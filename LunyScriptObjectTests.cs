@@ -8,9 +8,9 @@ namespace LunyScript.Test
 	{
 		public override void Build()
 		{
-			When.Object.Ready(Object.CreateEmpty("empty"));
-			When.Object.Ready(Object.CreateCube("cube"));
-			When.Object.Ready(Object.CreateSphere("sphere"));
+			When.Self.Ready(Object.CreateEmpty("empty"));
+			When.Self.Ready(Object.CreateCube("cube"));
+			When.Self.Ready(Object.CreateSphere("sphere"));
 		}
 	}
 
