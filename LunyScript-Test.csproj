@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <Compile Include="**\*.cs" Exclude="bin\**;obj\**" />
+      <None Include="LunyScript-Test\**\*.asmdef" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,6 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Luny-Test\Luny-Test.csproj" />
     <ProjectReference Include="..\Luny.csproj" />
     <ProjectReference Include="..\LunyLua.csproj" />
     <ProjectReference Include="..\LunyScript.csproj" />
