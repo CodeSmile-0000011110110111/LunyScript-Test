@@ -15,18 +15,13 @@ namespace LunyScript.Test
 	}
 
 	[TestFixture]
-	public sealed class LunyScriptObjectTests : LunyTestBase
+	public sealed class LunyScriptObjectTests : LunyScriptTestBase
 	{
 		[Test]
 		public void CreateObject_CallsServiceMethods()
 		{
-			LunyLogger.EnableInternalLogging = true;
 			var adapter = CreateEngineMockAdapter();
-
-			var nativeObject = new MockNativeObject(nameof(LunyScriptObjectTestScript));
-			var testObject = new MockLunyObject(nativeObject);
-			var sceneService = (MockSceneService)LunyEngine.Instance.Scene;
-			sceneService.AddSceneObject(testObject);
+			RegisterMockScript(typeof(LunyScriptObjectTestScript));
 
 			var objectService = LunyEngine.Instance.Object as MockObjectService;
 			Assert.That(objectService, Is.Not.Null, "MockObjectService should have been discovered and registered.");

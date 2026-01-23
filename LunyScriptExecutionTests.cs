@@ -1,6 +1,4 @@
-﻿using Luny;
-using Luny.Test;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 
 namespace LunyScript.Test
@@ -12,17 +10,13 @@ namespace LunyScript.Test
 	}
 
 	[TestFixture]
-	public sealed class LunyScriptExecutionTests : LunyTestBase
+	public sealed class LunyScriptExecutionTests : LunyScriptTestBase
 	{
 		[Test]
 		public void LunyScript_RunsBuildMethod()
 		{
 			var adapter = CreateEngineMockAdapter();
-
-			var nativeObject = new MockNativeObject(nameof(LunyScriptExecutionTestScript));
-			var mockObject = new MockLunyObject(nativeObject);
-			var sceneService = (MockSceneService)LunyEngine.Instance.Scene;
-			sceneService.AddSceneObject(mockObject);
+			RegisterMockScript(typeof(LunyScriptExecutionTestScript));
 
 			Assert.That(LunyScriptExecutionTestScript.DidRunBuild, Is.False);
 			adapter.Run();
