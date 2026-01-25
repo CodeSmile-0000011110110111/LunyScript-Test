@@ -43,7 +43,7 @@ namespace LunyScript.Test
 		public void SelfDisabled_DoesNotRunUpdates()
 		{
 			var adapter = CreateEngineMockAdapter();
-			var self = RegisterMockScript(typeof(WhenDisabledDoesNotRunSelfUpdates));
+			RegisterMockScript(typeof(WhenDisabledDoesNotRunSelfUpdates));
 			var gVars = LunyScriptEngine.Instance.GlobalVars;
 
 			adapter.RunAllFrames();
@@ -57,7 +57,7 @@ namespace LunyScript.Test
 		public void SelfEnabled_RunsUpdates()
 		{
 			var adapter = CreateEngineMockAdapter();
-			var self = RegisterMockScript(typeof(WhenEnabledRunsSelfUpdates));
+			RegisterMockScript(typeof(WhenEnabledRunsSelfUpdates));
 			var gVars = LunyScriptEngine.Instance.GlobalVars;
 
 			adapter.RunAllFrames();
