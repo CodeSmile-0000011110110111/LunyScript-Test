@@ -30,7 +30,7 @@ namespace LunyScript.Test
 			var objectService = LunyEngine.Instance.Object as MockObjectService;
 			Assert.That(objectService, Is.Not.Null, "MockObjectService should have been discovered and registered.");
 
-			adapter.Run();
+			adapter.RunAllFrames();
 
 			Assert.That(objectService.Log, Contains.Item("CreateEmpty(empty)"));
 			Assert.That(objectService.Log, Contains.Item("CreatePrimitive(Cube,cube)"));
