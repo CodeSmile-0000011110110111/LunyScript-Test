@@ -37,4 +37,10 @@
     <ProjectReference Include="..\LunyScript.csproj" />
   </ItemGroup>
 
+    <Target Name="FixMissingPdbError" BeforeTargets="CopyFilesToOutputDirectory">
+        <Copy SourceFiles="@(ReferenceCopyLocalPaths)"
+              Condition="Exists('%(FullPath)')"
+              DestinationFolder="$(OutDir)"
+              SkipUnchangedFiles="true" />
+    </Target>
 </Project>
