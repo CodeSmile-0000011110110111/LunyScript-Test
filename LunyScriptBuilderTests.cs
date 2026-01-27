@@ -9,18 +9,8 @@ namespace LunyScript.Test
 		public override void Build() => DidRunBuild = true;
 	}
 
-	[TestFixture]
-	public sealed class LunyScriptBuilderTests : LunyScriptTestBase
+	public sealed class LunyScriptBuilderTests
 	{
-		[Test]
-		public void LunyScript_RunsBuildMethod()
-		{
-			var adapter = CreateEngineMockAdapter();
-			RegisterMockScript(typeof(LunyScriptBuilderTestScript));
-
-			Assert.That(LunyScriptBuilderTestScript.DidRunBuild, Is.False);
-			adapter.RunAllFrames();
-			Assert.That(LunyScriptBuilderTestScript.DidRunBuild, Is.True);
-		}
+		// This test class is now redundant as logic moved to ContractTests.
 	}
 }

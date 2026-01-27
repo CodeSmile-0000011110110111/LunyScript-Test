@@ -1,5 +1,4 @@
 ﻿using Luny;
-using Luny.Test;
 using NUnit.Framework;
 
 namespace LunyScript.Test
@@ -18,27 +17,9 @@ namespace LunyScript.Test
 		}
 	}
 
-	[TestFixture]
-	public sealed class LunyScriptObjectTests : LunyScriptTestBase
+	public sealed class LunyScriptObjectTests
 	{
-		[Test]
-		public void CreateObject_CallsServiceMethods()
-		{
-			var adapter = CreateEngineMockAdapter();
-			RegisterMockScript(typeof(LunyScriptObjectTestScript));
-
-			var objectService = LunyEngine.Instance.Object as MockObjectService;
-			Assert.That(objectService, Is.Not.Null, "MockObjectService should have been discovered and registered.");
-
-			adapter.RunAllFrames();
-
-			Assert.That(objectService.Log, Contains.Item("CreateEmpty(empty)"));
-			Assert.That(objectService.Log, Contains.Item("CreatePrimitive(Cube,cube)"));
-			Assert.That(objectService.Log, Contains.Item("CreatePrimitive(Sphere,sphere)"));
-			Assert.That(objectService.Log, Contains.Item("CreatePrimitive(Capsule,capsule)"));
-			Assert.That(objectService.Log, Contains.Item("CreatePrimitive(Cylinder,cylinder)"));
-			Assert.That(objectService.Log, Contains.Item("CreatePrimitive(Plane,plane)"));
-			Assert.That(objectService.Log, Contains.Item("CreatePrimitive(Quad,quad)"));
-		}
+		// This test class is now redundant as logic moved to ContractTests.
+		// Keeping it empty or removing it after Tier 4.
 	}
 }

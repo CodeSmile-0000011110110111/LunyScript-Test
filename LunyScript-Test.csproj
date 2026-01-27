@@ -9,6 +9,7 @@
     <EnableDefaultItems>false</EnableDefaultItems>
     <DefaultItemExcludes>$(DefaultItemExcludes);bin\**;obj\**</DefaultItemExcludes>
     <LangVersion>9</LangVersion>
+    <RootNamespace>LunyScript.Test</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
     <PackageReference Include="NUnit" Version="4.3.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
     <PackageReference Include="NUnit.Analyzers" Version="4.5.0">
@@ -31,6 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Luny-ContractTest\Luny-ContractTest.csproj" />
     <ProjectReference Include="..\Luny-Test\Luny-Test.csproj" />
     <ProjectReference Include="..\Luny.csproj" />
     <ProjectReference Include="..\LunyLua.csproj" />

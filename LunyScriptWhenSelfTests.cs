@@ -36,35 +36,8 @@ namespace LunyScript.Test
 		}
 	}
 
-	[TestFixture]
-	public sealed class LunyScriptWhenSelfTests : LunyScriptTestBase
+	public sealed class LunyScriptWhenSelfTests
 	{
-		[Test]
-		public void SelfDisabled_DoesNotRunUpdates()
-		{
-			var adapter = CreateEngineMockAdapter();
-			RegisterMockScript(typeof(WhenDisabledDoesNotRunSelfUpdates));
-			var gVars = LunyScriptEngine.Instance.GlobalVars;
-
-			adapter.RunAllFrames();
-
-			Assert.That(gVars[nameof(LunyScript.When.Self.Steps)] == false);
-			Assert.That(gVars[nameof(LunyScript.When.Self.Updates)] == false);
-			Assert.That(gVars[nameof(LunyScript.When.Self.LateUpdates)] == false);
-		}
-
-		[Test]
-		public void SelfEnabled_RunsUpdates()
-		{
-			var adapter = CreateEngineMockAdapter();
-			RegisterMockScript(typeof(WhenEnabledRunsSelfUpdates));
-			var gVars = LunyScriptEngine.Instance.GlobalVars;
-
-			adapter.RunAllFrames();
-
-			Assert.That(gVars[nameof(LunyScript.When.Self.Steps)] == true);
-			Assert.That(gVars[nameof(LunyScript.When.Self.Updates)] == true);
-			Assert.That(gVars[nameof(LunyScript.When.Self.LateUpdates)] == true);
-		}
+		// This test class is now redundant as logic moved to ContractTests.
 	}
 }
