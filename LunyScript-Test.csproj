@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <Compile Include="**\*.cs" Exclude="bin\**;obj\**" />
-      <None Include="LunyScript-Test\**\*.asmdef" />
+    <None Include="LunyScript-Test\**\*.asmdef" />
   </ItemGroup>
 
   <ItemGroup>
