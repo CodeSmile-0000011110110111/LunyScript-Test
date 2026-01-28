@@ -1,6 +1,7 @@
 using Godot;
 using Luny;
 using Luny.ContractTest;
+using Luny.Engine;
 using NUnit.Framework;
 using System;
 using System.Linq;
