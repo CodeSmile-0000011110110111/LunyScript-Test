@@ -10,9 +10,9 @@ namespace LunyScript.Test
 		public override void Build()
 		{
 			When.Self.Ready(Object.Disable());
-			When.Self.Steps(Method.Run(() => GlobalVars[nameof(When.Self.Steps)] = (Variable)true));
-			When.Self.Updates(Method.Run(() => GlobalVars[nameof(When.Self.Updates)] = (Variable)true));
-			When.Self.LateUpdates(Method.Run(() => GlobalVars[nameof(When.Self.LateUpdates)] = (Variable)true));
+			When.Self.Steps(Method.Run(() => GlobalVars[nameof(When.Self.Steps)] = true));
+			When.Self.Updates(Method.Run(() => GlobalVars[nameof(When.Self.Updates)] = true));
+			When.Self.LateUpdates(Method.Run(() => GlobalVars[nameof(When.Self.LateUpdates)] = true));
 		}
 	}
 
@@ -21,9 +21,9 @@ namespace LunyScript.Test
 		public override void Build()
 		{
 			When.Self.Ready(Object.Disable(), Object.Enable());
-			When.Self.Steps(Method.Run(() => GlobalVars[nameof(When.Self.Steps)] = (Variable)true));
-			When.Self.Updates(Method.Run(() => GlobalVars[nameof(When.Self.Updates)] = (Variable)true));
-			When.Self.LateUpdates(Method.Run(() => GlobalVars[nameof(When.Self.LateUpdates)] = (Variable)true));
+			When.Self.Steps(Method.Run(() => GlobalVars[nameof(When.Self.Steps)] = true));
+			When.Self.Updates(Method.Run(() => GlobalVars[nameof(When.Self.Updates)] = true));
+			When.Self.LateUpdates(Method.Run(() => GlobalVars[nameof(When.Self.LateUpdates)] = true));
 		}
 	}
 

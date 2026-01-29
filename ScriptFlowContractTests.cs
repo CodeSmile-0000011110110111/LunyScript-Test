@@ -2,101 +2,89 @@ using Luny;
 using Luny.ContractTest;
 using Luny.Engine;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 
 namespace LunyScript.Test
 {
 	#region Scripts
-
 	public sealed class IfBranchingScript : LunyScript
 	{
-		public override void Build()
-		{
-			When.Self.Ready(
-				If(Method.IsTrue(() => GlobalVars["Condition"] == 1)).Then(
+		public override void Build() => When.Self.Ready(
+			If(Method.IsTrue(() => GlobalVars["Condition"] == 1))
+				.Then(
 					Method.Run(() => GlobalVars["Result"] = "Branch 1")
-				).ElseIf(Method.IsTrue(() => GlobalVars["Condition"] == 2)).Then(
+				)
+				.ElseIf(Method.IsTrue(() => GlobalVars["Condition"] == 2))
+				.Then(
 					Method.Run(() => GlobalVars["Result"] = "Branch 2")
-				).Else(
+				)
+				.Else(
 					Method.Run(() => GlobalVars["Result"] = "Branch Else")
 				)
-			);
-		}
+		);
 	}
 
 	public sealed class WhileLoopScript : LunyScript
 	{
-		public override void Build()
-		{
-			When.Self.Ready(
-				Method.Run(() => GlobalVars["Counter"] = 0),
-				While(Method.IsTrue(() => (Int32)GlobalVars["Counter"] < 5)).Do(
-					Method.Run(() => GlobalVars["Counter"] = (Int32)GlobalVars["Counter"] + 1)
+		public override void Build() => When.Self.Ready(
+			Method.Run(() => GlobalVars["Counter"] = 0),
+			While(Method.IsTrue(() => GlobalVars["Counter"] < 5))
+				.Do(
+					Method.Run(() => GlobalVars["Counter"] = GlobalVars["Counter"] + 1)
 				)
-			);
-		}
+		);
 	}
 
 	public sealed class ForLoopScript : LunyScript
 	{
-		public override void Build()
-		{
-			When.Self.Ready(
-				Method.Run(() => GlobalVars["Sum"] = 0),
-				For(3).Do(
+		public override void Build() => When.Self.Ready(
+			Method.Run(() => GlobalVars["Sum"] = 0),
+			For(3)
+				.Do(
 					Method.Run(ctx =>
 					{
 						var counter = ctx.LoopCount;
-						GlobalVars["Sum"] = (Int32)GlobalVars["Sum"] + (Int32)counter;
+						GlobalVars["Sum"] = GlobalVars["Sum"] + counter;
 					})
 				)
-			);
-		}
+		);
 	}
 
 	public sealed class ForLoopReverseScript : LunyScript
 	{
-		public override void Build()
-		{
-			When.Self.Ready(
-				Method.Run(() => GlobalVars["Sum"] = "START"),
-				For(3, -1).Do(
-					Method.Run(ctx => {
+		public override void Build() => When.Self.Ready(
+			Method.Run(() => GlobalVars["Sum"] = "START"),
+			For(3, -1)
+				.Do(
+					Method.Run(ctx =>
+					{
 						var counter = ctx.LoopCount;
-						GlobalVars["Sum"] = (Int32)GlobalVars["Sum"] + (Int32)counter;
+						GlobalVars["Sum"] = GlobalVars["Sum"] + counter;
 					})
 				)
-			);
-		}
+		);
 	}
 
 	public sealed class NestedForLoopScript : LunyScript
 	{
-		public override void Build()
-		{
-			When.Self.Ready(
-				Method.Run(() => GlobalVars["Outer"] = 0),
-				Method.Run(() => GlobalVars["Inner"] = 0),
-				For(2).Do(
-					Method.Run(() => GlobalVars["Outer"] = (Int32)GlobalVars["Outer"] + 1),
-					For(3).Do(
-						Method.Run(() => GlobalVars["Inner"] = (Int32)GlobalVars["Inner"] + 1)
-					)
+		public override void Build() => When.Self.Ready(
+			Method.Run(() => GlobalVars["Outer"] = 0),
+			Method.Run(() => GlobalVars["Inner"] = 0),
+			For(2)
+				.Do(
+					Method.Run(() => GlobalVars["Outer"] = GlobalVars["Outer"] + 1),
+					For(3)
+						.Do(
+							Method.Run(() => GlobalVars["Inner"] = GlobalVars["Inner"] + 1)
+						)
 				)
-			);
-		}
+		);
 	}
-
 	#endregion
 
 	public abstract class ScriptFlowContractTests : ContractTestBase
 	{
 		[SetUp]
-		public void SetupFlowTests()
-		{
-			LunyScriptEngine.Instance?.GlobalVars.Clear();
-		}
+		public void SetupFlowTests() => LunyScriptEngine.Instance?.GlobalVars.Clear();
 
 		[Test]
 		public void If_Branching_Works()
