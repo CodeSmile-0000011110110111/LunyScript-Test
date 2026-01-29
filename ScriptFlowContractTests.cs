@@ -14,9 +14,9 @@ namespace LunyScript.Test
 		public override void Build()
 		{
 			When.Self.Ready(
-				If(Method.Check(() => GlobalVars["Condition"] == 1)).Then(
+				If(Method.IsTrue(() => GlobalVars["Condition"] == 1)).Then(
 					Method.Run(() => GlobalVars["Result"] = "Branch 1")
-				).ElseIf(Method.Check(() => GlobalVars["Condition"] == 2)).Then(
+				).ElseIf(Method.IsTrue(() => GlobalVars["Condition"] == 2)).Then(
 					Method.Run(() => GlobalVars["Result"] = "Branch 2")
 				).Else(
 					Method.Run(() => GlobalVars["Result"] = "Branch Else")
@@ -31,7 +31,7 @@ namespace LunyScript.Test
 		{
 			When.Self.Ready(
 				Method.Run(() => GlobalVars["Counter"] = 0),
-				While(Method.Check(() => (Int32)GlobalVars["Counter"] < 5)).Do(
+				While(Method.IsTrue(() => (Int32)GlobalVars["Counter"] < 5)).Do(
 					Method.Run(() => GlobalVars["Counter"] = (Int32)GlobalVars["Counter"] + 1)
 				)
 			);
@@ -45,8 +45,9 @@ namespace LunyScript.Test
 			When.Self.Ready(
 				Method.Run(() => GlobalVars["Sum"] = 0),
 				For(3).Do(
-					Method.Run(ctx => {
-						var counter = Loop.Counter.Evaluate(ctx);
+					Method.Run(ctx =>
+					{
+						var counter = ctx.LoopCount;
 						GlobalVars["Sum"] = (Int32)GlobalVars["Sum"] + (Int32)counter;
 					})
 				)
@@ -62,7 +63,7 @@ namespace LunyScript.Test
 				Method.Run(() => GlobalVars["Sum"] = "START"),
 				For(3, -1).Do(
 					Method.Run(ctx => {
-						var counter = Loop.Counter.Evaluate(ctx);
+						var counter = ctx.LoopCount;
 						GlobalVars["Sum"] = (Int32)GlobalVars["Sum"] + (Int32)counter;
 					})
 				)

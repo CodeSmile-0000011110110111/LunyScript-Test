@@ -166,7 +166,7 @@ namespace LunyScript.Test
 			var context = new MockContext();
 			context.LoopStack.Push(42);
 
-			var value = LoopCounterValue.Instance.Evaluate(context);
+			var value = LoopCounterVariable.Get(context);
 			Assert.That(value.AsInt32(), Is.EqualTo(42));
 		}
 
