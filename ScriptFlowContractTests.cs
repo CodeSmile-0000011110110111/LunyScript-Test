@@ -84,7 +84,7 @@ namespace LunyScript.Test
 	public abstract class ScriptFlowContractTests : ContractTestBase
 	{
 		[SetUp]
-		public void SetupFlowTests() => LunyScriptEngine.Instance?.GlobalVars.Clear();
+		public void SetupFlowTests() => LunyScriptEngine.Instance?.GlobalVars.RemoveAll();
 
 		[Test]
 		public void If_Branching_Works()
@@ -92,21 +92,21 @@ namespace LunyScript.Test
 			var gVars = LunyScriptEngine.Instance.GlobalVars;
 
 			// Branch 1
-			gVars.Clear();
+			gVars.RemoveAll();
 			gVars["Condition"] = 1;
 			LunyEngine.Instance.Object.CreateEmpty(nameof(IfBranchingScript));
 			SimulateFrames(3);
 			Assert.That(gVars["Result"], Is.EqualTo((Variable)"Branch 1"));
 
 			// Branch 2
-			gVars.Clear();
+			gVars.RemoveAll();
 			gVars["Condition"] = 2;
 			LunyEngine.Instance.Object.CreateEmpty(nameof(IfBranchingScript));
 			SimulateFrames(3);
 			Assert.That(gVars["Result"], Is.EqualTo((Variable)"Branch 2"));
 
 			// Branch Else
-			gVars.Clear();
+			gVars.RemoveAll();
 			gVars["Condition"] = 3;
 			LunyEngine.Instance.Object.CreateEmpty(nameof(IfBranchingScript));
 			SimulateFrames(3);

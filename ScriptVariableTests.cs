@@ -48,7 +48,7 @@ namespace LunyScript.Test
 		protected override NativeEngine Engine => NativeEngine.Unity;
 
 		[SetUp]
-		public void Setup() => LunyScriptEngine.Instance?.GlobalVars.Clear();
+		public void Setup() => LunyScriptEngine.Instance?.GlobalVars.RemoveAll();
 
 		[Test]
 		public void Variable_API_Works()
@@ -76,7 +76,7 @@ namespace LunyScript.Test
 			var handle1 = table.GetHandle("test");
 			handle1.Value = 1;
 
-			table.Remove("test");
+			table.ResetValue("test");
 			Assert.That(handle1.Value.Type, Is.EqualTo(Variable.ValueType.Null));
 
 			var handle2 = table.GetHandle("test");
