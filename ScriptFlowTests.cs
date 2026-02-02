@@ -12,8 +12,6 @@ namespace LunyScript.Test
 	[TestFixture]
 	public sealed class ScriptFlowTests
 	{
-		private ILunyScriptContext _context;
-
 		[SetUp]
 		public void Setup()
 		{
