@@ -2,6 +2,7 @@ using Luny;
 using Luny.ContractTest;
 using Luny.Engine;
 using Luny.Engine.Bridge.Enums;
+using LunyScript.Blocks;
 using LunyScript.Execution;
 using NUnit.Framework;
 
@@ -39,6 +40,7 @@ namespace LunyScript.Test
 				// Test Multiplex arithmetic
 				hp.Set(hp * 2), // 140
 				hp.Set(hp / 2) // 70
+				//hp.Sub((hp + 10) / 2)  // 30
 			);
 		}
 	}
