@@ -1,7 +1,6 @@
 using Luny;
 using Luny.ContractTest;
 using Luny.Engine.Bridge.Enums;
-using LunyScript.Execution;
 using NUnit.Framework;
 
 namespace LunyScript.Test
