@@ -1,204 +1,147 @@
 using Luny;
-using Luny.Engine;
-using Luny.Engine.Bridge;
-using LunyScript.Blocks;
-using LunyScript.Execution;
+using Luny.ContractTest;
+using Luny.Engine.Bridge.Enums;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 
 namespace LunyScript.Test
 {
-	[TestFixture]
-	public sealed class ScriptFlowTests
+	#region Scripts
+	public sealed class IfBranchingScript : LunyScript
+	{
+		public override void Build() => When.Self.Ready(
+			If(Method.IsTrue(() => GlobalVars["Condition"] == 1))
+				.Then(Method.Run(() => GlobalVars["Result"] = "Branch 1"))
+				.ElseIf(Method.IsTrue(() => GlobalVars["Condition"] == 2))
+				.Then(Method.Run(() => GlobalVars["Result"] = "Branch 2"))
+				.Else(Method.Run(() => GlobalVars["Result"] = "Branch Else"))
+		);
+	}
+
+	public sealed class WhileLoopScript : LunyScript
+	{
+		public override void Build() => When.Self.Ready(
+			Method.Run(() => GlobalVars["Counter"] = 0),
+			While(Method.IsTrue(() => GlobalVars["Counter"] < 5))
+				.Do(Method.Run(() => GlobalVars["Counter"] = GlobalVars["Counter"] + 1))
+		);
+	}
+
+	public sealed class ForLoopScript : LunyScript
+	{
+		public override void Build() => When.Self.Ready(
+			Method.Run(() => GlobalVars["Sum"] = 0),
+			For(3).Do(Method.Run(ctx => GlobalVars["Sum"] = GlobalVars["Sum"] + ctx.LoopCount))
+		);
+	}
+
+	public sealed class ForLoopReverseScript : LunyScript
+	{
+		public override void Build() => When.Self.Ready(
+			Method.Run(() => GlobalVars["Sum"] = "START"),
+			For(3, -1).Do(Method.Run(ctx => GlobalVars["Sum"] = GlobalVars["Sum"] + ctx.LoopCount))
+		);
+	}
+
+	public sealed class NestedForLoopScript : LunyScript
+	{
+		public override void Build() => When.Self.Ready(
+			Method.Run(() => GlobalVars["Outer"] = 0),
+			Method.Run(() => GlobalVars["Inner"] = 0),
+			For(2)
+				.Do(Method.Run(() => GlobalVars["Outer"] = GlobalVars["Outer"] + 1),
+					For(3)
+						.Do(Method.Run(() => GlobalVars["Inner"] = GlobalVars["Inner"] + 1))));
+	}
+	#endregion
+
+	public abstract class ScriptFlowTests : ContractTestBase
 	{
 		[SetUp]
-		public void Setup()
+		public void SetupFlowTests() => LunyScriptEngine.Instance?.GlobalVars.RemoveAll();
+
+		[Test]
+		public void If_Branching_Works()
 		{
-			// Minimal setup to create a context
-			// In a real test we'd use mocks, but here I can use the actual implementation if it doesn't have heavy dependencies.
-			// LunyScriptContext needs ILunyScriptDefinition and ILunyObject.
-			// I'll use a simple mock-like approach.
+			var gVars = LunyScriptEngine.Instance.GlobalVars;
+
+			// Branch 1
+			gVars.RemoveAll();
+			gVars["Condition"] = 1;
+			LunyEngine.Instance.Object.CreateEmpty(nameof(IfBranchingScript));
+			SimulateFrames(3);
+			Assert.That(gVars["Result"], Is.EqualTo((Variable)"Branch 1"));
+
+			// Branch 2
+			gVars.RemoveAll();
+			gVars["Condition"] = 2;
+			LunyEngine.Instance.Object.CreateEmpty(nameof(IfBranchingScript));
+			SimulateFrames(3);
+			Assert.That(gVars["Result"], Is.EqualTo((Variable)"Branch 2"));
+
+			// Branch Else
+			gVars.RemoveAll();
+			gVars["Condition"] = 3;
+			LunyEngine.Instance.Object.CreateEmpty(nameof(IfBranchingScript));
+			SimulateFrames(3);
+			Assert.That(gVars["Result"], Is.EqualTo((Variable)"Branch Else"));
 		}
 
 		[Test]
-		public void TestAndBlock()
+		public void While_Loop_Works()
 		{
-			var condTrue = new MockCondition(true);
-			var condFalse = new MockCondition(false);
+			LunyEngine.Instance.Object.CreateEmpty(nameof(WhileLoopScript));
+			var gVars = LunyScriptEngine.Instance.GlobalVars;
 
-			Assert.That(AndBlock.Create(condTrue, condTrue).Evaluate(null), Is.True);
-			Assert.That(AndBlock.Create(condTrue, condFalse).Evaluate(null), Is.False);
-			Assert.That(AndBlock.Create().Evaluate(null), Is.True);
+			SimulateFrames(3);
+
+			Assert.That(gVars["Counter"], Is.EqualTo((Variable)5));
 		}
 
 		[Test]
-		public void TestOrBlock()
+		public void For_Loop_Works()
 		{
-			var condTrue = new MockCondition(true);
-			var condFalse = new MockCondition(false);
+			LunyEngine.Instance.Object.CreateEmpty(nameof(ForLoopScript));
+			var gVars = LunyScriptEngine.Instance.GlobalVars;
 
-			Assert.That(OrBlock.Create(condTrue, condFalse).Evaluate(null), Is.True);
-			Assert.That(OrBlock.Create(condFalse, condFalse).Evaluate(null), Is.False);
-			Assert.That(OrBlock.Create().Evaluate(null), Is.False);
+			SimulateFrames(3);
+
+			// 1 + 2 + 3 = 6
+			Assert.That(gVars["Sum"], Is.EqualTo((Variable)6));
 		}
 
 		[Test]
-		public void TestNotBlock()
+		public void For_Loop_Reverse_Works()
 		{
-			var condTrue = new MockCondition(true);
-			var condFalse = new MockCondition(false);
+			LunyEngine.Instance.Object.CreateEmpty(nameof(ForLoopReverseScript));
+			var gVars = LunyScriptEngine.Instance.GlobalVars;
 
-			Assert.That(NotBlock.Create(condTrue).Evaluate(null), Is.False);
-			Assert.That(NotBlock.Create(condFalse).Evaluate(null), Is.True);
+			SimulateFrames(3);
+
+			Assert.That(gVars["Sum"], Is.EqualTo((Variable)6));
 		}
 
 		[Test]
-		public void TestIfBlock()
+		public void Nested_For_Loop_Works()
 		{
-			var executed = false;
-			var cond = new MockCondition(true);
-			var action = new MockAction(() => executed = true);
+			LunyEngine.Instance.Object.CreateEmpty(nameof(NestedForLoopScript));
+			var gVars = LunyScriptEngine.Instance.GlobalVars;
 
-			var ifBlock = IfBlock.Create(new List<(IScriptConditionBlock[], IScriptActionBlock[])>
-			{
-				(new[] { cond }, new[] { action }),
-			}, null);
+			SimulateFrames(3);
 
-			ifBlock.Execute(null);
-			Assert.That(executed, Is.True);
+			Assert.That(gVars["Outer"], Is.EqualTo((Variable)2));
+			Assert.That(gVars["Inner"], Is.EqualTo((Variable)6));
 		}
+	}
 
-		[Test]
-		public void TestIfElseIfElseBlock()
-		{
-			var executedBranch = 0;
-			var condFalse = new MockCondition(false);
-			var condTrue = new MockCondition(true);
-			var action1 = new MockAction(() => executedBranch = 1);
-			var action2 = new MockAction(() => executedBranch = 2);
-			var action3 = new MockAction(() => executedBranch = 3);
+	[TestFixture]
+	public sealed class GodotScriptFlowTests : ScriptFlowTests
+	{
+		protected override NativeEngine Engine => NativeEngine.Godot;
+	}
 
-			// Test ElseIf branch
-			var ifBlock1 = IfBlock.Create(new List<(IScriptConditionBlock[], IScriptActionBlock[])>
-			{
-				(new[] { condFalse }, new[] { action1 }),
-				(new[] { condTrue }, new[] { action2 }),
-			}, new[] { action3 });
-
-			ifBlock1.Execute(null);
-			Assert.That(executedBranch, Is.EqualTo(2));
-
-			// Test Else branch
-			executedBranch = 0;
-			var ifBlock2 = IfBlock.Create(new List<(IScriptConditionBlock[], IScriptActionBlock[])>
-			{
-				(new[] { condFalse }, new[] { action1 }),
-				(new[] { condFalse }, new[] { action2 }),
-			}, new[] { action3 });
-
-			ifBlock2.Execute(null);
-			Assert.That(executedBranch, Is.EqualTo(3));
-		}
-
-		[Test]
-		public void TestIfBlockNullConditions()
-		{
-			var executed = false;
-			var action = new MockAction(() => executed = true);
-
-			// null conditions should evaluate to true
-			var ifBlock = IfBlock.Create(new List<(IScriptConditionBlock[], IScriptActionBlock[])>
-			{
-				(null, new[] { action }),
-			}, null);
-
-			ifBlock.Execute(null);
-			Assert.That(executed, Is.True);
-		}
-
-		[Test]
-		public void TestIfBlockEmptyConditions()
-		{
-			var executed = false;
-			var action = new MockAction(() => executed = true);
-
-			// empty conditions should evaluate to true
-			var ifBlock = IfBlock.Create(new List<(IScriptConditionBlock[], IScriptActionBlock[])>
-			{
-				(Array.Empty<IScriptConditionBlock>(), new[] { action }),
-			}, null);
-
-			ifBlock.Execute(null);
-			Assert.That(executed, Is.True);
-		}
-
-		[Test]
-		public void TestForBlock()
-		{
-			var counts = new List<Int32>();
-			var action = new MockActionWithContext(ctx => counts.Add(ctx.LoopStack.Peek()));
-
-			var forBlock = ForBlock.Create(3, 1, new[] { action });
-			var context = new MockContext();
-
-			forBlock.Execute(context);
-			Assert.That(counts, Is.EqualTo(new[] { 1, 2, 3 }));
-		}
-
-		[Test]
-		public void TestForBlockReverse()
-		{
-			var counts = new List<Int32>();
-			var action = new MockActionWithContext(ctx => counts.Add(ctx.LoopStack.Peek()));
-
-			var forBlock = ForBlock.Create(3, -1, new[] { action });
-			var context = new MockContext();
-
-			forBlock.Execute(context);
-			Assert.That(counts, Is.EqualTo(new[] { 3, 2, 1 }));
-		}
-
-		[Test]
-		public void TestLoopCounterValue()
-		{
-			var context = new MockContext();
-			context.LoopStack.Push(42);
-
-			var value = LoopCounterVariableBlock.Instance.GetValue(context);
-			Assert.That(value.AsInt32(), Is.EqualTo(42));
-		}
-
-		private class MockCondition : IScriptConditionBlock
-		{
-			private readonly Boolean _result;
-			public MockCondition(Boolean result) => _result = result;
-			public Boolean Evaluate(ILunyScriptContext context) => _result;
-		}
-
-		private class MockAction : IScriptActionBlock
-		{
-			private readonly Action _action;
-			public MockAction(Action action) => _action = action;
-			public void Execute(ILunyScriptContext context) => _action();
-		}
-
-		private class MockActionWithContext : IScriptActionBlock
-		{
-			private readonly Action<ILunyScriptContext> _action;
-			public MockActionWithContext(Action<ILunyScriptContext> action) => _action = action;
-			public void Execute(ILunyScriptContext context) => _action(context);
-		}
-
-		private class MockContext : ILunyScriptContext
-		{
-			public LunyScriptID ScriptID => default;
-			public Type ScriptType => null;
-			public ILunyObject LunyObject => null;
-			public ITable GlobalVariables => null;
-			public ITable LocalVariables => null;
-			public Stack<Int32> LoopStack { get; } = new();
-			public Int32 LoopCount => LoopStack.Count > 0 ? LoopStack.Peek() : 0;
-		}
+	[TestFixture]
+	public sealed class UnityScriptFlowTests : ScriptFlowTests
+	{
+		protected override NativeEngine Engine => NativeEngine.Unity;
 	}
 }
