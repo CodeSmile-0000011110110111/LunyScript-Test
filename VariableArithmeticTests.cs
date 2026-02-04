@@ -10,6 +10,12 @@ namespace LunyScript.Test
 	{
 		public override void Build()
 		{
+			// Constants
+			var three = Const(3);
+			var four = Const(4);
+			var five = Const(5);
+			var ten = Const(10);
+
 			// Method variants
 			var v_set = GVar("v_set");
 			var v_add = GVar("v_add");
@@ -31,16 +37,20 @@ namespace LunyScript.Test
 			var o_dec_post = GVar("o_dec_post");
 
 			// Inter-variable variants
-			var five = GVar("five");
-			var ten = GVar("ten");
-			var four = GVar("four");
-			var three = GVar("three");
 			var v_add_v = GVar("v_add_v");
 			var v_sub_v = GVar("v_sub_v");
 			var v_mul_v = GVar("v_mul_v");
 			var v_div_v = GVar("v_div_v");
 			var v_complex = GVar("v_complex");
 			var v_complex2 = GVar("v_complex2");
+			var v_lit_left = GVar("v_lit_left");
+			var v_lit_right = GVar("v_lit_right");
+
+			// IScriptVariableBlock variants (explicit method calls)
+			var m_add_b = GVar("m_add_b");
+			var m_sub_b = GVar("m_sub_b");
+			var m_mul_b = GVar("m_mul_b");
+			var m_div_b = GVar("m_div_b");
 
 			When.Self.Ready(
 				v_set.Set(100),
@@ -59,16 +69,20 @@ namespace LunyScript.Test
 				o_inc_post.Set(10), o_inc_post.Set(o_inc_post++), // 10 (postfix)
 				o_dec_pre.Set(10), o_dec_pre.Set(--o_dec_pre), // 9
 				o_dec_post.Set(10), o_dec_post.Set(o_dec_post--), // 10 (postfix)
-				five.Set(5),
-				ten.Set(10),
-				four.Set(4),
-				three.Set(3),
 				v_add_v.Set(five + ten), // 15
 				v_sub_v.Set(ten - five), // 5
 				v_mul_v.Set(five * ten), // 50
 				v_div_v.Set(ten / five), // 2
 				v_complex.Set(five * ten / four - three), // 9.5
-				v_complex2.Set(five * (ten / four - three)) // -2.5
+				v_complex2.Set(five * (ten / four - three)), // -2.5
+				(10 + v_lit_left).Set(100),
+				(v_lit_right + 20).Set(200),
+
+				// Explicitly call Add/Sub/Mul/Div(IScriptVariableBlock)
+				m_add_b.Set(10), m_add_b.Add(ten), // 20
+				m_sub_b.Set(200), m_sub_b.Sub(five), // 195 (200 - 5)
+				m_mul_b.Set(10), m_mul_b.Mul(ten), // 100
+				m_div_b.Set(10), m_div_b.Div(five) // 2 (10 / 5)
 			);
 
 			var v_upd_inc = GVar("v_upd_inc");
@@ -124,6 +138,16 @@ namespace LunyScript.Test
 			Assert.That(gVars["v_div_v"], Is.EqualTo((Variable)2));
 			Assert.That(gVars["v_complex"], Is.EqualTo(9.5));
 			Assert.That(gVars["v_complex2"], Is.EqualTo(-2.5));
+
+			// IScriptVariableBlock variants
+			Assert.That(gVars["m_add_b"], Is.EqualTo((Variable)20));
+			Assert.That(gVars["m_sub_b"], Is.EqualTo((Variable)195));
+			Assert.That(gVars["m_mul_b"], Is.EqualTo((Variable)100));
+			Assert.That(gVars["m_div_b"], Is.EqualTo((Variable)2));
+
+			// Literals in expressions targeting the variable
+			Assert.That(gVars["v_lit_left"], Is.EqualTo((Variable)100));
+			Assert.That(gVars["v_lit_right"], Is.EqualTo((Variable)200));
 
 			// Update increment test
 			Assert.That(gVars["v_upd_inc"], Is.EqualTo((Variable)frameCount));

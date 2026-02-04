@@ -44,7 +44,17 @@ namespace LunyScript.Test
 				If(a <= b).Then(GVar("o_le1").Set(true)),
 				If(a <= c).Then(GVar("o_le2").Set(true)),
 				If(isTrue).Then(GVar("o_true").Set(true)),
-				If(!isFalse).Then(GVar("o_not_false").Set(true))
+				If(!isFalse).Then(GVar("o_not_false").Set(true)),
+
+				// Is* with Variable literals
+				If(a.IsEqualTo(10)).Then(GVar("lv_eq").Set(true)),
+				If(a.IsNotEqualTo(20)).Then(GVar("lv_neq").Set(true)),
+				If(b.IsGreaterThan(10)).Then(GVar("lv_gt").Set(true)),
+				If(b.IsAtLeast(20)).Then(GVar("lv_ge1").Set(true)),
+				If(a.IsAtLeast(10)).Then(GVar("lv_ge2").Set(true)),
+				If(a.IsLessThan(20)).Then(GVar("lv_lt").Set(true)),
+				If(a.IsAtMost(20)).Then(GVar("lv_le1").Set(true)),
+				If(a.IsAtMost(10)).Then(GVar("lv_le2").Set(true))
 			);
 		}
 	}
@@ -85,6 +95,16 @@ namespace LunyScript.Test
 			Assert.That(gVars["o_le2"].AsBoolean(), Is.True, "o_le2");
 			Assert.That(gVars["o_true"].AsBoolean(), Is.True, "o_true");
 			Assert.That(gVars["o_not_false"].AsBoolean(), Is.True, "o_not_false");
+
+			// Literal Variable comparison variants
+			Assert.That(gVars["lv_eq"].AsBoolean(), Is.True, "lv_eq");
+			Assert.That(gVars["lv_neq"].AsBoolean(), Is.True, "lv_neq");
+			Assert.That(gVars["lv_gt"].AsBoolean(), Is.True, "lv_gt");
+			Assert.That(gVars["lv_ge1"].AsBoolean(), Is.True, "lv_ge1");
+			Assert.That(gVars["lv_ge2"].AsBoolean(), Is.True, "lv_ge2");
+			Assert.That(gVars["lv_lt"].AsBoolean(), Is.True, "lv_lt");
+			Assert.That(gVars["lv_le1"].AsBoolean(), Is.True, "lv_le1");
+			Assert.That(gVars["lv_le2"].AsBoolean(), Is.True, "lv_le2");
 		}
 	}
 }
