@@ -1,6 +1,5 @@
 using Luny;
 using Luny.ContractTest;
-using Luny.Engine;
 using Luny.Engine.Bridge.Enums;
 using NUnit.Framework;
 
@@ -11,16 +10,10 @@ namespace LunyScript.Test
 	{
 		public override void Build() => When.Self.Ready(
 			If(Method.IsTrue(() => GlobalVars["Condition"] == 1))
-				.Then(
-					Method.Run(() => GlobalVars["Result"] = "Branch 1")
-				)
+				.Then(Method.Run(() => GlobalVars["Result"] = "Branch 1"))
 				.ElseIf(Method.IsTrue(() => GlobalVars["Condition"] == 2))
-				.Then(
-					Method.Run(() => GlobalVars["Result"] = "Branch 2")
-				)
-				.Else(
-					Method.Run(() => GlobalVars["Result"] = "Branch Else")
-				)
+				.Then(Method.Run(() => GlobalVars["Result"] = "Branch 2"))
+				.Else(Method.Run(() => GlobalVars["Result"] = "Branch Else"))
 		);
 	}
 
@@ -29,9 +22,7 @@ namespace LunyScript.Test
 		public override void Build() => When.Self.Ready(
 			Method.Run(() => GlobalVars["Counter"] = 0),
 			While(Method.IsTrue(() => GlobalVars["Counter"] < 5))
-				.Do(
-					Method.Run(() => GlobalVars["Counter"] = GlobalVars["Counter"] + 1)
-				)
+				.Do(Method.Run(() => GlobalVars["Counter"] = GlobalVars["Counter"] + 1))
 		);
 	}
 
@@ -39,14 +30,7 @@ namespace LunyScript.Test
 	{
 		public override void Build() => When.Self.Ready(
 			Method.Run(() => GlobalVars["Sum"] = 0),
-			For(3)
-				.Do(
-					Method.Run(ctx =>
-					{
-						var counter = ctx.LoopCount;
-						GlobalVars["Sum"] = GlobalVars["Sum"] + counter;
-					})
-				)
+			For(3).Do(Method.Run(ctx => GlobalVars["Sum"] = GlobalVars["Sum"] + ctx.LoopCount))
 		);
 	}
 
@@ -54,14 +38,7 @@ namespace LunyScript.Test
 	{
 		public override void Build() => When.Self.Ready(
 			Method.Run(() => GlobalVars["Sum"] = "START"),
-			For(3, -1)
-				.Do(
-					Method.Run(ctx =>
-					{
-						var counter = ctx.LoopCount;
-						GlobalVars["Sum"] = GlobalVars["Sum"] + counter;
-					})
-				)
+			For(3, -1).Do(Method.Run(ctx => GlobalVars["Sum"] = GlobalVars["Sum"] + ctx.LoopCount))
 		);
 	}
 
@@ -71,14 +48,9 @@ namespace LunyScript.Test
 			Method.Run(() => GlobalVars["Outer"] = 0),
 			Method.Run(() => GlobalVars["Inner"] = 0),
 			For(2)
-				.Do(
-					Method.Run(() => GlobalVars["Outer"] = GlobalVars["Outer"] + 1),
+				.Do(Method.Run(() => GlobalVars["Outer"] = GlobalVars["Outer"] + 1),
 					For(3)
-						.Do(
-							Method.Run(() => GlobalVars["Inner"] = GlobalVars["Inner"] + 1)
-						)
-				)
-		);
+						.Do(Method.Run(() => GlobalVars["Inner"] = GlobalVars["Inner"] + 1))));
 	}
 	#endregion
 
