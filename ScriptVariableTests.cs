@@ -1,7 +1,6 @@
 using Luny;
 using Luny.ContractTest;
 using Luny.Engine.Bridge.Enums;
-using LunyScript.Blocks;
 using LunyScript.Execution;
 using NUnit.Framework;
 
@@ -15,6 +14,10 @@ namespace LunyScript.Test
 			var score = GVar("score");
 			var isDead = Var("isDead");
 			var count = Var("count");
+			var falseFlag = Var("falseFlag");
+
+			var testOp = Var("testOp");
+			var testOp2 = Var("testOp2");
 
 			When.Self.Ready(
 				// Test Set Literals
@@ -45,11 +48,15 @@ namespace LunyScript.Test
 				// Test Multiplex arithmetic
 				hp.Set(hp * 2), // 140
 				hp.Set(hp / 2), // 70
+				If(count + 10 - 10 < 10).Then(count.Set(count - 10 + 11)),
+				hp.Set((hp + 10) / 2),
+				hp.Set((hp + 10) * 2 - 5), // (40 + 10) * 2 - 5 = 95
+				If(!falseFlag).Then(falseFlag.Set(hp)),
 
-				If(count < 10).Then(count.Add(1)),
-
-				hp.Set((ScriptVariable)(hp + 10) / 2),
-				hp.Set((ScriptVariable)(hp + 10) / Constant.Create(2))
+				// Test Increment/Decrement operators
+				testOp.Set(10),
+				testOp.Set(testOp++), // remains 10 (postfix => testOp incremented after Set())
+				If(testOp == 11).Then(testOp2.Set(++testOp)) // becomes 12 (prefix => increment before Set())
 			);
 		}
 	}
@@ -65,24 +72,30 @@ namespace LunyScript.Test
 		[Test]
 		public void Variable_API_Works()
 		{
-			var gVars = LunyScriptEngine.Instance.GlobalVars;
-
 			var obj = LunyEngine.Instance.Object.CreateEmpty(nameof(VariableTestScript));
 			var context = (LunyScriptContext)LunyScriptEngine.Instance.GetScriptContext(obj.NativeObjectID);
-			var lVars = context.LocalVariables;
+			var Vars = context.LocalVariables;
+			var GVars = LunyScriptEngine.Instance.GlobalVars;
 
-			SimulateFrames(5);
+			SimulateFrames(1);
 
-			Assert.That(lVars["hp"], Is.EqualTo((Variable)70));
-			Assert.That(gVars["score"], Is.EqualTo((Variable)15));
-			Assert.That(lVars["isDead"], Is.EqualTo((Variable)true));
-			Assert.That(lVars["status"], Is.EqualTo((Variable)"healthy"));
-			Assert.That(gVars["lastEvent"], Is.EqualTo((Variable)"died"));
+			LunyLogger.LogInfo($"Final testOp: {Vars["testOp"]} ({Vars["testOp"].Value})");
+			Assert.That(Vars["hp"], Is.EqualTo((Variable)95));
+			Assert.That(GVars["score"], Is.EqualTo((Variable)15));
+			Assert.That(Vars["isDead"], Is.EqualTo((Variable)true));
+			Assert.That(Vars["status"], Is.EqualTo((Variable)"healthy"));
+			Assert.That(GVars["lastEvent"], Is.EqualTo((Variable)"died"));
+			LunyLogger.LogInfo($"---------> {Vars["falseFlag"]} ({Vars["falseFlag"].Value})");
+			Assert.That(Vars["falseFlag"], Is.EqualTo((Variable)95));
 
 			// Op variants
-			Assert.That(lVars["status_op"], Is.EqualTo((Variable)"healthy"));
-			Assert.That(gVars["lastEvent_op"], Is.EqualTo((Variable)"died"));
-			Assert.That(lVars["score_ok"], Is.EqualTo((Variable)true));
+			Assert.That(Vars["status_op"], Is.EqualTo((Variable)"healthy"));
+			Assert.That(GVars["lastEvent_op"], Is.EqualTo((Variable)"died"));
+			Assert.That(Vars["score_ok"], Is.EqualTo((Variable)true));
+
+			// Increment/Decrement
+			Assert.That(Vars["testOp"], Is.EqualTo((Variable)10));
+			Assert.That(Vars["testOp2"], Is.EqualTo((Variable)12));
 		}
 
 		[Test]
