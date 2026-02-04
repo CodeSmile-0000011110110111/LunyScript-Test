@@ -8,61 +8,87 @@ namespace LunyScript.Test
 	#region Scripts
 	public sealed class IfBranchingScript : LunyScript
 	{
-		public override void Build() => When.Self.Ready(
-			If(Method.IsTrue(() => GlobalVars["Condition"] == 1))
-				.Then(Method.Run(() => GlobalVars["Result"] = "Branch 1"))
-				.ElseIf(Method.IsTrue(() => GlobalVars["Condition"] == 2))
-				.Then(Method.Run(() => GlobalVars["Result"] = "Branch 2"))
-				.Else(Method.Run(() => GlobalVars["Result"] = "Branch Else"))
-		);
+		public override void Build()
+		{
+			var condition = GVar("Condition");
+			var result = GVar("Result");
+
+			When.Self.Ready(
+				If(condition == 1)
+					.Then(result.Set("Branch 1"))
+					.ElseIf(condition == 2)
+					.Then(result.Set("Branch 2"))
+					.Else(result.Set("Branch Else"))
+			);
+		}
 	}
 
 	public sealed class WhileLoopScript : LunyScript
 	{
-		public override void Build() => When.Self.Ready(
-			Method.Run(() => GlobalVars["Counter"] = 0),
-			While(Method.IsTrue(() => GlobalVars["Counter"] < 5))
-				.Do(Method.Run(() => GlobalVars["Counter"] = GlobalVars["Counter"] + 1))
-		);
+		public override void Build()
+		{
+			var counter = GVar("Counter");
+
+			When.Self.Ready(
+				counter.Set(0),
+				While(counter < 5)
+					.Do(counter.Inc())
+			);
+		}
 	}
 
 	public sealed class ForLoopScript : LunyScript
 	{
-		public override void Build() => When.Self.Ready(
-			Method.Run(() => GlobalVars["Sum"] = 0),
-			For(3).Do(Method.Run(ctx => GlobalVars["Sum"] = GlobalVars["Sum"] + ctx.LoopCount))
-		);
+		public override void Build()
+		{
+			var sum = GVar("Sum");
+
+			When.Self.Ready(
+				sum.Set(0),
+				For(3).Do(sum.Add(Loop.Counter))
+			);
+		}
 	}
 
 	public sealed class ForLoopReverseScript : LunyScript
 	{
-		public override void Build() => When.Self.Ready(
-			Method.Run(() => GlobalVars["Sum"] = "START"),
-			For(3, -1).Do(Method.Run(ctx => GlobalVars["Sum"] = GlobalVars["Sum"] + ctx.LoopCount))
-		);
+		public override void Build()
+		{
+			var sum = GVar("Sum");
+
+			When.Self.Ready(
+				sum.Set("START"),
+				For(3, -1).Do(sum.Add(Loop.Counter))
+			);
+		}
 	}
 
 	public sealed class NestedForLoopScript : LunyScript
 	{
-		public override void Build() => When.Self.Ready(
-			Method.Run(() => GlobalVars["Outer"] = 0),
-			Method.Run(() => GlobalVars["Inner"] = 0),
-			For(2)
-				.Do(Method.Run(() => GlobalVars["Outer"] = GlobalVars["Outer"] + 1),
-					For(3)
-						.Do(Method.Run(() => GlobalVars["Inner"] = GlobalVars["Inner"] + 1))));
+		public override void Build()
+		{
+			var outer = GVar("Outer");
+			var inner = GVar("Inner");
+
+			When.Self.Ready(
+				outer.Set(0),
+				inner.Set(0),
+				For(2)
+					.Do(
+						outer.Inc(),
+						For(3).Do(inner.Inc())
+					)
+			);
+		}
 	}
 	#endregion
 
 	public abstract class ScriptFlowTests : ContractTestBase
 	{
-		[SetUp]
-		public void SetupFlowTests() => LunyScriptEngine.Instance?.GlobalVars.RemoveAll();
-
 		[Test]
 		public void If_Branching_Works()
 		{
-			var gVars = LunyScriptEngine.Instance.GlobalVars;
+			var gVars = LunyScriptEngine.Instance.GlobalVariables;
 
 			// Branch 1
 			gVars.RemoveAll();
@@ -90,7 +116,7 @@ namespace LunyScript.Test
 		public void While_Loop_Works()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(WhileLoopScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVars;
+			var gVars = LunyScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(3);
 
@@ -101,7 +127,7 @@ namespace LunyScript.Test
 		public void For_Loop_Works()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(ForLoopScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVars;
+			var gVars = LunyScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(3);
 
@@ -113,7 +139,7 @@ namespace LunyScript.Test
 		public void For_Loop_Reverse_Works()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(ForLoopReverseScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVars;
+			var gVars = LunyScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(3);
 
@@ -124,7 +150,7 @@ namespace LunyScript.Test
 		public void Nested_For_Loop_Works()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(NestedForLoopScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVars;
+			var gVars = LunyScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(3);
 

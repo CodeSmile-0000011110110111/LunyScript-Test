@@ -12,36 +12,36 @@ namespace LunyScript.Test
 		public override void Build()
 		{
 			// Method variants
-			var v_set = Var("v_set");
-			var v_add = Var("v_add");
-			var v_sub = Var("v_sub");
-			var v_mul = Var("v_mul");
-			var v_div = Var("v_div");
-			var v_inc = Var("v_inc");
-			var v_dec = Var("v_dec");
-			var v_tog = Var("v_tog");
+			var v_set = GVar("v_set");
+			var v_add = GVar("v_add");
+			var v_sub = GVar("v_sub");
+			var v_mul = GVar("v_mul");
+			var v_div = GVar("v_div");
+			var v_inc = GVar("v_inc");
+			var v_dec = GVar("v_dec");
+			var v_tog = GVar("v_tog");
 
 			// Operator variants
-			var o_add = Var("o_add");
-			var o_sub = Var("o_sub");
-			var o_mul = Var("o_mul");
-			var o_div = Var("o_div");
-			var o_inc_pre = Var("o_inc_pre");
-			var o_inc_post = Var("o_inc_post");
-			var o_dec_pre = Var("o_dec_pre");
-			var o_dec_post = Var("o_dec_post");
+			var o_add = GVar("o_add");
+			var o_sub = GVar("o_sub");
+			var o_mul = GVar("o_mul");
+			var o_div = GVar("o_div");
+			var o_inc_pre = GVar("o_inc_pre");
+			var o_inc_post = GVar("o_inc_post");
+			var o_dec_pre = GVar("o_dec_pre");
+			var o_dec_post = GVar("o_dec_post");
 
 			// Inter-variable variants
-			var five = Var("five");
-			var ten = Var("ten");
-			var four = Var("four");
-			var three = Var("three");
-			var v_add_v = Var("v_add_v");
-			var v_sub_v = Var("v_sub_v");
-			var v_mul_v = Var("v_mul_v");
-			var v_div_v = Var("v_div_v");
-			var v_complex = Var("v_complex");
-			var v_complex2 = Var("v_complex2");
+			var five = GVar("five");
+			var ten = GVar("ten");
+			var four = GVar("four");
+			var three = GVar("three");
+			var v_add_v = GVar("v_add_v");
+			var v_sub_v = GVar("v_sub_v");
+			var v_mul_v = GVar("v_mul_v");
+			var v_div_v = GVar("v_div_v");
+			var v_complex = GVar("v_complex");
+			var v_complex2 = GVar("v_complex2");
 
 			When.Self.Ready(
 				v_set.Set(100),
@@ -72,8 +72,8 @@ namespace LunyScript.Test
 				v_complex2.Set(five * (ten / four - three)) // -2.5
 			);
 
-			var v_upd_inc = Var("v_upd_inc");
-			var v_upd_tog = Var("v_upd_tog");
+			var v_upd_inc = GVar("v_upd_inc");
+			var v_upd_tog = GVar("v_upd_tog");
 			v_upd_inc.Set(0);
 			v_upd_tog.Set(false);
 
@@ -89,50 +89,46 @@ namespace LunyScript.Test
 	{
 		protected override NativeEngine Engine => NativeEngine.Unity;
 
-		[SetUp]
-		public void Setup() => LunyScriptEngine.Instance?.GlobalVars.RemoveAll();
-
 		[Test]
 		public void Arithmetic_Operations_Work()
 		{
-			var obj = LunyEngine.Instance.Object.CreateEmpty(nameof(ArithmeticOperationsTestScript));
-			var context = (LunyScriptContext)LunyScriptEngine.Instance.GetScriptContext(obj.NativeObjectID);
-			var Vars = context.LocalVariables;
+			LunyEngine.Instance.Object.CreateEmpty(nameof(ArithmeticOperationsTestScript));
+			var gVars = LunyScriptEngine.Instance.GlobalVariables;
 
 			var frameCount = 3;
 			SimulateFrames(frameCount);
 
 			// Method variants
-			Assert.That(Vars["v_set"], Is.EqualTo((Variable)100));
-			Assert.That(Vars["v_add"], Is.EqualTo((Variable)15));
-			Assert.That(Vars["v_sub"], Is.EqualTo((Variable)5));
-			Assert.That(Vars["v_mul"], Is.EqualTo((Variable)50));
-			Assert.That(Vars["v_div"], Is.EqualTo((Variable)5));
-			Assert.That(Vars["v_inc"], Is.EqualTo((Variable)11));
-			Assert.That(Vars["v_dec"], Is.EqualTo((Variable)9));
-			Assert.That(Vars["v_tog"].AsBoolean(), Is.True);
+			Assert.That(gVars["v_set"], Is.EqualTo((Variable)100));
+			Assert.That(gVars["v_add"], Is.EqualTo((Variable)15));
+			Assert.That(gVars["v_sub"], Is.EqualTo((Variable)5));
+			Assert.That(gVars["v_mul"], Is.EqualTo((Variable)50));
+			Assert.That(gVars["v_div"], Is.EqualTo((Variable)5));
+			Assert.That(gVars["v_inc"], Is.EqualTo((Variable)11));
+			Assert.That(gVars["v_dec"], Is.EqualTo((Variable)9));
+			Assert.That(gVars["v_tog"].AsBoolean(), Is.True);
 
 			// Operator variants
-			Assert.That(Vars["o_add"], Is.EqualTo((Variable)15));
-			Assert.That(Vars["o_sub"], Is.EqualTo((Variable)5));
-			Assert.That(Vars["o_mul"], Is.EqualTo((Variable)50));
-			Assert.That(Vars["o_div"], Is.EqualTo((Variable)5));
-			Assert.That(Vars["o_inc_pre"], Is.EqualTo((Variable)11));
-			Assert.That(Vars["o_inc_post"], Is.EqualTo((Variable)10));
-			Assert.That(Vars["o_dec_pre"], Is.EqualTo((Variable)9));
-			Assert.That(Vars["o_dec_post"], Is.EqualTo((Variable)10));
+			Assert.That(gVars["o_add"], Is.EqualTo((Variable)15));
+			Assert.That(gVars["o_sub"], Is.EqualTo((Variable)5));
+			Assert.That(gVars["o_mul"], Is.EqualTo((Variable)50));
+			Assert.That(gVars["o_div"], Is.EqualTo((Variable)5));
+			Assert.That(gVars["o_inc_pre"], Is.EqualTo((Variable)11));
+			Assert.That(gVars["o_inc_post"], Is.EqualTo((Variable)10));
+			Assert.That(gVars["o_dec_pre"], Is.EqualTo((Variable)9));
+			Assert.That(gVars["o_dec_post"], Is.EqualTo((Variable)10));
 
 			// Inter-variable variants
-			Assert.That(Vars["v_add_v"], Is.EqualTo((Variable)15));
-			Assert.That(Vars["v_sub_v"], Is.EqualTo((Variable)5));
-			Assert.That(Vars["v_mul_v"], Is.EqualTo((Variable)50));
-			Assert.That(Vars["v_div_v"], Is.EqualTo((Variable)2));
-			Assert.That(Vars["v_complex"], Is.EqualTo(9.5));
-			Assert.That(Vars["v_complex2"], Is.EqualTo(-2.5));
+			Assert.That(gVars["v_add_v"], Is.EqualTo((Variable)15));
+			Assert.That(gVars["v_sub_v"], Is.EqualTo((Variable)5));
+			Assert.That(gVars["v_mul_v"], Is.EqualTo((Variable)50));
+			Assert.That(gVars["v_div_v"], Is.EqualTo((Variable)2));
+			Assert.That(gVars["v_complex"], Is.EqualTo(9.5));
+			Assert.That(gVars["v_complex2"], Is.EqualTo(-2.5));
 
 			// Update increment test
-			Assert.That(Vars["v_upd_inc"], Is.EqualTo((Variable)frameCount));
-			Assert.That((Boolean)Vars["v_upd_tog"], Is.EqualTo((Variable)true));
+			Assert.That(gVars["v_upd_inc"], Is.EqualTo((Variable)frameCount));
+			Assert.That((Boolean)gVars["v_upd_tog"], Is.EqualTo((Variable)true));
 		}
 
 		[Test]

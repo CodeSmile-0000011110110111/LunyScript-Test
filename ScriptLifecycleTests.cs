@@ -10,9 +10,9 @@ namespace LunyScript.Test
 		public override void Build()
 		{
 			When.Self.Ready(Object.Disable());
-			When.Self.Steps(Method.Run(() => GlobalVars[nameof(When.Self.Steps)] = true));
-			When.Self.Updates(Method.Run(() => GlobalVars[nameof(When.Self.Updates)] = true));
-			When.Self.LateUpdates(Method.Run(() => GlobalVars[nameof(When.Self.LateUpdates)] = true));
+			When.Self.Steps(GVar("Steps").Set(true));
+			When.Self.Updates(GVar("Updates").Set(true));
+			When.Self.LateUpdates(GVar("LateUpdates").Set(true));
 		}
 	}
 
@@ -21,9 +21,9 @@ namespace LunyScript.Test
 		public override void Build()
 		{
 			When.Self.Ready(Object.Disable(), Object.Enable());
-			When.Self.Steps(Method.Run(() => GlobalVars[nameof(When.Self.Steps)] = true));
-			When.Self.Updates(Method.Run(() => GlobalVars[nameof(When.Self.Updates)] = true));
-			When.Self.LateUpdates(Method.Run(() => GlobalVars[nameof(When.Self.LateUpdates)] = true));
+			When.Self.Steps(GVar("Steps").Set(true));
+			When.Self.Updates(GVar("Updates").Set(true));
+			When.Self.LateUpdates(GVar("LateUpdates").Set(true));
 		}
 	}
 
@@ -33,28 +33,28 @@ namespace LunyScript.Test
 		public void SelfDisabled_DoesNotRunUpdates()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(SelfDisabled_DoesNotRunUpdates_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVars;
+			var gVars = LunyScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(3);
 
 			// not using Is.False: NUnit calls false.Equals({Variable}) which will always be false
-			Assert.That(gVars[nameof(LunyScript.When.Self.Steps)].AsBoolean(), Is.EqualTo(false));
-			Assert.That(gVars[nameof(LunyScript.When.Self.Updates)].AsBoolean(), Is.EqualTo(false));
-			Assert.That(gVars[nameof(LunyScript.When.Self.LateUpdates)].AsBoolean(), Is.EqualTo(false));
+			Assert.That(gVars["Steps"].AsBoolean(), Is.EqualTo(false));
+			Assert.That(gVars["Updates"].AsBoolean(), Is.EqualTo(false));
+			Assert.That(gVars["LateUpdates"].AsBoolean(), Is.EqualTo(false));
 		}
 
 		[Test]
 		public void SelfEnabled_RunsUpdates()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(SelfEnabled_RunsUpdates_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVars;
+			var gVars = LunyScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(3);
 
 			// not using Is.True: NUnit calls false.Equals({Variable}) which will always be false
-			Assert.That(gVars[nameof(LunyScript.When.Self.Steps)], Is.EqualTo((Variable)true));
-			Assert.That(gVars[nameof(LunyScript.When.Self.Updates)], Is.EqualTo((Variable)true));
-			Assert.That(gVars[nameof(LunyScript.When.Self.LateUpdates)], Is.EqualTo((Variable)true));
+			Assert.That(gVars["Steps"], Is.EqualTo((Variable)true));
+			Assert.That(gVars["Updates"], Is.EqualTo((Variable)true));
+			Assert.That(gVars["LateUpdates"], Is.EqualTo((Variable)true));
 		}
 	}
 
