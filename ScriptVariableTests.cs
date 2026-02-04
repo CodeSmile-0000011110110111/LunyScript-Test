@@ -1,6 +1,5 @@
 using Luny;
 using Luny.ContractTest;
-using Luny.Engine;
 using Luny.Engine.Bridge.Enums;
 using LunyScript.Blocks;
 using LunyScript.Execution;
@@ -12,9 +11,10 @@ namespace LunyScript.Test
 	{
 		public override void Build()
 		{
-			var hp = Var.Get("hp");
-			var score = GVar.Get("score");
-			var isDead = Var.Get("isDead");
+			var hp = Var("hp");
+			var score = GVar("score");
+			var isDead = Var("isDead");
+			var count = Var("count");
 
 			When.Self.Ready(
 				// Test Set Literals
@@ -34,13 +34,22 @@ namespace LunyScript.Test
 				isDead.Toggle(), // true
 
 				// Test Conditions
-				If(hp.IsGreater(50)).Then(Var.Set("status", "healthy")),
-				If(isDead.IsTrue()).Then(GVar.Set("lastEvent", "died")),
+				If(hp.IsGreaterThan(50)).Then(Var("status").Set("healthy")),
+				If(isDead.IsTrue()).Then(GVar("lastEvent").Set("died")),
+
+				// Test Operators & Condition implementation
+				If(hp > 50).Then(Var("status_op").Set("healthy")),
+				If(isDead).Then(GVar("lastEvent_op").Set("died")),
+				If(score >= 15).Then(Var("score_ok").Set(true)),
 
 				// Test Multiplex arithmetic
 				hp.Set(hp * 2), // 140
-				hp.Set(hp / 2) // 70
-				//hp.Sub((hp + 10) / 2)  // 30
+				hp.Set(hp / 2), // 70
+
+				If(count < 10).Then(count.Add(1)),
+
+				hp.Set((ScriptVariable)(hp + 10) / 2),
+				hp.Set((ScriptVariable)(hp + 10) / Constant.Create(2))
 			);
 		}
 	}
@@ -69,6 +78,11 @@ namespace LunyScript.Test
 			Assert.That(lVars["isDead"], Is.EqualTo((Variable)true));
 			Assert.That(lVars["status"], Is.EqualTo((Variable)"healthy"));
 			Assert.That(gVars["lastEvent"], Is.EqualTo((Variable)"died"));
+
+			// Op variants
+			Assert.That(lVars["status_op"], Is.EqualTo((Variable)"healthy"));
+			Assert.That(gVars["lastEvent_op"], Is.EqualTo((Variable)"died"));
+			Assert.That(lVars["score_ok"], Is.EqualTo((Variable)true));
 		}
 
 		[Test]
