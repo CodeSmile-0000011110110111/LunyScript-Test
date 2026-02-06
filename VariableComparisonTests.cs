@@ -15,7 +15,7 @@ namespace LunyScript.Test
 			var isTrue = GVar("isTrue");
 			var isFalse = GVar("isFalse");
 
-			When.Self.Ready(
+			On.Ready(
 				a.Set(10),
 				b.Set(20),
 				c.Set(10),

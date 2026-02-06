@@ -49,7 +49,7 @@ namespace LunyScript.Test
 			var pi = Const("PI", 3.14159);
 			var gVar = GVar("result");
 
-			When.Self.Ready(
+			On.Ready(
 				gVar.Set(pi)
 			);
 		}

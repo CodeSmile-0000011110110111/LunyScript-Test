@@ -9,10 +9,10 @@ namespace LunyScript.Test
 	{
 		public override void Build()
 		{
-			When.Self.Ready(Object.Disable());
-			When.Self.Steps(GVar("Steps").Set(true));
-			When.Self.Updates(GVar("Updates").Set(true));
-			When.Self.LateUpdates(GVar("LateUpdates").Set(true));
+			On.Ready(Object.Disable());
+			On.Heartbeat(GVar("Steps").Set(true));
+			On.FrameUpdate(GVar("Updates").Set(true));
+			On.FrameEnd(GVar("LateUpdates").Set(true));
 		}
 	}
 
@@ -20,10 +20,10 @@ namespace LunyScript.Test
 	{
 		public override void Build()
 		{
-			When.Self.Ready(Object.Disable(), Object.Enable());
-			When.Self.Steps(GVar("Steps").Set(true));
-			When.Self.Updates(GVar("Updates").Set(true));
-			When.Self.LateUpdates(GVar("LateUpdates").Set(true));
+			On.Ready(Object.Disable(), Object.Enable());
+			On.Heartbeat(GVar("Steps").Set(true));
+			On.FrameUpdate(GVar("Updates").Set(true));
+			On.FrameEnd(GVar("LateUpdates").Set(true));
 		}
 	}
 

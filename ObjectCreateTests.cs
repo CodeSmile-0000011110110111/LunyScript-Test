@@ -14,13 +14,13 @@ namespace LunyScript.Test
 	{
 		public override void Build()
 		{
-			When.Self.Ready(Object.Create("empty"));
-			When.Self.Ready(Object.CreateCube("cube"));
-			When.Self.Ready(Object.CreateSphere("sphere"));
-			When.Self.Ready(Object.CreateCapsule("capsule"));
-			When.Self.Ready(Object.CreateCylinder("cylinder"));
-			When.Self.Ready(Object.CreatePlane("plane"));
-			When.Self.Ready(Object.CreateQuad("quad"));
+			On.Ready(Object.Create("empty"));
+			On.Ready(Object.CreateCube("cube"));
+			On.Ready(Object.CreateSphere("sphere"));
+			On.Ready(Object.CreateCapsule("capsule"));
+			On.Ready(Object.CreateCylinder("cylinder"));
+			On.Ready(Object.CreatePlane("plane"));
+			On.Ready(Object.CreateQuad("quad"));
 		}
 	}
 

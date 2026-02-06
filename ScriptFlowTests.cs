@@ -13,7 +13,7 @@ namespace LunyScript.Test
 			var condition = GVar("Condition");
 			var result = GVar("Result");
 
-			When.Self.Ready(
+			On.Ready(
 				If(condition == 1)
 					.Then(result.Set("Branch 1"))
 					.ElseIf(condition == 2)
@@ -29,7 +29,7 @@ namespace LunyScript.Test
 		{
 			var counter = GVar("Counter");
 
-			When.Self.Ready(
+			On.Ready(
 				counter.Set(0),
 				While(counter < 5)
 					.Do(counter.Inc())
@@ -43,7 +43,7 @@ namespace LunyScript.Test
 		{
 			var sum = GVar("Sum");
 
-			When.Self.Ready(
+			On.Ready(
 				sum.Set(0),
 				For(3).Do(sum.Add(Loop.Counter))
 			);
@@ -56,7 +56,7 @@ namespace LunyScript.Test
 		{
 			var sum = GVar("Sum");
 
-			When.Self.Ready(
+			On.Ready(
 				sum.Set("START"),
 				For(3, -1).Do(sum.Add(Loop.Counter))
 			);
@@ -70,7 +70,7 @@ namespace LunyScript.Test
 			var outer = GVar("Outer");
 			var inner = GVar("Inner");
 
-			When.Self.Ready(
+			On.Ready(
 				outer.Set(0),
 				inner.Set(0),
 				For(2)

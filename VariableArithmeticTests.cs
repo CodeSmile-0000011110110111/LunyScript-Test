@@ -52,7 +52,7 @@ namespace LunyScript.Test
 			var m_mul_b = GVar("m_mul_b");
 			var m_div_b = GVar("m_div_b");
 
-			When.Self.Ready(
+			On.Ready(
 				v_set.Set(100),
 				v_add.Set(10), v_add.Add(5), // 15
 				v_sub.Set(10), v_sub.Sub(5), // 5
@@ -90,7 +90,7 @@ namespace LunyScript.Test
 			v_upd_inc.Set(0);
 			v_upd_tog.Set(false);
 
-			When.Self.Updates(
+			On.FrameUpdate(
 				v_upd_inc.Inc(),
 				v_upd_tog.Toggle()
 			);
