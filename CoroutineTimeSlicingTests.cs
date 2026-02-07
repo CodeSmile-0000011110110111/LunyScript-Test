@@ -10,7 +10,7 @@ namespace LunyScript.Test
 		public override void Build()
 		{
 			On.Ready(GVar("Counter").Set(0));
-			Every(2).Frames(GVar("Counter").Add(1));
+			Every(2).Frames().Do(GVar("Counter").Add(1));
 		}
 	}
 
@@ -19,7 +19,7 @@ namespace LunyScript.Test
 		public override void Build()
 		{
 			On.Ready(GVar("Counter").Set(0));
-			Every(3).Heartbeats(GVar("Counter").Add(1));
+			Every(3).Heartbeats().Do(GVar("Counter").Add(1));
 		}
 	}
 
@@ -28,7 +28,7 @@ namespace LunyScript.Test
 		public override void Build()
 		{
 			On.Ready(GVar("Counter").Set(0));
-			Every(Even).Frames(GVar("Counter").Add(1));
+			Every(Even).Frames().Do(GVar("Counter").Add(1));
 		}
 	}
 
@@ -37,7 +37,7 @@ namespace LunyScript.Test
 		public override void Build()
 		{
 			On.Ready(GVar("Counter").Set(0));
-			Every(Odd).Heartbeats(GVar("Counter").Add(1));
+			Every(Odd).Heartbeats().Do(GVar("Counter").Add(1));
 		}
 	}
 
@@ -46,7 +46,7 @@ namespace LunyScript.Test
 		public override void Build()
 		{
 			On.Ready(GVar("Counter").Set(0));
-			Every(2).DelayBy(1).Frames(GVar("Counter").Add(1));
+			Every(2).Frames().DelayBy(1).Do(GVar("Counter").Add(1));
 		}
 	}
 
