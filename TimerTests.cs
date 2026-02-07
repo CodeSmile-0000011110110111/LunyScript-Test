@@ -46,6 +46,16 @@ namespace LunyScript.Test
 		}
 	}
 
+	public sealed class Timer_Repeating_FiresMultipleTimes_LunyScript : LunyScript
+	{
+		public override void Build()
+		{
+			// Timer fires every 100ms
+			var timer = Timer("test").Every(100).Milliseconds().Do(GVar("Counter").Inc());
+			On.Ready(timer.Start());
+		}
+	}
+
 	public abstract class TimerTests : ContractTestBase
 	{
 		[Test]
@@ -96,6 +106,18 @@ namespace LunyScript.Test
 
 			// Timer was paused, should not have fired
 			Assert.That(gVars["TimerFired"].AsBoolean(), Is.EqualTo(false));
+		}
+
+		[Test]
+		public void Timer_Repeating_FiresMultipleTimes()
+		{
+			LunyEngine.Instance.Object.CreateEmpty(nameof(Timer_Repeating_FiresMultipleTimes_LunyScript));
+			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+
+			// 100ms = ~6 frames. 40 frames should be ~6-7 fires.
+			SimulateFrames(40);
+
+			Assert.That(gVars["Counter"].AsInt32(), Is.GreaterThanOrEqualTo(5));
 		}
 	}
 
