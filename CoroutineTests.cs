@@ -10,7 +10,7 @@ namespace LunyScript.Test
 		public override void Build()
 		{
 			var counter = Coroutine("counter")
-				.OnUpdate(GVar("Counter").Add(1))
+				.OnFrameUpdate(GVar("Counter").Add(1))
 				.Build();
 
 			On.Ready(counter.Start());
@@ -35,7 +35,7 @@ namespace LunyScript.Test
 		{
 			var co = Coroutine("timed")
 				.Duration(2).Seconds()
-				.OnUpdate(GVar("Ticks").Add(1))
+				.OnFrameUpdate(GVar("Ticks").Add(1))
 				.Elapsed(GVar("Elapsed").Set(true));
 
 			On.Ready(co.Start());
