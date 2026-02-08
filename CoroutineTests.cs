@@ -34,7 +34,8 @@ namespace LunyScript.Test
 		public override void Build()
 		{
 			var co = Coroutine("timed")
-				.For(2).Seconds()
+				.For(2)
+				.Seconds()
 				.OnFrameUpdate(GVar("Ticks").Add(1))
 				.Elapsed(GVar("Elapsed").Set(true));
 
@@ -47,7 +48,8 @@ namespace LunyScript.Test
 		public override void Build()
 		{
 			var co = Coroutine("timed")
-				.For(5).Seconds()
+				.For(5)
+				.Seconds()
 				.Elapsed(GVar("Elapsed").Set(true));
 
 			On.Ready(co.Start());
@@ -59,7 +61,8 @@ namespace LunyScript.Test
 		public override void Build()
 		{
 			var co = Coroutine("controlled")
-				.For(10).Seconds()
+				.For(10)
+				.Seconds()
 				.Started(GVar("Started").Set(true))
 				.Build();
 
@@ -72,7 +75,8 @@ namespace LunyScript.Test
 		public override void Build()
 		{
 			var co = Coroutine("controlled")
-				.For(10).Seconds()
+				.For(10)
+				.Seconds()
 				.Stopped(GVar("Stopped").Set(true))
 				.Build();
 
@@ -86,7 +90,8 @@ namespace LunyScript.Test
 		public override void Build()
 		{
 			var co = Coroutine("controlled")
-				.For(10).Seconds()
+				.For(10)
+				.Seconds()
 				.Paused(GVar("Paused").Set(true))
 				.Build();
 
@@ -100,7 +105,8 @@ namespace LunyScript.Test
 		public override void Build()
 		{
 			var co = Coroutine("controlled")
-				.For(10).Seconds()
+				.For(10)
+				.Seconds()
 				.Resumed(GVar("Resumed").Set(true))
 				.Build();
 
