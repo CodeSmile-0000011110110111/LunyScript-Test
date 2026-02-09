@@ -8,7 +8,7 @@ using System.Linq;
 using UnityEngine;
 using UnityObject = UnityEngine.Object;
 
-namespace LunyScript.Test
+namespace LunyScript.Test.Objects
 {
 	public sealed class LunyScript_Test_CreateObjects : LunyScript
 	{

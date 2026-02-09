@@ -3,7 +3,7 @@ using Luny.ContractTest;
 using Luny.Engine.Bridge.Enums;
 using NUnit.Framework;
 
-namespace LunyScript.Test
+namespace LunyScript.Test.Coroutines
 {
 	public sealed class Coroutine_OnUpdate_RunsEveryFrame_LunyScript : LunyScript
 	{

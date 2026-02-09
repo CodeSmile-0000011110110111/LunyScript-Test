@@ -3,13 +3,12 @@ using Luny.ContractTest;
 using Luny.Engine.Bridge.Enums;
 using NUnit.Framework;
 
-namespace LunyScript.Test
+namespace LunyScript.Test.Coroutines
 {
 	public sealed class Every2Frames_RunsAlternating_LunyScript : LunyScript
 	{
 		public override void Build()
 		{
-			On.Ready(GVar("Counter").Set(0));
 			Every(2).Frames().Do(GVar("Counter").Add(1));
 		}
 	}
@@ -18,7 +17,6 @@ namespace LunyScript.Test
 	{
 		public override void Build()
 		{
-			On.Ready(GVar("Counter").Set(0));
 			Every(3).Heartbeats().Do(GVar("Counter").Add(1));
 		}
 	}
@@ -27,7 +25,6 @@ namespace LunyScript.Test
 	{
 		public override void Build()
 		{
-			On.Ready(GVar("Counter").Set(0));
 			Every(Even).Frames().Do(GVar("Counter").Add(1));
 		}
 	}
@@ -36,7 +33,6 @@ namespace LunyScript.Test
 	{
 		public override void Build()
 		{
-			On.Ready(GVar("Counter").Set(0));
 			Every(Odd).Heartbeats().Do(GVar("Counter").Add(1));
 		}
 	}
@@ -45,7 +41,6 @@ namespace LunyScript.Test
 	{
 		public override void Build()
 		{
-			On.Ready(GVar("Counter").Set(0));
 			Every(2).Frames().DelayBy(1).Do(GVar("Counter").Add(1));
 		}
 	}

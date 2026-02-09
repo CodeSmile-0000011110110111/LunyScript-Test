@@ -3,7 +3,7 @@ using Luny.ContractTest;
 using Luny.Engine.Bridge.Enums;
 using NUnit.Framework;
 
-namespace LunyScript.Test
+namespace LunyScript.Test.Scripts
 {
 	#region Scripts
 	public sealed class IfBranchingScript : LunyScript

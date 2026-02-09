@@ -6,7 +6,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
-namespace LunyScript.Test
+namespace LunyScript.Test.Scripts
 {
 	[TestFixture]
 	public sealed class ScriptFlowLowLevelTests

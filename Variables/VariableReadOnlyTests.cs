@@ -6,7 +6,7 @@ using LunyScript.Exceptions;
 using NUnit.Framework;
 using System;
 
-namespace LunyScript.Test
+namespace LunyScript.Test.Variables
 {
 	public sealed class VariableReadOnlyTests
 	{
