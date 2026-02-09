@@ -11,7 +11,7 @@ namespace LunyScript.Test
 		public override void Build()
 		{
 			// It should not be necessary to call timer.Start()
-			var timer = Timer("test").In(5).Frames().Do(GVar("TimerFired").Set(true));
+			var timer = Counter("test").In(5).Frames().Do(GVar("TimerFired").Set(true));
 		}
 	}
 
@@ -75,7 +75,7 @@ namespace LunyScript.Test
 		public override void Build()
 		{
 			// this should not even compile (TimeScale + CounterCoroutine is not meaningful)
-			var timer = Timer("test").In(5).Heartbeats().Do(GVar("TimerFired").Set(true)).TimeScale(0.5);
+			// var timer = Counter("test").In(5).Heartbeats().Do(GVar("TimerFired").Set(true)).TimeScale(0.5);
 		}
 	}
 
