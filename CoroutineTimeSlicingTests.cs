@@ -50,7 +50,7 @@ namespace LunyScript.Test
 		}
 	}
 
-	public abstract class TimeSlicingTests : ContractTestBase
+	public abstract class CoroutineTimeSliceTests : ContractTestBase
 	{
 		[Test]
 		public void Every2Frames_RunsAlternating()
@@ -120,13 +120,13 @@ namespace LunyScript.Test
 	}
 
 	[TestFixture]
-	public sealed class GodotTimeSlicingTests : TimeSlicingTests
+	public sealed class GodotCoroutineTimeSliceTests : CoroutineTimeSliceTests
 	{
 		protected override NativeEngine Engine => NativeEngine.Godot;
 	}
 
 	[TestFixture]
-	public sealed class UnityTimeSlicingTests : TimeSlicingTests
+	public sealed class UnityCoroutineTimeSliceTests : CoroutineTimeSliceTests
 	{
 		protected override NativeEngine Engine => NativeEngine.Unity;
 	}

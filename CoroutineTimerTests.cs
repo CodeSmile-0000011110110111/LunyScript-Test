@@ -2,9 +2,83 @@ using Luny;
 using Luny.ContractTest;
 using Luny.Engine.Bridge.Enums;
 using NUnit.Framework;
+using System;
 
 namespace LunyScript.Test
 {
+	public sealed class Timer_AutoStarts_LunyScript : LunyScript
+	{
+		public override void Build()
+		{
+			// It should not be necessary to call timer.Start()
+			var timer = Timer("test").In(5).Frames().Do(GVar("TimerFired").Set(true));
+		}
+	}
+
+	public sealed class Timer_StartsStopped_StartsLater_LunyScript : LunyScript
+	{
+		public override void Build()
+		{
+			var timer = Timer("test").In(10).Milliseconds().Do(GVar("TimerFired").Set(true),
+				GVar("TimerFired_Seconds").Set(Time.ElapsedSeconds));
+
+			// This should start the coroutine as stopped
+			timer.Stop();
+
+			// timer should complete within >= 50+10 ms (0.06 seconds)
+			var startLater = Timer("start").In(50).Milliseconds().Do(timer.Start());
+		}
+	}
+
+	public sealed class Timer_StartsPaused_ResumeLater_LunyScript : LunyScript
+	{
+		public override void Build()
+		{
+			var timer = Timer("test").In(10).Milliseconds().Do(GVar("TimerFired").Set(true),
+					GVar("TimerFired_Seconds").Set(Time.ElapsedSeconds));
+
+			// This should start the coroutine as paused
+			timer.Pause();
+
+			// timer should complete after >= 50+10 ms (0.06 seconds)
+			var resumeLater = Timer("resume").In(50).Milliseconds().Do(timer.Resume());
+
+		}
+	}
+
+	public sealed class Timer_PausedLater_ResumeLater_LunyScript : LunyScript
+	{
+		public override void Build()
+		{
+			var timer = Timer("test").In(40).Milliseconds().Do(GVar("TimerFired").Set(true),
+				GVar("TimerFired_Seconds").Set(Time.ElapsedSeconds));
+
+			// This should pause about quarter-way
+			var pauseLater = Timer("pause").In(15).Milliseconds().Do(timer.Pause());
+
+			// resume remaining 25 ms after 30 ms to complete after >= 30+25 ms (0.055 seconds)
+			var resumeLater = Timer("resume").In(30).Milliseconds().Do(timer.Resume());
+		}
+	}
+
+	public sealed class Timer_LowerTimeScale_TakesLonger_LunyScript : LunyScript
+	{
+		public override void Build()
+		{
+			// this should complete after >= 200 ms
+			var timer = Timer("test").In(100).Milliseconds().Do(GVar("TimerFired").Set(true)).TimeScale(0.5);
+		}
+	}
+
+	public sealed class Timer_HeartbeatTimeScale_NoEffect_LunyScript : LunyScript
+	{
+		public override void Build()
+		{
+			// this should not even compile (TimeScale + CounterCoroutine is not meaningful)
+			var timer = Timer("test").In(5).Heartbeats().Do(GVar("TimerFired").Set(true)).TimeScale(0.5);
+		}
+	}
+
 	public sealed class Timer_FiresAfterDuration_LunyScript : LunyScript
 	{
 		public override void Build()
