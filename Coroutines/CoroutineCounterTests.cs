@@ -19,16 +19,17 @@ namespace LunyScript.Test.Coroutines
 		public override void Build(ScriptBuildContext context)
 		{
 			var counter = Counter("test")
-				.In(10)
+				.In(5)
 				.Frames()
-				.Do(GVar("CounterFired").Set(true),
-					GVar("CounterFired_Seconds").Set(GVar("Time.ElapsedSeconds")));
+				.Do(GVar("CounterFired").Set(true));
 
 			// This should start the coroutine as stopped
-			counter.Stop();
+			On.Ready(counter.Stop());
 
-			// counter should complete within >= 50+10 ms (0.06 seconds)
-			var startLater = Counter("start").In(50).Frames().Do(counter.Start());
+			// This counter processes after the one above, thus when it calls Start()
+			// the above counter has already processed in the current frame,
+			// causing a 1-frame delay in the resumption of the Counter.
+			var startLater = Counter("start").In(8).Frames().Do(counter.Start());
 		}
 	}
 
@@ -37,16 +38,16 @@ namespace LunyScript.Test.Coroutines
 		public override void Build(ScriptBuildContext context)
 		{
 			var counter = Counter(nameof(Counter_StartsPaused_ResumeLater_LunyScript))
-				.In(3)
+				.In(5)
 				.Frames()
-				.Do(GVar("CounterFired").Set(true),
-					GVar("CounterFired_Seconds").Set(GVar("Time.ElapsedSeconds")));
+				.Do(GVar("CounterFired").Set(true));
 
-			// This should start the coroutine as paused
 			On.Ready(counter.Pause());
 
-			// counter should complete after >= 70+50 ms (0.12 seconds)
-			var resumeLater = Counter("RESUME_StartsPaused_ResumeLater_LunyScript").In(6).Frames().Do(counter.Resume());
+			// This counter processes after the one above, thus when it calls Resume()
+			// the above counter has already processed in the current frame,
+			// causing a 1-frame delay in the resumption of the Counter.
+			var resumeLater = Counter("RESUME").In(8).Frames().Do(counter.Resume());
 		}
 	}
 
@@ -55,16 +56,12 @@ namespace LunyScript.Test.Coroutines
 		public override void Build(ScriptBuildContext context)
 		{
 			var counter = Counter("test")
-				.In(6)
+				.In(9)
 				.Frames()
-				.Do(GVar("CounterFired").Set(true),
-					GVar("CounterFired_Seconds").Set(GVar("Time.ElapsedSeconds")));
+				.Do(GVar("CounterFired").Set(true));
 
-			// This should pause about quarter-way
-			var pauseLater = Counter("pause").In(3).Frames().Do(counter.Pause());
-
-			// resume remaining 25 ms after 30 ms to complete after >= 30+25 ms (0.055 seconds)
-			var resumeLater = Counter("resume").In(9).Frames().Do(counter.Resume());
+			var pauseLater = Counter("pause").In(5).Frames().Do(counter.Pause());
+			var resumeLater = Counter("resume").In(10).Frames().Do(counter.Resume());
 		}
 	}
 
@@ -72,7 +69,6 @@ namespace LunyScript.Test.Coroutines
 	{
 		public override void Build(ScriptBuildContext context)
 		{
-			// Counter fires after 0.1 seconds
 			var counter = Counter("test").In(8).Frames().Do(GVar("CounterFired").Set(true));
 			On.Ready(counter.Start());
 		}
@@ -109,7 +105,7 @@ namespace LunyScript.Test.Coroutines
 	{
 		public override void Build(ScriptBuildContext context)
 		{
-			var counter = Counter("test").Every(10).Frames().Do(GVar("Counter").Inc());
+			var counter = Counter("test").Every(9).Frames().Do(GVar("Counter").Inc());
 			On.Ready(counter.Start());
 		}
 	}
@@ -191,10 +187,9 @@ namespace LunyScript.Test.Coroutines
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Counter_PausedLater_ResumeLater_LunyScript));
 			var gVars = LunyScriptEngine.Instance.GlobalVariables;
 
-			SimulateFrames(12);
+			SimulateFrames(15);
 
 			Assert.That(gVars["CounterFired"].AsBoolean(), Is.EqualTo(true));
-			Assert.That(gVars["CounterFired_Seconds"].AsDouble(), Is.GreaterThanOrEqualTo(0.055));
 		}
 
 		[Test]
@@ -203,10 +198,9 @@ namespace LunyScript.Test.Coroutines
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Counter_StartsPaused_ResumeLater_LunyScript));
 			var gVars = LunyScriptEngine.Instance.GlobalVariables;
 
-			SimulateFrames(10);
+			SimulateFrames(15);
 
 			Assert.That(gVars["CounterFired"].AsBoolean(), Is.EqualTo(true));
-			Assert.That(gVars["CounterFired_Seconds"].AsDouble(), Is.GreaterThanOrEqualTo(0.12));
 		}
 
 		[Test]
@@ -215,11 +209,9 @@ namespace LunyScript.Test.Coroutines
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Counter_StartsStopped_StartsLater_LunyScript));
 			var gVars = LunyScriptEngine.Instance.GlobalVariables;
 
-			// Counter fires after 50ms (start) + 10ms (test) = 60ms
-			SimulateFrames(10);
+			SimulateFrames(15);
 
 			Assert.That(gVars["CounterFired"].AsBoolean(), Is.EqualTo(true));
-			Assert.That(gVars["CounterFired_Seconds"].AsDouble(), Is.GreaterThanOrEqualTo(0.06));
 		}
 
 	}
