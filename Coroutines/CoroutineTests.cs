@@ -12,8 +12,6 @@ namespace LunyScript.Test.Coroutines
 			var counter = Coroutine("counter")
 				.OnFrameUpdate(GVar("Counter").Add(1))
 				.Build();
-
-			On.Ready(counter.Start());
 		}
 	}
 
@@ -21,11 +19,9 @@ namespace LunyScript.Test.Coroutines
 	{
 		public override void Build(ScriptBuildContext context)
 		{
-			var counter = Coroutine("counter")
+			var counter = Coroutine(nameof(Coroutine_OnHeartbeat_RunsEveryStep_LunyScript))
 				.OnHeartbeat(GVar("Counter").Add(1))
 				.Build();
-
-			On.Ready(counter.Start());
 		}
 	}
 
@@ -38,8 +34,6 @@ namespace LunyScript.Test.Coroutines
 				.Seconds()
 				.OnFrameUpdate(GVar("Ticks").Add(1))
 				.Elapsed(GVar("Elapsed").Set(true));
-
-			On.Ready(co.Start());
 		}
 	}
 
@@ -51,8 +45,6 @@ namespace LunyScript.Test.Coroutines
 				.For(5)
 				.Seconds()
 				.Elapsed(GVar("Elapsed").Set(true));
-
-			On.Ready(co.Start());
 		}
 	}
 
@@ -60,13 +52,11 @@ namespace LunyScript.Test.Coroutines
 	{
 		public override void Build(ScriptBuildContext context)
 		{
-			var co = Coroutine("controlled")
+			var co = Coroutine(nameof(Coroutine_Started_FiresOnStart_LunyScript))
 				.For(10)
 				.Seconds()
 				.Started(GVar("Started").Set(true))
 				.Build();
-
-			On.Ready(co.Start());
 		}
 	}
 
@@ -80,8 +70,8 @@ namespace LunyScript.Test.Coroutines
 				.Stopped(GVar("Stopped").Set(true))
 				.Build();
 
-			// Start then immediately stop
-			On.Ready(co.Start(), co.Stop());
+			// immediately stop
+			On.Ready(co.Stop());
 		}
 	}
 
@@ -95,8 +85,8 @@ namespace LunyScript.Test.Coroutines
 				.Paused(GVar("Paused").Set(true))
 				.Build();
 
-			// Start then pause
-			On.Ready(co.Start(), co.Pause());
+			// immediately pause
+			On.Ready(co.Pause());
 		}
 	}
 
@@ -110,8 +100,8 @@ namespace LunyScript.Test.Coroutines
 				.Resumed(GVar("Resumed").Set(true))
 				.Build();
 
-			// Start, pause, then resume
-			On.Ready(co.Start(), co.Pause(), co.Resume());
+			// pause, then resume
+			On.Ready(co.Pause(), co.Resume());
 		}
 	}
 

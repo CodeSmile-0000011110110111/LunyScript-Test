@@ -30,7 +30,7 @@ namespace LunyScript.Test.Coroutines
 		public override void Build(ScriptBuildContext context) => Every(2).Frames().DelayBy(1).Do(GVar("Counter").Add(1));
 	}
 
-	public abstract class CoroutineTimeSliceTests : ContractTestBase
+	public abstract class CoroutineEveryTimeSliceTests : ContractTestBase
 	{
 		[Test]
 		public void Every2Frames_RunsAlternating()
@@ -100,13 +100,13 @@ namespace LunyScript.Test.Coroutines
 	}
 
 	[TestFixture]
-	public sealed class GodotCoroutineTimeSliceTests : CoroutineTimeSliceTests
+	public sealed class GodotCoroutineTimeSliceTimeSliceTests : CoroutineEveryTimeSliceTests
 	{
 		protected override NativeEngine Engine => NativeEngine.Godot;
 	}
 
 	[TestFixture]
-	public sealed class UnityCoroutineTimeSliceTests : CoroutineTimeSliceTests
+	public sealed class UnityCoroutineTimeSliceTimeSliceTests : CoroutineEveryTimeSliceTests
 	{
 		protected override NativeEngine Engine => NativeEngine.Unity;
 	}

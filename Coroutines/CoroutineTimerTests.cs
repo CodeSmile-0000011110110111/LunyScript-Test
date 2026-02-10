@@ -32,6 +32,7 @@ namespace LunyScript.Test.Coroutines
 		}
 	}
 
+
 	public sealed class Timer_StartsPaused_ResumeLater_LunyScript : LunyScript
 	{
 		public override void Build(ScriptBuildContext context)
