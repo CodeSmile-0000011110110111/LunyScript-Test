@@ -7,13 +7,12 @@ namespace LunyScript.Test.Coroutines
 {
 	public sealed class Counter_AutoStarts_LunyScript : LunyScript
 	{
-		public override void Build()
+		public override void Build(ScriptBuildContext context)
 		{
 			// It should not be necessary to call timer.Start()
 			var counter = Counter("test").In(5).Frames().Do(GVar("TimerFired").Set(true));
 		}
 	}
-
 
 	public abstract class CoroutineCounterTests : ContractTestBase
 	{
@@ -91,6 +90,7 @@ namespace LunyScript.Test.Coroutines
 			Assert.That(gVars["TimerFired"].AsBoolean(), Is.EqualTo(true));
 		}
 	}
+
 	[TestFixture]
 	public sealed class GodotCoroutineCounterTests : CoroutineCounterTests
 	{

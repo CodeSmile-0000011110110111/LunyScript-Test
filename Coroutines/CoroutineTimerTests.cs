@@ -7,7 +7,7 @@ namespace LunyScript.Test.Coroutines
 {
 	public sealed class Timer_AutoStarts_LunyScript : LunyScript
 	{
-		public override void Build()
+		public override void Build(ScriptBuildContext context)
 		{
 			// It should not be necessary to call timer.Start()
 			var timer = Timer("test").In(50).Milliseconds().Do(GVar("TimerFired").Set(true));
@@ -16,7 +16,7 @@ namespace LunyScript.Test.Coroutines
 
 	public sealed class Timer_StartsStopped_StartsLater_LunyScript : LunyScript
 	{
-		public override void Build()
+		public override void Build(ScriptBuildContext context)
 		{
 			var timer = Timer("test")
 				.In(10)
@@ -34,7 +34,7 @@ namespace LunyScript.Test.Coroutines
 
 	public sealed class Timer_StartsPaused_ResumeLater_LunyScript : LunyScript
 	{
-		public override void Build()
+		public override void Build(ScriptBuildContext context)
 		{
 			var timer = Timer("TIMER_StartsPaused_ResumeLater_LunyScript")
 				.In(50)
@@ -52,7 +52,7 @@ namespace LunyScript.Test.Coroutines
 
 	public sealed class Timer_PausedLater_ResumeLater_LunyScript : LunyScript
 	{
-		public override void Build()
+		public override void Build(ScriptBuildContext context)
 		{
 			var timer = Timer("test")
 				.In(40)
@@ -70,7 +70,7 @@ namespace LunyScript.Test.Coroutines
 
 	public sealed class Timer_LowerTimeScale_TakesLonger_LunyScript : LunyScript
 	{
-		public override void Build()
+		public override void Build(ScriptBuildContext context)
 		{
 			// this should complete after >= 200 ms
 			var timer = Timer("test").In(100).Milliseconds().Do(GVar("TimerFired").Set(true));
@@ -80,7 +80,7 @@ namespace LunyScript.Test.Coroutines
 
 	public sealed class Timer_FiresAfterDuration_LunyScript : LunyScript
 	{
-		public override void Build()
+		public override void Build(ScriptBuildContext context)
 		{
 			// Timer fires after 0.1 seconds
 			var timer = Timer("test").In(100).Milliseconds().Do(GVar("TimerFired").Set(true));
@@ -90,7 +90,7 @@ namespace LunyScript.Test.Coroutines
 
 	public sealed class Timer_DoesNotFireBeforeDuration_LunyScript : LunyScript
 	{
-		public override void Build()
+		public override void Build(ScriptBuildContext context)
 		{
 			// Timer fires after 1 second
 			var timer = Timer("test").In(1).Seconds().Do(GVar("TimerFired").Set(true));
@@ -100,7 +100,7 @@ namespace LunyScript.Test.Coroutines
 
 	public sealed class Timer_CanBeStopped_LunyScript : LunyScript
 	{
-		public override void Build()
+		public override void Build(ScriptBuildContext context)
 		{
 			var timer = Timer("test").In(100).Milliseconds().Do(GVar("TimerFired").Set(true));
 			On.Ready(timer.Start());
@@ -110,7 +110,7 @@ namespace LunyScript.Test.Coroutines
 
 	public sealed class Timer_CanBePaused_LunyScript : LunyScript
 	{
-		public override void Build()
+		public override void Build(ScriptBuildContext context)
 		{
 			var timer = Timer("test").In(100).Milliseconds().Do(GVar("TimerFired").Set(true));
 			On.Ready(timer.Start());
@@ -120,7 +120,7 @@ namespace LunyScript.Test.Coroutines
 
 	public sealed class Timer_Repeating_FiresMultipleTimes_LunyScript : LunyScript
 	{
-		public override void Build()
+		public override void Build(ScriptBuildContext context)
 		{
 			// Timer fires every 100ms
 			var timer = Timer("test").Every(100).Milliseconds().Do(GVar("Counter").Inc());

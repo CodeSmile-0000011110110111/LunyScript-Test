@@ -44,7 +44,7 @@ namespace LunyScript.Test.Variables
 
 	public sealed class NamedConstantTestScript : LunyScript
 	{
-		public override void Build()
+		public override void Build(ScriptBuildContext context)
 		{
 			var pi = Const("PI", 3.14159);
 			var gVar = GVar("result");

@@ -1,7 +1,6 @@
 using Luny;
 using Luny.Engine.Bridge;
 using LunyScript.Blocks;
-using LunyScript.Execution;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -130,7 +129,7 @@ namespace LunyScript.Test.Scripts
 			var action = new MockActionWithContext(ctx => counts.Add(ctx.LoopStack.Peek()));
 
 			var forBlock = ForBlock.Create(3, 1, new[] { action });
-			var context = new MockContext();
+			var context = new MockRuntimeContext();
 
 			forBlock.Execute(context);
 			Assert.That(counts, Is.EqualTo(new[] { 1, 2, 3 }));
@@ -143,7 +142,7 @@ namespace LunyScript.Test.Scripts
 			var action = new MockActionWithContext(ctx => counts.Add(ctx.LoopStack.Peek()));
 
 			var forBlock = ForBlock.Create(3, -1, new[] { action });
-			var context = new MockContext();
+			var context = new MockRuntimeContext();
 
 			forBlock.Execute(context);
 			Assert.That(counts, Is.EqualTo(new[] { 3, 2, 1 }));
@@ -152,7 +151,7 @@ namespace LunyScript.Test.Scripts
 		[Test]
 		public void TestLoopCounterValue()
 		{
-			var context = new MockContext();
+			var context = new MockRuntimeContext();
 			context.LoopStack.Push(42);
 
 			var value = LoopCounterVariableBlock.Instance.GetValue(context);
@@ -163,26 +162,26 @@ namespace LunyScript.Test.Scripts
 		{
 			private readonly Boolean _result;
 			public MockCondition(Boolean result) => _result = result;
-			public Boolean Evaluate(ILunyScriptContext context) => _result;
+			public Boolean Evaluate(IScriptRuntimeContext runtimeContext) => _result;
 		}
 
 		private class MockAction : IScriptActionBlock
 		{
 			private readonly Action _action;
 			public MockAction(Action action) => _action = action;
-			public void Execute(ILunyScriptContext context) => _action();
+			public void Execute(IScriptRuntimeContext runtimeContext) => _action();
 		}
 
 		private class MockActionWithContext : IScriptActionBlock
 		{
-			private readonly Action<ILunyScriptContext> _action;
-			public MockActionWithContext(Action<ILunyScriptContext> action) => _action = action;
-			public void Execute(ILunyScriptContext context) => _action(context);
+			private readonly Action<IScriptRuntimeContext> _action;
+			public MockActionWithContext(Action<IScriptRuntimeContext> action) => _action = action;
+			public void Execute(IScriptRuntimeContext runtimeContext) => _action(runtimeContext);
 		}
 
-		private class MockContext : ILunyScriptContext
+		private class MockRuntimeContext : IScriptRuntimeContext
 		{
-			public LunyScriptID ScriptID => default;
+			public ScriptDefID ScriptDefId => default;
 			public Type ScriptType => null;
 			public ILunyObject LunyObject => null;
 			public ITable GlobalVariables => null;

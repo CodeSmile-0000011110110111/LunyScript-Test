@@ -7,7 +7,7 @@ namespace LunyScript.Test.Scripts
 {
 	public sealed class SelfDisabled_DoesNotRunUpdates_LunyScript : LunyScript
 	{
-		public override void Build()
+		public override void Build(ScriptBuildContext context)
 		{
 			On.Ready(Object.Disable());
 			On.Heartbeat(GVar("Steps").Set(true));
@@ -18,7 +18,7 @@ namespace LunyScript.Test.Scripts
 
 	public sealed class SelfEnabled_RunsUpdates_LunyScript : LunyScript
 	{
-		public override void Build()
+		public override void Build(ScriptBuildContext context)
 		{
 			On.Ready(Object.Disable(), Object.Enable());
 			On.Heartbeat(GVar("Steps").Set(true));

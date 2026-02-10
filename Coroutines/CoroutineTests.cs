@@ -7,7 +7,7 @@ namespace LunyScript.Test.Coroutines
 {
 	public sealed class Coroutine_OnUpdate_RunsEveryFrame_LunyScript : LunyScript
 	{
-		public override void Build()
+		public override void Build(ScriptBuildContext context)
 		{
 			var counter = Coroutine("counter")
 				.OnFrameUpdate(GVar("Counter").Add(1))
@@ -19,7 +19,7 @@ namespace LunyScript.Test.Coroutines
 
 	public sealed class Coroutine_OnHeartbeat_RunsEveryStep_LunyScript : LunyScript
 	{
-		public override void Build()
+		public override void Build(ScriptBuildContext context)
 		{
 			var counter = Coroutine("counter")
 				.OnHeartbeat(GVar("Counter").Add(1))
@@ -31,7 +31,7 @@ namespace LunyScript.Test.Coroutines
 
 	public sealed class Coroutine_Duration_FiresElapsed_LunyScript : LunyScript
 	{
-		public override void Build()
+		public override void Build(ScriptBuildContext context)
 		{
 			var co = Coroutine("timed")
 				.For(2)
@@ -45,7 +45,7 @@ namespace LunyScript.Test.Coroutines
 
 	public sealed class Coroutine_Duration_DoesNotFireEarly_LunyScript : LunyScript
 	{
-		public override void Build()
+		public override void Build(ScriptBuildContext context)
 		{
 			var co = Coroutine("timed")
 				.For(5)
@@ -58,7 +58,7 @@ namespace LunyScript.Test.Coroutines
 
 	public sealed class Coroutine_Started_FiresOnStart_LunyScript : LunyScript
 	{
-		public override void Build()
+		public override void Build(ScriptBuildContext context)
 		{
 			var co = Coroutine("controlled")
 				.For(10)
@@ -72,7 +72,7 @@ namespace LunyScript.Test.Coroutines
 
 	public sealed class Coroutine_Stopped_FiresOnStop_LunyScript : LunyScript
 	{
-		public override void Build()
+		public override void Build(ScriptBuildContext context)
 		{
 			var co = Coroutine("controlled")
 				.For(10)
@@ -87,7 +87,7 @@ namespace LunyScript.Test.Coroutines
 
 	public sealed class Coroutine_Paused_FiresOnPause_LunyScript : LunyScript
 	{
-		public override void Build()
+		public override void Build(ScriptBuildContext context)
 		{
 			var co = Coroutine("controlled")
 				.For(10)
@@ -102,7 +102,7 @@ namespace LunyScript.Test.Coroutines
 
 	public sealed class Coroutine_Resumed_FiresOnResume_LunyScript : LunyScript
 	{
-		public override void Build()
+		public override void Build(ScriptBuildContext context)
 		{
 			var co = Coroutine("controlled")
 				.For(10)

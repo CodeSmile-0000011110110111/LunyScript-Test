@@ -8,7 +8,7 @@ namespace LunyScript.Test.Scripts
 	#region Scripts
 	public sealed class IfBranchingScript : LunyScript
 	{
-		public override void Build()
+		public override void Build(ScriptBuildContext context)
 		{
 			var condition = GVar("Condition");
 			var result = GVar("Result");
@@ -25,7 +25,7 @@ namespace LunyScript.Test.Scripts
 
 	public sealed class WhileLoopScript : LunyScript
 	{
-		public override void Build()
+		public override void Build(ScriptBuildContext context)
 		{
 			var counter = GVar("Counter");
 
@@ -39,7 +39,7 @@ namespace LunyScript.Test.Scripts
 
 	public sealed class ForLoopScript : LunyScript
 	{
-		public override void Build()
+		public override void Build(ScriptBuildContext context)
 		{
 			var sum = GVar("Sum");
 
@@ -52,7 +52,7 @@ namespace LunyScript.Test.Scripts
 
 	public sealed class ForLoopReverseScript : LunyScript
 	{
-		public override void Build()
+		public override void Build(ScriptBuildContext context)
 		{
 			var sum = GVar("Sum");
 
@@ -65,7 +65,7 @@ namespace LunyScript.Test.Scripts
 
 	public sealed class NestedForLoopScript : LunyScript
 	{
-		public override void Build()
+		public override void Build(ScriptBuildContext context)
 		{
 			var outer = GVar("Outer");
 			var inner = GVar("Inner");

@@ -7,42 +7,27 @@ namespace LunyScript.Test.Coroutines
 {
 	public sealed class Every2Frames_RunsAlternating_LunyScript : LunyScript
 	{
-		public override void Build()
-		{
-			Every(2).Frames().Do(GVar("Counter").Add(1));
-		}
+		public override void Build(ScriptBuildContext context) => Every(2).Frames().Do(GVar("Counter").Add(1));
 	}
 
 	public sealed class Every3Heartbeats_RunsEveryThird_LunyScript : LunyScript
 	{
-		public override void Build()
-		{
-			Every(3).Heartbeats().Do(GVar("Counter").Add(1));
-		}
+		public override void Build(ScriptBuildContext context) => Every(3).Heartbeats().Do(GVar("Counter").Add(1));
 	}
 
 	public sealed class EveryEvenFrames_RunsOnEven_LunyScript : LunyScript
 	{
-		public override void Build()
-		{
-			Every(Even).Frames().Do(GVar("Counter").Add(1));
-		}
+		public override void Build(ScriptBuildContext context) => Every(Even).Frames().Do(GVar("Counter").Add(1));
 	}
 
 	public sealed class EveryOddHeartbeats_RunsOnOdd_LunyScript : LunyScript
 	{
-		public override void Build()
-		{
-			Every(Odd).Heartbeats().Do(GVar("Counter").Add(1));
-		}
+		public override void Build(ScriptBuildContext context) => Every(Odd).Heartbeats().Do(GVar("Counter").Add(1));
 	}
 
 	public sealed class Every2FramesDelayBy1_RunsAlternatingOffset_LunyScript : LunyScript
 	{
-		public override void Build()
-		{
-			Every(2).Frames().DelayBy(1).Do(GVar("Counter").Add(1));
-		}
+		public override void Build(ScriptBuildContext context) => Every(2).Frames().DelayBy(1).Do(GVar("Counter").Add(1));
 	}
 
 	public abstract class CoroutineTimeSliceTests : ContractTestBase

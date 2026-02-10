@@ -7,7 +7,7 @@ namespace LunyScript.Test.Variables
 {
 	public sealed class ComparisonOperationsTestScript : LunyScript
 	{
-		public override void Build()
+		public override void Build(ScriptBuildContext context)
 		{
 			var a = GVar("a");
 			var b = GVar("b");

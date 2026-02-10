@@ -8,7 +8,7 @@ namespace LunyScript.Test.Variables
 {
 	public sealed class ArithmeticOperationsTestScript : LunyScript
 	{
-		public override void Build()
+		public override void Build(ScriptBuildContext context)
 		{
 			// Constants
 			var three = Const(3);
