@@ -218,13 +218,13 @@ namespace LunyScript.Test.Coroutines
 	}
 
 	[TestFixture]
-	public sealed class GodotCoroutineCounterTests : CoroutineCounterTests
+	public sealed class CoroutineCounterGodotTests : CoroutineCounterTests
 	{
 		protected override NativeEngine Engine => NativeEngine.Godot;
 	}
 
 	[TestFixture]
-	public sealed class UnityCoroutineCounterTests : CoroutineCounterTests
+	public sealed class CoroutineCounterUnityTests : CoroutineCounterTests
 	{
 		protected override NativeEngine Engine => NativeEngine.Unity;
 	}

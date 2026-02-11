@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace LunyScript.Test.Scripts
 {
 	[TestFixture]
-	public sealed class ScriptFlowLowLevelTests
+	public sealed class ScriptFlowBlockTests
 	{
 		[Test]
 		public void TestAndBlock()

@@ -57,7 +57,7 @@ namespace LunyScript.Test.Variables
 	}
 
 	[TestFixture]
-	public sealed class NamedConstantTests : ContractTestBase
+	public sealed class VariableNamedConstantTests : ContractTestBase
 	{
 		protected override NativeEngine Engine => NativeEngine.Unity;
 

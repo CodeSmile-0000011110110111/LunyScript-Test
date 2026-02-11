@@ -261,13 +261,13 @@ namespace LunyScript.Test.Coroutines
 	}
 
 	[TestFixture]
-	public sealed class GodotCoroutineTimerTests : CoroutineTimerTests
+	public sealed class CoroutineTimerGodotTests : CoroutineTimerTests
 	{
 		protected override NativeEngine Engine => NativeEngine.Godot;
 	}
 
 	[TestFixture]
-	public sealed class UnityCoroutineTimerTests : CoroutineTimerTests
+	public sealed class CoroutineTimerUnityTests : CoroutineTimerTests
 	{
 		protected override NativeEngine Engine => NativeEngine.Unity;
 	}

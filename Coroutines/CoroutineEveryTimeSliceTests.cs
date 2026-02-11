@@ -65,13 +65,13 @@ namespace LunyScript.Test.Coroutines
 	}
 
 	[TestFixture]
-	public sealed class GodotCoroutineTimeSliceTimeSliceTests : CoroutineEveryTimeSliceTests
+	public sealed class CoroutineEveryTimeSliceGodotTests : CoroutineEveryTimeSliceTests
 	{
 		protected override NativeEngine Engine => NativeEngine.Godot;
 	}
 
 	[TestFixture]
-	public sealed class UnityCoroutineTimeSliceTimeSliceTests : CoroutineEveryTimeSliceTests
+	public sealed class CoroutineEveryTimeSliceUnityTests : CoroutineEveryTimeSliceTests
 	{
 		protected override NativeEngine Engine => NativeEngine.Unity;
 	}

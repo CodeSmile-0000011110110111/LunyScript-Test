@@ -1,0 +1,113 @@
+﻿using Luny;
+using Luny.ContractTest;
+using Luny.Engine.Bridge.Enums;
+using LunyScript.Activation;
+using NUnit.Framework;
+using System;
+
+namespace LunyScript.Test.Scripts
+{
+	public sealed class Object_SpawnLater_RunsScript_LunyScript : LunyScript
+	{
+		public override void Build(ScriptBuildContext context)
+		{
+			var counter = Counter("spawn").In(10).Frames().Do(Object.Create(nameof(CountEvents_LunyScript)));
+		}
+	}
+
+	public sealed class CountEvents_LunyScript : LunyScript
+	{
+		public override void Build(ScriptBuildContext context)
+		{
+			On.Created(GVar("Spawned_CreatedCount").Inc());
+			On.Enabled(GVar("Spawned_EnabledCount").Inc());
+			On.Ready(GVar("Spawned_ReadyCount").Inc());
+			On.Heartbeat(GVar("Spawned_HeartbeatCount").Inc());
+			On.FrameUpdate(GVar("Spawned_UpdateCount").Inc());
+			On.FrameLateUpdate(GVar("Spawned_LateUpdateCount").Inc(), Object.Destroy());
+			On.Disabled(GVar("Spawned_DisabledCount").Inc());
+			On.Destroyed(GVar("Spawned_DestroyedCount").Inc());
+
+			Counter("Spawned_CounterCoroutine").In(0).Frames().Do(GVar("Spawned_CounterCoroutineCount").Inc());
+		}
+	}
+
+	public abstract class ScriptActivationTests : ContractTestBase
+	{
+		[Test]
+		public void CountEvents_SpawnObjectsMultipleTimes_CountsAllEvents()
+		{
+			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+
+			SimulateFrames(5);
+			LunyEngine.Instance.Object.CreateEmpty(nameof(CountEvents_LunyScript));
+			SimulateFrames(5);
+			LunyEngine.Instance.Object.CreateEmpty(nameof(CountEvents_LunyScript));
+			SimulateFrames(5);
+			LunyEngine.Instance.Object.CreateEmpty(nameof(CountEvents_LunyScript));
+			SimulateFrames(5);
+
+			AssertAllEventCountersEqual(gVars, 3);
+		}
+
+		[Test]
+		public void CountEvents_SpawnObjectLater_CountsAllEvents()
+		{
+			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+
+			SimulateFrames(5);
+			LunyEngine.Instance.Object.CreateEmpty(nameof(CountEvents_LunyScript));
+			SimulateFrames(5);
+
+			AssertAllEventCountersEqual(gVars, 1);
+		}
+
+		[Test]
+		public void CountEvents_SpawnObjectBeforeSimulate_CountsAllEvents()
+		{
+			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			AssertAllEventCountersEqual(gVars, 0);
+
+			LunyEngine.Instance.Object.CreateEmpty(nameof(CountEvents_LunyScript));
+
+			Assert.That(gVars["Spawned_CreatedCount"].AsInt32(), Is.EqualTo(1)); // runs upon Create
+			Assert.That(gVars["Spawned_EnabledCount"].AsInt32(), Is.EqualTo(1)); // runs upon Create
+			Assert.That(gVars["Spawned_ReadyCount"].AsInt32(), Is.EqualTo(0));
+			Assert.That(gVars["Spawned_HeartbeatCount"].AsInt32(), Is.EqualTo(0));
+			Assert.That(gVars["Spawned_UpdateCount"].AsInt32(), Is.EqualTo(0));
+			Assert.That(gVars["Spawned_LateUpdateCount"].AsInt32(), Is.EqualTo(0));
+			Assert.That(gVars["Spawned_DisabledCount"].AsInt32(), Is.EqualTo(0));
+			Assert.That(gVars["Spawned_DestroyedCount"].AsInt32(), Is.EqualTo(0));
+			Assert.That(gVars["Spawned_CounterCoroutineCount"].AsInt32(), Is.EqualTo(0));
+
+			SimulateFrame();
+
+			AssertAllEventCountersEqual(gVars, 1);
+		}
+
+		private void AssertAllEventCountersEqual(ITable gVars, Int32 expectedCount)
+		{
+			Assert.That(gVars["Spawned_CreatedCount"].AsInt32(), Is.EqualTo(expectedCount));
+			Assert.That(gVars["Spawned_EnabledCount"].AsInt32(), Is.EqualTo(expectedCount));
+			Assert.That(gVars["Spawned_ReadyCount"].AsInt32(), Is.EqualTo(expectedCount));
+			Assert.That(gVars["Spawned_HeartbeatCount"].AsInt32(), Is.EqualTo(expectedCount));
+			Assert.That(gVars["Spawned_UpdateCount"].AsInt32(), Is.EqualTo(expectedCount));
+			Assert.That(gVars["Spawned_LateUpdateCount"].AsInt32(), Is.EqualTo(expectedCount));
+			Assert.That(gVars["Spawned_DisabledCount"].AsInt32(), Is.EqualTo(expectedCount));
+			Assert.That(gVars["Spawned_DestroyedCount"].AsInt32(), Is.EqualTo(expectedCount));
+			Assert.That(gVars["Spawned_CounterCoroutineCount"].AsInt32(), Is.EqualTo(expectedCount));
+		}
+	}
+
+	[TestFixture]
+	public sealed class ScriptActivationGodotTests : ScriptActivationTests
+	{
+		protected override NativeEngine Engine => NativeEngine.Godot;
+	}
+
+	[TestFixture]
+	public sealed class ScriptActivationUnityTests : ScriptActivationTests
+	{
+		protected override NativeEngine Engine => NativeEngine.Unity;
+	}
+}

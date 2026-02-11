@@ -50,7 +50,7 @@ namespace LunyScript.Test.Objects
 	}
 
 	[TestFixture]
-	public sealed class GodotObjectCreateTests : ObjectCreateTests
+	public sealed class ObjectCreateGodotTests : ObjectCreateTests
 	{
 		protected override NativeEngine Engine => NativeEngine.Godot;
 
@@ -62,7 +62,7 @@ namespace LunyScript.Test.Objects
 	}
 
 	[TestFixture]
-	public sealed class UnityObjectCreateTests : ObjectCreateTests
+	public sealed class ObjectCreateUnityTests : ObjectCreateTests
 	{
 		protected override NativeEngine Engine => NativeEngine.Unity;
 

@@ -161,13 +161,13 @@ namespace LunyScript.Test.Scripts
 	}
 
 	[TestFixture]
-	public sealed class GodotScriptFlowTests : ScriptFlowTests
+	public sealed class ScriptFlowGodotTests : ScriptFlowTests
 	{
 		protected override NativeEngine Engine => NativeEngine.Godot;
 	}
 
 	[TestFixture]
-	public sealed class UnityScriptFlowTests : ScriptFlowTests
+	public sealed class ScriptFlowUnityTests : ScriptFlowTests
 	{
 		protected override NativeEngine Engine => NativeEngine.Unity;
 	}

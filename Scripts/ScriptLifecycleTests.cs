@@ -13,7 +13,7 @@ namespace LunyScript.Test.Scripts
 			On.Ready(Object.Disable());
 			On.Heartbeat(GVar("Steps").Set(true));
 			On.FrameUpdate(GVar("Updates").Set(true));
-			On.FrameEnd(GVar("LateUpdates").Set(true));
+			On.FrameLateUpdate(GVar("LateUpdates").Set(true));
 		}
 	}
 
@@ -24,7 +24,7 @@ namespace LunyScript.Test.Scripts
 			On.Ready(Object.Disable(), Object.Enable());
 			On.Heartbeat(GVar("Steps").Set(true));
 			On.FrameUpdate(GVar("Updates").Set(true));
-			On.FrameEnd(GVar("LateUpdates").Set(true));
+			On.FrameLateUpdate(GVar("LateUpdates").Set(true));
 		}
 	}
 
@@ -60,13 +60,13 @@ namespace LunyScript.Test.Scripts
 	}
 
 	[TestFixture]
-	public sealed class GodotScriptLifecycleTests : ScriptLifecycleTests
+	public sealed class ScriptLifecycleGodotTests : ScriptLifecycleTests
 	{
 		protected override NativeEngine Engine => NativeEngine.Godot;
 	}
 
 	[TestFixture]
-	public sealed class UnityScriptLifecycleTests : ScriptLifecycleTests
+	public sealed class ScriptLifecycleUnityTests : ScriptLifecycleTests
 	{
 		protected override NativeEngine Engine => NativeEngine.Unity;
 	}

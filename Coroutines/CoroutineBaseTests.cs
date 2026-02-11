@@ -46,7 +46,7 @@ namespace LunyScript.Test.Coroutines
 			var co = Coroutine("timed")
 				.For(2)
 				.Seconds()
-				.OnFrameUpdate(GVar("Ticks").Add(1))
+				.OnFrameUpdate(GVar("Ticks").Inc())
 				.Elapsed(GVar("Elapsed").Set(true));
 		}
 	}
@@ -119,7 +119,7 @@ namespace LunyScript.Test.Coroutines
 		}
 	}
 
-	public abstract class CoroutineTests : ContractTestBase
+	public abstract class CoroutineBaseTests : ContractTestBase
 	{
 		[Test]
 		public void Coroutine_UsedAsBlock_Throws()
@@ -159,10 +159,10 @@ namespace LunyScript.Test.Coroutines
 			var gVars = LunyScriptEngine.Instance.GlobalVariables;
 
 			// 2 seconds at 60fps = 120 frames + buffer
-			SimulateFrames(130);
+			SimulateFrames(125);
 
+			Assert.That(gVars["Ticks"].AsInt32(), Is.EqualTo(120));
 			Assert.That(gVars["Elapsed"].AsBoolean(), Is.True);
-			Assert.That(gVars["Ticks"].AsInt32(), Is.GreaterThan(0));
 		}
 
 		[Test]
@@ -223,13 +223,13 @@ namespace LunyScript.Test.Coroutines
 	}
 
 	[TestFixture]
-	public sealed class GodotCoroutineTests : CoroutineTests
+	public sealed class CoroutineBaseGodotTests : CoroutineBaseTests
 	{
 		protected override NativeEngine Engine => NativeEngine.Godot;
 	}
 
 	[TestFixture]
-	public sealed class UnityCoroutineTests : CoroutineTests
+	public sealed class CoroutineBaseUnityTests : CoroutineBaseTests
 	{
 		protected override NativeEngine Engine => NativeEngine.Unity;
 	}
