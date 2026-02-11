@@ -19,6 +19,10 @@ namespace LunyScript.Test.Scripts
 	{
 		public override void Build(ScriptBuildContext context)
 		{
+			LunyLogger.LogInfo("-------------------------------------------------------------------------");
+			LunyLogger.LogInfo($" ==> {nameof(CountEvents_LunyScript)}.Build() running ...");
+			LunyLogger.LogInfo("-------------------------------------------------------------------------");
+
 			On.Created(GVar("Spawned_CreatedCount").Inc());
 			On.Enabled(GVar("Spawned_EnabledCount").Inc());
 			On.Ready(GVar("Spawned_ReadyCount").Inc());
@@ -35,16 +39,38 @@ namespace LunyScript.Test.Scripts
 	public abstract class ScriptActivationTests : ContractTestBase
 	{
 		[Test]
-		public void CountEvents_SpawnObjectsMultipleTimes_CountsAllEvents()
+		public void CountEvents_SpawnTwoObjectsWithSameName_CountsAllEventsTwice()
 		{
 			var gVars = LunyScriptEngine.Instance.GlobalVariables;
 
+			var luny = LunyEngine.Instance;
 			SimulateFrames(5);
-			LunyEngine.Instance.Object.CreateEmpty(nameof(CountEvents_LunyScript));
+			luny.Object.CreateEmpty(nameof(CountEvents_LunyScript));
+			luny.Object.CreateEmpty(nameof(CountEvents_LunyScript));
 			SimulateFrames(5);
-			LunyEngine.Instance.Object.CreateEmpty(nameof(CountEvents_LunyScript));
+			luny.Object.CreateEmpty(nameof(CountEvents_LunyScript));
+			luny.Object.CreateEmpty(nameof(CountEvents_LunyScript));
 			SimulateFrames(5);
-			LunyEngine.Instance.Object.CreateEmpty(nameof(CountEvents_LunyScript));
+			luny.Object.CreateEmpty(nameof(CountEvents_LunyScript));
+			luny.Object.CreateEmpty(nameof(CountEvents_LunyScript));
+			SimulateFrames(5);
+
+			AssertAllEventCountersEqual(gVars, 6);
+		}
+
+
+		[Test]
+		public void CountEvents_SpawnObjectMultipleTimes_CountsAllEvents()
+		{
+			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+
+			var luny = LunyEngine.Instance;
+			SimulateFrames(5);
+			luny.Object.CreateEmpty(nameof(CountEvents_LunyScript));
+			SimulateFrames(5);
+			luny.Object.CreateEmpty(nameof(CountEvents_LunyScript));
+			SimulateFrames(5);
+			luny.Object.CreateEmpty(nameof(CountEvents_LunyScript));
 			SimulateFrames(5);
 
 			AssertAllEventCountersEqual(gVars, 3);
