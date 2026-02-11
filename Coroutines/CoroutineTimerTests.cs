@@ -1,6 +1,7 @@
 using Luny;
 using Luny.ContractTest;
 using Luny.Engine.Bridge.Enums;
+using LunyScript.Activation;
 using NUnit.Framework;
 
 namespace LunyScript.Test.Coroutines
@@ -31,7 +32,6 @@ namespace LunyScript.Test.Coroutines
 			var startLater = Timer("start").In(50).Milliseconds().Do(timer.Start());
 		}
 	}
-
 
 	public sealed class Timer_StartsPaused_ResumeLater_LunyScript : LunyScript
 	{

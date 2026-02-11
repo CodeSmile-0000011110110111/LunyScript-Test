@@ -2,6 +2,7 @@ using Godot;
 using Luny;
 using Luny.ContractTest;
 using Luny.Engine.Bridge.Enums;
+using LunyScript.Activation;
 using NUnit.Framework;
 using System;
 using System.Linq;

@@ -1,6 +1,7 @@
 ﻿using Luny;
 using Luny.ContractTest;
 using Luny.Engine.Bridge.Enums;
+using LunyScript.Activation;
 using NUnit.Framework;
 
 namespace LunyScript.Test.Coroutines
@@ -39,7 +40,7 @@ namespace LunyScript.Test.Coroutines
 		{
 			var counter = Counter(nameof(Counter_StartsPaused_ResumeLater_LunyScript))
 				.In(5)
-				.Frames()
+				.Heartbeats()
 				.Do(GVar("CounterFired").Set(true));
 
 			On.Ready(counter.Pause());
@@ -181,6 +182,7 @@ namespace LunyScript.Test.Coroutines
 
 			Assert.That(gVars["Counter"].AsInt32(), Is.GreaterThanOrEqualTo(4));
 		}
+
 		[Test]
 		public void Counter_PausedLater_ResumeLater()
 		{
@@ -213,7 +215,6 @@ namespace LunyScript.Test.Coroutines
 
 			Assert.That(gVars["CounterFired"].AsBoolean(), Is.EqualTo(true));
 		}
-
 	}
 
 	[TestFixture]

@@ -1,10 +1,24 @@
 using Luny;
 using Luny.ContractTest;
 using Luny.Engine.Bridge.Enums;
+using LunyScript.Activation;
 using NUnit.Framework;
+using System;
 
 namespace LunyScript.Test.Coroutines
 {
+	public sealed class Coroutine_UsedAsBlock_Throws_LunyScript : LunyScript
+	{
+		public override void Build(ScriptBuildContext context)
+		{
+			var counter = Coroutine("throws")
+				.OnFrameUpdate(GVar("Counter").Add(1))
+				.Build();
+
+			On.Ready(counter); // throws
+		}
+	}
+
 	public sealed class Coroutine_OnUpdate_RunsEveryFrame_LunyScript : LunyScript
 	{
 		public override void Build(ScriptBuildContext context)
@@ -107,6 +121,13 @@ namespace LunyScript.Test.Coroutines
 
 	public abstract class CoroutineTests : ContractTestBase
 	{
+		[Test]
+		public void Coroutine_UsedAsBlock_Throws()
+		{
+			LunyEngine.Instance.Object.CreateEmpty(nameof(Coroutine_UsedAsBlock_Throws_LunyScript));
+			Assert.Throws<NotImplementedException>(() => SimulateFrames(1));
+		}
+
 		[Test]
 		public void Coroutine_OnUpdate_RunsEveryFrame()
 		{
