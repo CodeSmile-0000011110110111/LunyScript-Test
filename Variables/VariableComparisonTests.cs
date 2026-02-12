@@ -6,9 +6,9 @@ using NUnit.Framework;
 
 namespace LunyScript.Test.Variables
 {
-	public sealed class ComparisonOperationsTestScript : LunyScript
+	public sealed class ComparisonOperationsTestScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			var a = GVar("a");
 			var b = GVar("b");
@@ -69,7 +69,7 @@ namespace LunyScript.Test.Variables
 		public void Comparison_Operations_Work()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(ComparisonOperationsTestScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(1);
 

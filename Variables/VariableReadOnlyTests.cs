@@ -43,9 +43,9 @@ namespace LunyScript.Test.Variables
 		}
 	}
 
-	public sealed class NamedConstantTestScript : LunyScript
+	public sealed class NamedConstantTestScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			var pi = Const("PI", 3.14159);
 			var gVar = GVar("result");
@@ -65,7 +65,7 @@ namespace LunyScript.Test.Variables
 		public void Named_Constant_Value_Is_Accessible()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(NamedConstantTestScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(1);
 

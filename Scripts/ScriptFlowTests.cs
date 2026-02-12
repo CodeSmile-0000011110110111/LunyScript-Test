@@ -7,9 +7,9 @@ using NUnit.Framework;
 namespace LunyScript.Test.Scripts
 {
 	#region Scripts
-	public sealed class IfBranchingScript : LunyScript
+	public sealed class IfBranchingScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			var condition = GVar("Condition");
 			var result = GVar("Result");
@@ -24,9 +24,9 @@ namespace LunyScript.Test.Scripts
 		}
 	}
 
-	public sealed class WhileLoopScript : LunyScript
+	public sealed class WhileLoopScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			var counter = GVar("Counter");
 
@@ -38,9 +38,9 @@ namespace LunyScript.Test.Scripts
 		}
 	}
 
-	public sealed class ForLoopScript : LunyScript
+	public sealed class ForLoopScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			var sum = GVar("Sum");
 
@@ -51,9 +51,9 @@ namespace LunyScript.Test.Scripts
 		}
 	}
 
-	public sealed class ForLoopReverseScript : LunyScript
+	public sealed class ForLoopReverseScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			var sum = GVar("Sum");
 
@@ -64,9 +64,9 @@ namespace LunyScript.Test.Scripts
 		}
 	}
 
-	public sealed class NestedForLoopScript : LunyScript
+	public sealed class NestedForLoopScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			var outer = GVar("Outer");
 			var inner = GVar("Inner");
@@ -89,7 +89,7 @@ namespace LunyScript.Test.Scripts
 		[Test]
 		public void If_Branching_Works()
 		{
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			// Branch 1
 			gVars.RemoveAll();
@@ -117,7 +117,7 @@ namespace LunyScript.Test.Scripts
 		public void While_Loop_Works()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(WhileLoopScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(3);
 
@@ -128,7 +128,7 @@ namespace LunyScript.Test.Scripts
 		public void For_Loop_Works()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(ForLoopScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(3);
 
@@ -140,7 +140,7 @@ namespace LunyScript.Test.Scripts
 		public void For_Loop_Reverse_Works()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(ForLoopReverseScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(3);
 
@@ -151,7 +151,7 @@ namespace LunyScript.Test.Scripts
 		public void Nested_For_Loop_Works()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(NestedForLoopScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(3);
 

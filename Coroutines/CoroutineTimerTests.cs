@@ -6,18 +6,18 @@ using NUnit.Framework;
 
 namespace LunyScript.Test.Coroutines
 {
-	public sealed class Timer_AutoStarts_LunyScript : LunyScript
+	public sealed class Timer_AutoStarts_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			// It should not be necessary to call timer.Start()
 			var timer = Timer("test").In(50).Milliseconds().Do(GVar("TimerFired").Set(true));
 		}
 	}
 
-	public sealed class Timer_StartsStopped_StartsLater_LunyScript : LunyScript
+	public sealed class Timer_StartsStopped_StartsLater_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			var timer = Timer("test")
 				.In(10)
@@ -33,9 +33,9 @@ namespace LunyScript.Test.Coroutines
 		}
 	}
 
-	public sealed class Timer_StartsPaused_ResumeLater_LunyScript : LunyScript
+	public sealed class Timer_StartsPaused_ResumeLater_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			var timer = Timer("TIMER_StartsPaused_ResumeLater_LunyScript")
 				.In(50)
@@ -51,9 +51,9 @@ namespace LunyScript.Test.Coroutines
 		}
 	}
 
-	public sealed class Timer_PausedLater_ResumeLater_LunyScript : LunyScript
+	public sealed class Timer_PausedLater_ResumeLater_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			var timer = Timer("test")
 				.In(40)
@@ -69,9 +69,9 @@ namespace LunyScript.Test.Coroutines
 		}
 	}
 
-	public sealed class Timer_LowerTimeScale_TakesLonger_LunyScript : LunyScript
+	public sealed class Timer_LowerTimeScale_TakesLonger_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			// this should complete after >= 200 ms
 			var timer = Timer("test").In(100).Milliseconds().Do(GVar("TimerFired").Set(true));
@@ -79,9 +79,9 @@ namespace LunyScript.Test.Coroutines
 		}
 	}
 
-	public sealed class Timer_FiresAfterDuration_LunyScript : LunyScript
+	public sealed class Timer_FiresAfterDuration_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			// Timer fires after 0.1 seconds
 			var timer = Timer("test").In(100).Milliseconds().Do(GVar("TimerFired").Set(true));
@@ -89,9 +89,9 @@ namespace LunyScript.Test.Coroutines
 		}
 	}
 
-	public sealed class Timer_DoesNotFireBeforeDuration_LunyScript : LunyScript
+	public sealed class Timer_DoesNotFireBeforeDuration_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			// Timer fires after 1 second
 			var timer = Timer("test").In(1).Seconds().Do(GVar("TimerFired").Set(true));
@@ -99,9 +99,9 @@ namespace LunyScript.Test.Coroutines
 		}
 	}
 
-	public sealed class Timer_CanBeStopped_LunyScript : LunyScript
+	public sealed class Timer_CanBeStopped_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			var timer = Timer("test").In(100).Milliseconds().Do(GVar("TimerFired").Set(true));
 			On.Ready(timer.Start());
@@ -109,9 +109,9 @@ namespace LunyScript.Test.Coroutines
 		}
 	}
 
-	public sealed class Timer_CanBePaused_LunyScript : LunyScript
+	public sealed class Timer_CanBePaused_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			var timer = Timer("test").In(100).Milliseconds().Do(GVar("TimerFired").Set(true));
 			On.Ready(timer.Start());
@@ -119,9 +119,9 @@ namespace LunyScript.Test.Coroutines
 		}
 	}
 
-	public sealed class Timer_Repeating_FiresMultipleTimes_LunyScript : LunyScript
+	public sealed class Timer_Repeating_FiresMultipleTimes_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			// Timer fires every 100ms
 			var timer = Timer("test").Every(100).Milliseconds().Do(GVar("Counter").Inc());
@@ -135,7 +135,7 @@ namespace LunyScript.Test.Coroutines
 		public void Timer_FiresAfterDuration()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Timer_FiresAfterDuration_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			// 100ms = 6 frames at 60fps (16.67ms/frame)
 			SimulateFrames(10);
@@ -147,7 +147,7 @@ namespace LunyScript.Test.Coroutines
 		public void Timer_DoesNotFireBeforeDuration()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Timer_DoesNotFireBeforeDuration_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			// Only simulate 0.5 seconds (30 frames at 60fps) - timer is set for 1 second
 			SimulateFrames(30);
@@ -159,7 +159,7 @@ namespace LunyScript.Test.Coroutines
 		public void Timer_CanBeStopped()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Timer_CanBeStopped_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			// Simulate well past when timer would fire
 			SimulateFrames(20);
@@ -172,7 +172,7 @@ namespace LunyScript.Test.Coroutines
 		public void Timer_CanBePaused()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Timer_CanBePaused_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			// Simulate well past when timer would fire
 			SimulateFrames(20);
@@ -185,7 +185,7 @@ namespace LunyScript.Test.Coroutines
 		public void Timer_Repeating_FiresMultipleTimes()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Timer_Repeating_FiresMultipleTimes_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			// 100ms = ~6 frames. 40 frames should be ~6-7 fires.
 			SimulateFrames(40);
@@ -197,7 +197,7 @@ namespace LunyScript.Test.Coroutines
 		public void Timer_AutoStarts()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Timer_AutoStarts_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			// 50ms = 3 frames at 60fps.
 			SimulateFrames(10);
@@ -209,7 +209,7 @@ namespace LunyScript.Test.Coroutines
 		public void Timer_StartsStopped_StartsLater()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Timer_StartsStopped_StartsLater_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			// Timer fires after 50ms (start) + 10ms (test) = 60ms
 			SimulateFrames(10);
@@ -222,7 +222,7 @@ namespace LunyScript.Test.Coroutines
 		public void Timer_StartsPaused_ResumeLater()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Timer_StartsPaused_ResumeLater_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			// Timer fires after 70ms (resume) + 50ms (test) = 120ms
 			SimulateFrames(10);
@@ -235,7 +235,7 @@ namespace LunyScript.Test.Coroutines
 		public void Timer_PausedLater_ResumeLater()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Timer_PausedLater_ResumeLater_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			// Timer fires after 30ms (resume) + 25ms (remaining) = 55ms
 			SimulateFrames(10);
@@ -248,7 +248,7 @@ namespace LunyScript.Test.Coroutines
 		public void Timer_LowerTimeScale_TakesLonger()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Timer_LowerTimeScale_TakesLonger_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			// 100ms at 0.5 scale = 200ms. 10 frames = 166ms.
 			SimulateFrames(10);

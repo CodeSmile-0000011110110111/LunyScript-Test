@@ -6,19 +6,19 @@ using NUnit.Framework;
 
 namespace LunyScript.Test.Coroutines
 {
-	public sealed class Every2Frames_RunsAlternating_LunyScript : LunyScript
+	public sealed class Every2Frames_RunsAlternating_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context) => Every(2).Frames().Do(GVar("Counter").Add(1));
+		public override void Build(ScriptContext context) => Every(2).Frames().Do(GVar("Counter").Add(1));
 	}
 
-	public sealed class Every3Heartbeats_RunsEveryThird_LunyScript : LunyScript
+	public sealed class Every3Heartbeats_RunsEveryThird_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context) => Every(3).Heartbeats().Do(GVar("Counter").Add(1));
+		public override void Build(ScriptContext context) => Every(3).Heartbeats().Do(GVar("Counter").Add(1));
 	}
 
-	public sealed class Every2FramesDelayBy1_RunsAlternatingOffset_LunyScript : LunyScript
+	public sealed class Every2FramesDelayBy1_RunsAlternatingOffset_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context) => Every(2).Frames().DelayBy(1).Do(GVar("Counter").Add(1));
+		public override void Build(ScriptContext context) => Every(2).Frames().DelayBy(1).Do(GVar("Counter").Add(1));
 	}
 
 	public abstract class CoroutineEveryTimeSliceTests : ContractTestBase
@@ -27,7 +27,7 @@ namespace LunyScript.Test.Coroutines
 		public void Every2Frames_RunsAlternating()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Every2Frames_RunsAlternating_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(6);
 
@@ -41,7 +41,7 @@ namespace LunyScript.Test.Coroutines
 		public void Every3Heartbeats_RunsEveryThird()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Every3Heartbeats_RunsEveryThird_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(9);
 
@@ -54,7 +54,7 @@ namespace LunyScript.Test.Coroutines
 		public void Every2FramesDelayBy1_RunsAlternatingOffset()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Every2FramesDelayBy1_RunsAlternatingOffset_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(6);
 

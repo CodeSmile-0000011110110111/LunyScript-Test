@@ -6,18 +6,18 @@ using NUnit.Framework;
 
 namespace LunyScript.Test.Coroutines
 {
-	public sealed class Counter_AutoStarts_LunyScript : LunyScript
+	public sealed class Counter_AutoStarts_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			// It should not be necessary to call counter.Start()
 			var counter = Counter(nameof(Counter_AutoStarts_LunyScript)).In(5).Frames().Do(GVar("CounterFired").Set(true));
 		}
 	}
 
-	public sealed class Counter_StartsStopped_StartsLater_LunyScript : LunyScript
+	public sealed class Counter_StartsStopped_StartsLater_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			var counter = Counter("test")
 				.In(5)
@@ -34,9 +34,9 @@ namespace LunyScript.Test.Coroutines
 		}
 	}
 
-	public sealed class Counter_StartsPaused_ResumeLater_LunyScript : LunyScript
+	public sealed class Counter_StartsPaused_ResumeLater_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			var counter = Counter(nameof(Counter_StartsPaused_ResumeLater_LunyScript))
 				.In(5)
@@ -52,9 +52,9 @@ namespace LunyScript.Test.Coroutines
 		}
 	}
 
-	public sealed class Counter_PausedLater_ResumeLater_LunyScript : LunyScript
+	public sealed class Counter_PausedLater_ResumeLater_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			var counter = Counter("test")
 				.In(9)
@@ -66,45 +66,45 @@ namespace LunyScript.Test.Coroutines
 		}
 	}
 
-	public sealed class Counter_FiresAfterDuration_LunyScript : LunyScript
+	public sealed class Counter_FiresAfterDuration_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			var counter = Counter("test").In(8).Frames().Do(GVar("CounterFired").Set(true));
 			On.Ready(counter.Start());
 		}
 	}
 
-	public sealed class Counter_DoesNotFireBeforeDuration_LunyScript : LunyScript
+	public sealed class Counter_DoesNotFireBeforeDuration_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			var counter = Counter("test").In(60).Frames().Do(GVar("CounterFired").Set(true));
 			On.Ready(counter.Start());
 		}
 	}
 
-	public sealed class Counter_CanBeStopped_LunyScript : LunyScript
+	public sealed class Counter_CanBeStopped_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			var counter = Counter("test").In(1).Frames().Do(GVar("CounterFired").Set(true), Debug.LogInfo("COUNTER FIRED"));
 			On.FrameUpdate(counter.Stop(), Debug.LogInfo("FRAME UPDATE")); // Stop immediately on first update
 		}
 	}
 
-	public sealed class Counter_CanBePaused_LunyScript : LunyScript
+	public sealed class Counter_CanBePaused_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			var counter = Counter("test").In(1).Frames().Do(GVar("CounterFired").Set(true));
 			On.Ready(counter.Pause()); // Pause immediately - counter should never fire
 		}
 	}
 
-	public sealed class Counter_Repeating_FiresMultipleTimes_LunyScript : LunyScript
+	public sealed class Counter_Repeating_FiresMultipleTimes_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			var counter = Counter("test").Every(9).Frames().Do(GVar("Counter").Inc());
 			On.Ready(counter.Start());
@@ -117,7 +117,7 @@ namespace LunyScript.Test.Coroutines
 		public void Counter_AutoStarts()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Counter_AutoStarts_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(10);
 
@@ -128,7 +128,7 @@ namespace LunyScript.Test.Coroutines
 		public void Counter_FiresAfterDuration()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Counter_FiresAfterDuration_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(10);
 
@@ -139,7 +139,7 @@ namespace LunyScript.Test.Coroutines
 		public void Counter_DoesNotFireBeforeDuration()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Counter_DoesNotFireBeforeDuration_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(30);
 
@@ -150,7 +150,7 @@ namespace LunyScript.Test.Coroutines
 		public void Counter_CanBeStopped()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Counter_CanBeStopped_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			// Simulate well past when counter would fire
 			SimulateFrames(10);
@@ -163,7 +163,7 @@ namespace LunyScript.Test.Coroutines
 		public void Counter_CanBePaused()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Counter_CanBePaused_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			// Simulate well past when counter would fire
 			SimulateFrames(20);
@@ -176,7 +176,7 @@ namespace LunyScript.Test.Coroutines
 		public void Counter_Repeating_FiresMultipleTimes()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Counter_Repeating_FiresMultipleTimes_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(40);
 
@@ -187,7 +187,7 @@ namespace LunyScript.Test.Coroutines
 		public void Counter_PausedLater_ResumeLater()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Counter_PausedLater_ResumeLater_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(15);
 
@@ -198,7 +198,7 @@ namespace LunyScript.Test.Coroutines
 		public void Counter_StartsPaused_ResumeLater()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Counter_StartsPaused_ResumeLater_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(15);
 
@@ -209,7 +209,7 @@ namespace LunyScript.Test.Coroutines
 		public void Counter_StartsStopped_StartsLater()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Counter_StartsStopped_StartsLater_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(15);
 

@@ -7,17 +7,17 @@ using System;
 
 namespace LunyScript.Test.Scripts
 {
-	public sealed class Object_SpawnLater_RunsScript_LunyScript : LunyScript
+	public sealed class Object_SpawnLater_RunsScript_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			var counter = Counter("spawn").In(10).Frames().Do(Object.Create(nameof(CountEvents_LunyScript)));
 		}
 	}
 
-	public sealed class CountEvents_LunyScript : LunyScript
+	public sealed class CountEvents_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			LunyLogger.LogInfo("-------------------------------------------------------------------------");
 			LunyLogger.LogInfo($" ==> {nameof(CountEvents_LunyScript)}.Build() running ...");
@@ -41,7 +41,7 @@ namespace LunyScript.Test.Scripts
 		[Test]
 		public void CountEvents_SpawnTwoObjectsWithSameName_CountsAllEventsTwice()
 		{
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			var luny = LunyEngine.Instance;
 			SimulateFrames(5);
@@ -62,7 +62,7 @@ namespace LunyScript.Test.Scripts
 		[Test]
 		public void CountEvents_SpawnObjectMultipleTimes_CountsAllEvents()
 		{
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			var luny = LunyEngine.Instance;
 			SimulateFrames(5);
@@ -79,7 +79,7 @@ namespace LunyScript.Test.Scripts
 		[Test]
 		public void CountEvents_SpawnObjectLater_CountsAllEvents()
 		{
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(5);
 			LunyEngine.Instance.Object.CreateEmpty(nameof(CountEvents_LunyScript));
@@ -91,7 +91,7 @@ namespace LunyScript.Test.Scripts
 		[Test]
 		public void CountEvents_SpawnObjectBeforeSimulate_CountsAllEvents()
 		{
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 			AssertAllEventCountersEqual(gVars, 0);
 
 			LunyEngine.Instance.Object.CreateEmpty(nameof(CountEvents_LunyScript));

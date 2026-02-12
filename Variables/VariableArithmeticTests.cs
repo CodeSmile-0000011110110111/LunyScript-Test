@@ -7,9 +7,9 @@ using System;
 
 namespace LunyScript.Test.Variables
 {
-	public sealed class ArithmeticOperationsTestScript : LunyScript
+	public sealed class ArithmeticOperationsTestScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			// Constants
 			var three = Const(3);
@@ -107,7 +107,7 @@ namespace LunyScript.Test.Variables
 		public void Arithmetic_Operations_Work()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(ArithmeticOperationsTestScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			var frameCount = 3;
 			SimulateFrames(frameCount);

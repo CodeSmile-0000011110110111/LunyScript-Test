@@ -7,9 +7,9 @@ using System;
 
 namespace LunyScript.Test.Coroutines
 {
-	public sealed class Coroutine_UsedAsBlock_Throws_LunyScript : LunyScript
+	public sealed class Coroutine_UsedAsBlock_Throws_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			var counter = Coroutine("throws")
 				.OnFrameUpdate(GVar("Counter").Add(1))
@@ -19,9 +19,9 @@ namespace LunyScript.Test.Coroutines
 		}
 	}
 
-	public sealed class Coroutine_OnUpdate_RunsEveryFrame_LunyScript : LunyScript
+	public sealed class Coroutine_OnUpdate_RunsEveryFrame_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			var counter = Coroutine("counter")
 				.OnFrameUpdate(GVar("Counter").Add(1))
@@ -29,9 +29,9 @@ namespace LunyScript.Test.Coroutines
 		}
 	}
 
-	public sealed class Coroutine_OnHeartbeat_RunsEveryStep_LunyScript : LunyScript
+	public sealed class Coroutine_OnHeartbeat_RunsEveryStep_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			var counter = Coroutine(nameof(Coroutine_OnHeartbeat_RunsEveryStep_LunyScript))
 				.OnHeartbeat(GVar("Counter").Add(1))
@@ -39,9 +39,9 @@ namespace LunyScript.Test.Coroutines
 		}
 	}
 
-	public sealed class Coroutine_Duration_FiresElapsed_LunyScript : LunyScript
+	public sealed class Coroutine_Duration_FiresElapsed_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			var co = Coroutine("timed")
 				.For(2)
@@ -51,9 +51,9 @@ namespace LunyScript.Test.Coroutines
 		}
 	}
 
-	public sealed class Coroutine_Duration_DoesNotFireEarly_LunyScript : LunyScript
+	public sealed class Coroutine_Duration_DoesNotFireEarly_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			var co = Coroutine("timed")
 				.For(5)
@@ -62,9 +62,9 @@ namespace LunyScript.Test.Coroutines
 		}
 	}
 
-	public sealed class Coroutine_Started_FiresOnStart_LunyScript : LunyScript
+	public sealed class Coroutine_Started_FiresOnStart_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			var co = Coroutine(nameof(Coroutine_Started_FiresOnStart_LunyScript))
 				.For(10)
@@ -74,9 +74,9 @@ namespace LunyScript.Test.Coroutines
 		}
 	}
 
-	public sealed class Coroutine_Stopped_FiresOnStop_LunyScript : LunyScript
+	public sealed class Coroutine_Stopped_FiresOnStop_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			var co = Coroutine("controlled")
 				.For(10)
@@ -89,9 +89,9 @@ namespace LunyScript.Test.Coroutines
 		}
 	}
 
-	public sealed class Coroutine_Paused_FiresOnPause_LunyScript : LunyScript
+	public sealed class Coroutine_Paused_FiresOnPause_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			var co = Coroutine("controlled")
 				.For(10)
@@ -104,9 +104,9 @@ namespace LunyScript.Test.Coroutines
 		}
 	}
 
-	public sealed class Coroutine_Resumed_FiresOnResume_LunyScript : LunyScript
+	public sealed class Coroutine_Resumed_FiresOnResume_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			var co = Coroutine("controlled")
 				.For(10)
@@ -132,7 +132,7 @@ namespace LunyScript.Test.Coroutines
 		public void Coroutine_OnUpdate_RunsEveryFrame()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Coroutine_OnUpdate_RunsEveryFrame_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(5);
 
@@ -144,7 +144,7 @@ namespace LunyScript.Test.Coroutines
 		public void Coroutine_OnHeartbeat_RunsEveryStep()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Coroutine_OnHeartbeat_RunsEveryStep_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(5);
 
@@ -156,7 +156,7 @@ namespace LunyScript.Test.Coroutines
 		public void Coroutine_Duration_FiresElapsed()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Coroutine_Duration_FiresElapsed_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			// 2 seconds at 60fps = 120 frames + buffer
 			SimulateFrames(125);
@@ -169,7 +169,7 @@ namespace LunyScript.Test.Coroutines
 		public void Coroutine_Duration_DoesNotFireEarly()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Coroutine_Duration_DoesNotFireEarly_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			// Only 2 seconds at 60fps = 120 frames, duration is 5 seconds
 			SimulateFrames(120);
@@ -181,7 +181,7 @@ namespace LunyScript.Test.Coroutines
 		public void Coroutine_Started_FiresOnStart()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Coroutine_Started_FiresOnStart_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(2);
 
@@ -192,7 +192,7 @@ namespace LunyScript.Test.Coroutines
 		public void Coroutine_Stopped_FiresOnStop()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Coroutine_Stopped_FiresOnStop_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(2);
 
@@ -203,7 +203,7 @@ namespace LunyScript.Test.Coroutines
 		public void Coroutine_Paused_FiresOnPause()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Coroutine_Paused_FiresOnPause_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(2);
 
@@ -214,7 +214,7 @@ namespace LunyScript.Test.Coroutines
 		public void Coroutine_Resumed_FiresOnResume()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Coroutine_Resumed_FiresOnResume_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(2);
 

@@ -6,9 +6,9 @@ using NUnit.Framework;
 
 namespace LunyScript.Test.Scripts
 {
-	public sealed class SelfDisabled_DoesNotRunUpdates_LunyScript : LunyScript
+	public sealed class SelfDisabled_DoesNotRunUpdates_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			On.Ready(Object.Disable());
 			On.Heartbeat(GVar("Steps").Set(true));
@@ -17,9 +17,9 @@ namespace LunyScript.Test.Scripts
 		}
 	}
 
-	public sealed class SelfEnabled_RunsUpdates_LunyScript : LunyScript
+	public sealed class SelfEnabled_RunsUpdates_LunyScript : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			On.Ready(Object.Disable(), Object.Enable());
 			On.Heartbeat(GVar("Steps").Set(true));
@@ -34,7 +34,7 @@ namespace LunyScript.Test.Scripts
 		public void SelfDisabled_DoesNotRunUpdates()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(SelfDisabled_DoesNotRunUpdates_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(3);
 
@@ -48,7 +48,7 @@ namespace LunyScript.Test.Scripts
 		public void SelfEnabled_RunsUpdates()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(SelfEnabled_RunsUpdates_LunyScript));
-			var gVars = LunyScriptEngine.Instance.GlobalVariables;
+			var gVars = ScriptEngine.Instance.GlobalVariables;
 
 			SimulateFrames(3);
 

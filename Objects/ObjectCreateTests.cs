@@ -11,9 +11,9 @@ using UnityObject = UnityEngine.Object;
 
 namespace LunyScript.Test.Objects
 {
-	public sealed class LunyScript_Test_CreateObjects : LunyScript
+	public sealed class LunyScript_Test_CreateObjects : Script
 	{
-		public override void Build(ScriptBuildContext context)
+		public override void Build(ScriptContext context)
 		{
 			On.Ready(Object.Create("empty"));
 			On.Ready(Object.CreateCube("cube"));
