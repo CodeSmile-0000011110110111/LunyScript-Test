@@ -1,7 +1,6 @@
 ﻿using Luny;
 using Luny.ContractTest;
 using Luny.Engine.Bridge.Enums;
-using LunyScript.Activation;
 using NUnit.Framework;
 using System;
 
@@ -28,7 +27,7 @@ namespace LunyScript.Test.Scripts
 			On.Ready(GVar("Spawned_ReadyCount").Inc());
 			On.Heartbeat(GVar("Spawned_HeartbeatCount").Inc());
 			On.FrameUpdate(GVar("Spawned_UpdateCount").Inc());
-			On.FrameLateUpdate(GVar("Spawned_LateUpdateCount").Inc(), Object.Destroy());
+			On.AfterFrameUpdate(GVar("Spawned_LateUpdateCount").Inc(), Object.Destroy());
 			On.Disabled(GVar("Spawned_DisabledCount").Inc());
 			On.Destroyed(GVar("Spawned_DestroyedCount").Inc());
 
@@ -57,7 +56,6 @@ namespace LunyScript.Test.Scripts
 
 			AssertAllEventCountersEqual(gVars, 6);
 		}
-
 
 		[Test]
 		public void CountEvents_SpawnObjectMultipleTimes_CountsAllEvents()
@@ -106,22 +104,22 @@ namespace LunyScript.Test.Scripts
 			Assert.That(gVars["Spawned_DestroyedCount"].AsInt32(), Is.EqualTo(0));
 			Assert.That(gVars["Spawned_CounterCoroutineCount"].AsInt32(), Is.EqualTo(0));
 
-			SimulateFrame();
+			SimulateFrames(5);
 
 			AssertAllEventCountersEqual(gVars, 1);
 		}
 
 		private void AssertAllEventCountersEqual(ITable gVars, Int32 expectedCount)
 		{
-			Assert.That(gVars["Spawned_CreatedCount"].AsInt32(), Is.EqualTo(expectedCount));
-			Assert.That(gVars["Spawned_EnabledCount"].AsInt32(), Is.EqualTo(expectedCount));
-			Assert.That(gVars["Spawned_ReadyCount"].AsInt32(), Is.EqualTo(expectedCount));
-			Assert.That(gVars["Spawned_HeartbeatCount"].AsInt32(), Is.EqualTo(expectedCount));
-			Assert.That(gVars["Spawned_UpdateCount"].AsInt32(), Is.EqualTo(expectedCount));
-			Assert.That(gVars["Spawned_LateUpdateCount"].AsInt32(), Is.EqualTo(expectedCount));
-			Assert.That(gVars["Spawned_DisabledCount"].AsInt32(), Is.EqualTo(expectedCount));
-			Assert.That(gVars["Spawned_DestroyedCount"].AsInt32(), Is.EqualTo(expectedCount));
-			Assert.That(gVars["Spawned_CounterCoroutineCount"].AsInt32(), Is.EqualTo(expectedCount));
+			Assert.That(gVars["Spawned_CreatedCount"].AsInt32(), Is.EqualTo(expectedCount), LunyObjectEvent.OnCreated.ToString());
+			Assert.That(gVars["Spawned_EnabledCount"].AsInt32(), Is.EqualTo(expectedCount), LunyObjectEvent.OnEnabled.ToString());
+			Assert.That(gVars["Spawned_ReadyCount"].AsInt32(), Is.EqualTo(expectedCount), LunyObjectEvent.OnReady.ToString());
+			Assert.That(gVars["Spawned_HeartbeatCount"].AsInt32(), Is.EqualTo(expectedCount),  LunyObjectEvent.OnHeartbeat.ToString());
+			Assert.That(gVars["Spawned_UpdateCount"].AsInt32(), Is.EqualTo(expectedCount), LunyObjectEvent.OnFrameUpdate.ToString());
+			Assert.That(gVars["Spawned_LateUpdateCount"].AsInt32(), Is.EqualTo(expectedCount),  LunyObjectEvent.OnFrameLateUpdate.ToString());
+			Assert.That(gVars["Spawned_DisabledCount"].AsInt32(), Is.EqualTo(expectedCount), LunyObjectEvent.OnDisabled.ToString());
+			Assert.That(gVars["Spawned_DestroyedCount"].AsInt32(), Is.EqualTo(expectedCount), LunyObjectEvent.OnDestroyed.ToString());
+			Assert.That(gVars["Spawned_CounterCoroutineCount"].AsInt32(), Is.EqualTo(expectedCount), "CounterCoroutine");
 		}
 	}
 
