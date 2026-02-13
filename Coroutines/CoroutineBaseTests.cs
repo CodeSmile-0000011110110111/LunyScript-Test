@@ -1,6 +1,7 @@
 using Luny;
 using Luny.ContractTest;
 using Luny.Engine.Bridge.Enums;
+using LunyScript.Exceptions;
 using NUnit.Framework;
 using System;
 
@@ -14,7 +15,16 @@ namespace LunyScript.Test.Coroutines
 				.OnFrameUpdate(GVar("Counter").Add(1))
 				.Do();
 
-			On.Ready(counter); // throws
+			On.Ready(counter); // throws, a coroutine is not an executable block
+		}
+	}
+
+	public sealed class Coroutine_LeftUnfinished_Throws_LunyScript : Script
+	{
+		public override void Build(ScriptContext context)
+		{
+			// does not end in .Do() leaving a dangling, unused coroutine
+			Coroutine("throws").OnFrameUpdate(GVar("Counter").Add(1));
 		}
 	}
 
@@ -120,17 +130,12 @@ namespace LunyScript.Test.Coroutines
 
 	public sealed class Coroutine_Do_Shortcut_LunyScript : Script
 	{
-		public override void Build(ScriptContext context)
-		{
+		public override void Build(ScriptContext context) =>
 			// Test Do(blocks) shortcut for finite coroutine
 			Coroutine("shortcut")
 				.For(2)
 				.Seconds()
 				.Do(GVar("Counter").Inc()); // runs every frame
-
-			// var unfinished = Coroutine("dsd").For(2).Seconds().OnFrameUpdate();
-			// On.Ready(unfinished);
-		}
 	}
 
 	public abstract class CoroutineBaseTests : ContractTestBase
@@ -141,6 +146,10 @@ namespace LunyScript.Test.Coroutines
 			LunyEngine.Instance.Object.CreateEmpty(nameof(Coroutine_UsedAsBlock_Throws_LunyScript));
 			Assert.Throws<NotImplementedException>(() => SimulateFrames(1));
 		}
+
+		[Test]
+		public void Coroutine_LeftUnfinished_Throws() => Assert.Throws<LunyScriptException>(() =>
+			LunyEngine.Instance.Object.CreateEmpty(nameof(Coroutine_LeftUnfinished_Throws_LunyScript)));
 
 		[Test]
 		public void Coroutine_OnUpdate_RunsEveryFrame()
