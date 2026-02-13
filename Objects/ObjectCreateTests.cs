@@ -2,6 +2,7 @@ using Godot;
 using Luny;
 using Luny.ContractTest;
 using Luny.Engine.Bridge.Enums;
+using LunyScript.Api;
 using LunyScript.Activation;
 using NUnit.Framework;
 using System;
@@ -15,13 +16,13 @@ namespace LunyScript.Test.Objects
 	{
 		public override void Build(ScriptContext context)
 		{
-			On.Ready(Object.Create("empty"));
-			On.Ready(Object.CreateCube("cube"));
-			On.Ready(Object.CreateSphere("sphere"));
-			On.Ready(Object.CreateCapsule("capsule"));
-			On.Ready(Object.CreateCylinder("cylinder"));
-			On.Ready(Object.CreatePlane("plane"));
-			On.Ready(Object.CreateQuad("quad"));
+			On.Ready(Object.Create("empty").Do());
+			On.Ready(Object.Create("cube").AsCube().Do());
+			On.Ready(Object.Create("sphere").AsSphere().Do());
+			On.Ready(Object.Create("capsule").AsCapsule().Do());
+			On.Ready(Object.Create("cylinder").AsCylinder().Do());
+			On.Ready(Object.Create("plane").AsPlane().Do());
+			On.Ready(Object.Create("quad").AsQuad().Do());
 		}
 	}
 

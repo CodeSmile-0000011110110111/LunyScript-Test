@@ -1,6 +1,7 @@
 ﻿using Luny;
 using Luny.ContractTest;
 using Luny.Engine.Bridge.Enums;
+using LunyScript.Api;
 using NUnit.Framework;
 using System;
 
@@ -10,7 +11,7 @@ namespace LunyScript.Test.Scripts
 	{
 		public override void Build(ScriptContext context)
 		{
-			var counter = Counter("spawn").In(10).Frames().Do(Object.Create(nameof(CountEvents_LunyScript)));
+			var counter = Counter("spawn").In(10).Frames().Do(Object.Create(nameof(CountEvents_LunyScript)).Do());
 		}
 	}
 
