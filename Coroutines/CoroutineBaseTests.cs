@@ -1,7 +1,6 @@
 using Luny;
 using Luny.ContractTest;
 using Luny.Engine.Bridge.Enums;
-using LunyScript.Activation;
 using NUnit.Framework;
 using System;
 
@@ -13,7 +12,7 @@ namespace LunyScript.Test.Coroutines
 		{
 			var counter = Coroutine("throws")
 				.OnFrameUpdate(GVar("Counter").Add(1))
-				.Build();
+				.Do();
 
 			On.Ready(counter); // throws
 		}
@@ -25,7 +24,7 @@ namespace LunyScript.Test.Coroutines
 		{
 			var counter = Coroutine("counter")
 				.OnFrameUpdate(GVar("Counter").Add(1))
-				.Build();
+				.Do();
 		}
 	}
 
@@ -35,7 +34,7 @@ namespace LunyScript.Test.Coroutines
 		{
 			var counter = Coroutine(nameof(Coroutine_OnHeartbeat_RunsEveryStep_LunyScript))
 				.OnHeartbeat(GVar("Counter").Add(1))
-				.Build();
+				.Do();
 		}
 	}
 
@@ -47,7 +46,7 @@ namespace LunyScript.Test.Coroutines
 				.For(2)
 				.Seconds()
 				.OnFrameUpdate(GVar("Ticks").Inc())
-				.Elapsed(GVar("Elapsed").Set(true));
+				.WhenElapsed(GVar("Elapsed").Set(true));
 		}
 	}
 
@@ -58,7 +57,7 @@ namespace LunyScript.Test.Coroutines
 			var co = Coroutine("timed")
 				.For(5)
 				.Seconds()
-				.Elapsed(GVar("Elapsed").Set(true));
+				.WhenElapsed(GVar("Elapsed").Set(true));
 		}
 	}
 
@@ -69,8 +68,8 @@ namespace LunyScript.Test.Coroutines
 			var co = Coroutine(nameof(Coroutine_Started_FiresOnStart_LunyScript))
 				.For(10)
 				.Seconds()
-				.Started(GVar("Started").Set(true))
-				.Build();
+				.WhenStarted(GVar("Started").Set(true))
+				.Do();
 		}
 	}
 
@@ -81,8 +80,8 @@ namespace LunyScript.Test.Coroutines
 			var co = Coroutine("controlled")
 				.For(10)
 				.Seconds()
-				.Stopped(GVar("Stopped").Set(true))
-				.Build();
+				.WhenStopped(GVar("Stopped").Set(true))
+				.Do();
 
 			// immediately stop
 			On.Ready(co.Stop());
@@ -96,8 +95,8 @@ namespace LunyScript.Test.Coroutines
 			var co = Coroutine("controlled")
 				.For(10)
 				.Seconds()
-				.Paused(GVar("Paused").Set(true))
-				.Build();
+				.WhenPaused(GVar("Paused").Set(true))
+				.Do();
 
 			// immediately pause
 			On.Ready(co.Pause());
@@ -111,11 +110,26 @@ namespace LunyScript.Test.Coroutines
 			var co = Coroutine("controlled")
 				.For(10)
 				.Seconds()
-				.Resumed(GVar("Resumed").Set(true))
-				.Build();
+				.WhenResumed(GVar("Resumed").Set(true))
+				.Do();
 
 			// pause, then resume
 			On.Ready(co.Pause(), co.Resume());
+		}
+	}
+
+	public sealed class Coroutine_Do_Shortcut_LunyScript : Script
+	{
+		public override void Build(ScriptContext context)
+		{
+			// Test Do(blocks) shortcut for finite coroutine
+			Coroutine("shortcut")
+				.For(2)
+				.Seconds()
+				.Do(GVar("Counter").Inc()); // runs every frame
+
+			// var unfinished = Coroutine("dsd").For(2).Seconds().OnFrameUpdate();
+			// On.Ready(unfinished);
 		}
 	}
 
@@ -219,6 +233,17 @@ namespace LunyScript.Test.Coroutines
 			SimulateFrames(2);
 
 			Assert.That(gVars["Resumed"].AsBoolean(), Is.True);
+		}
+
+		[Test]
+		public void Coroutine_Do_Shortcut_Works()
+		{
+			LunyEngine.Instance.Object.CreateEmpty(nameof(Coroutine_Do_Shortcut_LunyScript));
+			var gVars = ScriptEngine.Instance.GlobalVariables;
+
+			SimulateFrames(10);
+
+			Assert.That(gVars["Counter"].AsInt32(), Is.EqualTo(10));
 		}
 	}
 
