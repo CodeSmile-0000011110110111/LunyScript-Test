@@ -1,7 +1,7 @@
 using Godot;
 using Luny;
 using Luny.ContractTest;
-using Luny.Engine.Bridge.Enums;
+using Luny.Engine.Bridge;
 using LunyScript.Api;
 using LunyScript.Activation;
 using NUnit.Framework;
