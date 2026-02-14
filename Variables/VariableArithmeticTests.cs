@@ -1,7 +1,6 @@
 using Luny;
 using Luny.ContractTest;
 using Luny.Engine.Bridge;
-using LunyScript.Activation;
 using NUnit.Framework;
 using System;
 
@@ -86,7 +85,7 @@ namespace LunyScript.Test.Variables
 				m_div_b.Set(10), m_div_b.Div(five) // 2 (10 / 5)
 			);
 
- 		var v_upd_inc = GVar["v_upd_inc"];
+			var v_upd_inc = GVar["v_upd_inc"];
 			var v_upd_tog = GVar["v_upd_tog"];
 			GVar["v_upd_inc"] = 0;
 			GVar["v_upd_tog"] = false;

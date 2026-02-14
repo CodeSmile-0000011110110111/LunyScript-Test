@@ -3,7 +3,6 @@ using Luny;
 using Luny.ContractTest;
 using Luny.Engine.Bridge;
 using LunyScript.Api;
-using LunyScript.Activation;
 using NUnit.Framework;
 using System;
 using System.Linq;

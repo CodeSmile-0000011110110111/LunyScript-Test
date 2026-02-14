@@ -1,7 +1,6 @@
 using Luny;
 using Luny.ContractTest;
 using Luny.Engine.Bridge;
-using LunyScript.Activation;
 using LunyScript.Blocks;
 using LunyScript.Exceptions;
 using NUnit.Framework;

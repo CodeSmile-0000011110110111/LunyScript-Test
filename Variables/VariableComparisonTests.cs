@@ -1,7 +1,6 @@
 using Luny;
 using Luny.ContractTest;
 using Luny.Engine.Bridge;
-using LunyScript.Activation;
 using NUnit.Framework;
 
 namespace LunyScript.Test.Variables
@@ -16,7 +15,7 @@ namespace LunyScript.Test.Variables
 			var isTrue = GVar["isTrue"];
 			var isFalse = GVar["isFalse"];
 
- 		On.Ready(
+			On.Ready(
 				a.Set(10),
 				b.Set(20),
 				c.Set(10),

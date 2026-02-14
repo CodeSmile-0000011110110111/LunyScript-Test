@@ -22,11 +22,9 @@ namespace LunyScript.Test.Coroutines
 
 	public sealed class Coroutine_LeftUnfinished_Throws_LunyScript : Script
 	{
-		public override void Build(ScriptContext context)
-		{
+		public override void Build(ScriptContext context) =>
 			// does not end in .Do() leaving a dangling, unused coroutine
 			Coroutine("throws").OnFrameUpdate(GVar["Counter"].Add(1));
-		}
 	}
 
 	public sealed class Coroutine_OnUpdate_RunsEveryFrame_LunyScript : Script

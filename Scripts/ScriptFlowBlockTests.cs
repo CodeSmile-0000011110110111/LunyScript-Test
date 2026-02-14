@@ -162,21 +162,21 @@ namespace LunyScript.Test.Scripts
 		{
 			private readonly Boolean _result;
 			public MockCondition(Boolean result) => _result = result;
- 		public override Boolean Evaluate(IScriptRuntimeContext runtimeContext) => _result;
+			public override Boolean Evaluate(IScriptRuntimeContext runtimeContext) => _result;
 		}
 
 		private class MockAction : ScriptActionBlock
 		{
 			private readonly Action _action;
 			public MockAction(Action action) => _action = action;
- 		public override void Execute(IScriptRuntimeContext runtimeContext) => _action();
+			public override void Execute(IScriptRuntimeContext runtimeContext) => _action();
 		}
 
 		private class MockActionWithContext : ScriptActionBlock
 		{
 			private readonly Action<IScriptRuntimeContext> _action;
 			public MockActionWithContext(Action<IScriptRuntimeContext> action) => _action = action;
- 		public override void Execute(IScriptRuntimeContext runtimeContext) => _action(runtimeContext);
+			public override void Execute(IScriptRuntimeContext runtimeContext) => _action(runtimeContext);
 		}
 
 		private class MockRuntimeContext : IScriptRuntimeContext
