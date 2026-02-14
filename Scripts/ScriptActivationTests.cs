@@ -23,16 +23,16 @@ namespace LunyScript.Test.Scripts
 			LunyLogger.LogInfo($" ==> {nameof(CountEvents_LunyScript)}.Build() running ...");
 			LunyLogger.LogInfo("-------------------------------------------------------------------------");
 
-			On.Created(GVar("Spawned_CreatedCount").Inc());
-			On.Enabled(GVar("Spawned_EnabledCount").Inc());
-			On.Ready(GVar("Spawned_ReadyCount").Inc());
-			On.Heartbeat(GVar("Spawned_HeartbeatCount").Inc());
-			On.FrameUpdate(GVar("Spawned_UpdateCount").Inc());
-			On.AfterFrameUpdate(GVar("Spawned_LateUpdateCount").Inc(), Object.Destroy());
-			On.Disabled(GVar("Spawned_DisabledCount").Inc());
-			On.Destroyed(GVar("Spawned_DestroyedCount").Inc());
+			On.Created(GVar["Spawned_CreatedCount"].Inc());
+			On.Enabled(GVar["Spawned_EnabledCount"].Inc());
+			On.Ready(GVar["Spawned_ReadyCount"].Inc());
+			On.Heartbeat(GVar["Spawned_HeartbeatCount"].Inc());
+			On.FrameUpdate(GVar["Spawned_UpdateCount"].Inc());
+			On.AfterFrameUpdate(GVar["Spawned_LateUpdateCount"].Inc(), Object.Destroy());
+			On.Disabled(GVar["Spawned_DisabledCount"].Inc());
+			On.Destroyed(GVar["Spawned_DestroyedCount"].Inc());
 
-			Counter("Spawned_CounterCoroutine").In(0).Frames().Do(Debug.LogInfo("COUNTER => Immediate Destroy"), GVar("Spawned_CounterCoroutineCount").Inc());
+			Counter("Spawned_CounterCoroutine").In(0).Frames().Do(Debug.LogInfo("COUNTER => Immediate Destroy"), GVar["Spawned_CounterCoroutineCount"].Inc());
 		}
 	}
 

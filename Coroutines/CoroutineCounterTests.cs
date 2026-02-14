@@ -11,7 +11,7 @@ namespace LunyScript.Test.Coroutines
 		public override void Build(ScriptContext context)
 		{
 			// It should not be necessary to call counter.Start()
-			var counter = Counter(nameof(Counter_AutoStarts_LunyScript)).In(5).Frames().Do(GVar("CounterFired").Set(true));
+			var counter = Counter(nameof(Counter_AutoStarts_LunyScript)).In(5).Frames().Do(GVar["CounterFired"].Set(true));
 		}
 	}
 
@@ -22,7 +22,7 @@ namespace LunyScript.Test.Coroutines
 			var counter = Counter("test")
 				.In(5)
 				.Frames()
-				.Do(GVar("CounterFired").Set(true));
+				.Do(GVar["CounterFired"].Set(true));
 
 			// This should start the coroutine as stopped
 			On.Ready(counter.Stop());
@@ -41,7 +41,7 @@ namespace LunyScript.Test.Coroutines
 			var counter = Counter(nameof(Counter_StartsPaused_ResumeLater_LunyScript))
 				.In(5)
 				.Heartbeats()
-				.Do(GVar("CounterFired").Set(true));
+				.Do(GVar["CounterFired"].Set(true));
 
 			On.Ready(counter.Pause());
 
@@ -59,7 +59,7 @@ namespace LunyScript.Test.Coroutines
 			var counter = Counter("test")
 				.In(9)
 				.Frames()
-				.Do(GVar("CounterFired").Set(true));
+				.Do(GVar["CounterFired"].Set(true));
 
 			var pauseLater = Counter("pause").In(5).Frames().Do(counter.Pause());
 			var resumeLater = Counter("resume").In(10).Frames().Do(counter.Resume());
@@ -70,7 +70,7 @@ namespace LunyScript.Test.Coroutines
 	{
 		public override void Build(ScriptContext context)
 		{
-			var counter = Counter("test").In(8).Frames().Do(GVar("CounterFired").Set(true));
+			var counter = Counter("test").In(8).Frames().Do(GVar["CounterFired"].Set(true));
 			On.Ready(counter.Start());
 		}
 	}
@@ -79,7 +79,7 @@ namespace LunyScript.Test.Coroutines
 	{
 		public override void Build(ScriptContext context)
 		{
-			var counter = Counter("test").In(60).Frames().Do(GVar("CounterFired").Set(true));
+			var counter = Counter("test").In(60).Frames().Do(GVar["CounterFired"].Set(true));
 			On.Ready(counter.Start());
 		}
 	}
@@ -88,7 +88,7 @@ namespace LunyScript.Test.Coroutines
 	{
 		public override void Build(ScriptContext context)
 		{
-			var counter = Counter("test").In(1).Frames().Do(GVar("CounterFired").Set(true), Debug.LogInfo("COUNTER FIRED"));
+			var counter = Counter("test").In(1).Frames().Do(GVar["CounterFired"].Set(true), Debug.LogInfo("COUNTER FIRED"));
 			On.FrameUpdate(counter.Stop(), Debug.LogInfo("FRAME UPDATE")); // Stop immediately on first update
 		}
 	}
@@ -97,7 +97,7 @@ namespace LunyScript.Test.Coroutines
 	{
 		public override void Build(ScriptContext context)
 		{
-			var counter = Counter("test").In(1).Frames().Do(GVar("CounterFired").Set(true));
+			var counter = Counter("test").In(1).Frames().Do(GVar["CounterFired"].Set(true));
 			On.Ready(counter.Pause()); // Pause immediately - counter should never fire
 		}
 	}
@@ -106,7 +106,7 @@ namespace LunyScript.Test.Coroutines
 	{
 		public override void Build(ScriptContext context)
 		{
-			var counter = Counter("test").Every(9).Frames().Do(GVar("Counter").Inc());
+			var counter = Counter("test").Every(9).Frames().Do(GVar["Counter"].Inc());
 			On.Ready(counter.Start());
 		}
 	}

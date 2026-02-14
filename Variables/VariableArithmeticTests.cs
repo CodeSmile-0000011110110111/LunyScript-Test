@@ -18,40 +18,40 @@ namespace LunyScript.Test.Variables
 			var ten = Define("ten", 10);
 
 			// Method variants
-			var v_set = GVar("v_set");
-			var v_add = GVar("v_add");
-			var v_sub = GVar("v_sub");
-			var v_mul = GVar("v_mul");
-			var v_div = GVar("v_div");
-			var v_inc = GVar("v_inc");
-			var v_dec = GVar("v_dec");
-			var v_tog = GVar("v_tog");
+			var v_set = GVar["v_set"];
+			var v_add = GVar["v_add"];
+			var v_sub = GVar["v_sub"];
+			var v_mul = GVar["v_mul"];
+			var v_div = GVar["v_div"];
+			var v_inc = GVar["v_inc"];
+			var v_dec = GVar["v_dec"];
+			var v_tog = GVar["v_tog"];
 
 			// Operator variants
-			var o_add = GVar("o_add");
-			var o_sub = GVar("o_sub");
-			var o_mul = GVar("o_mul");
-			var o_div = GVar("o_div");
-			var o_inc_pre = GVar("o_inc_pre");
-			var o_inc_post = GVar("o_inc_post");
-			var o_dec_pre = GVar("o_dec_pre");
-			var o_dec_post = GVar("o_dec_post");
+			var o_add = GVar["o_add"];
+			var o_sub = GVar["o_sub"];
+			var o_mul = GVar["o_mul"];
+			var o_div = GVar["o_div"];
+			var o_inc_pre = GVar["o_inc_pre"];
+			var o_inc_post = GVar["o_inc_post"];
+			var o_dec_pre = GVar["o_dec_pre"];
+			var o_dec_post = GVar["o_dec_post"];
 
 			// Inter-variable variants
-			var v_add_v = GVar("v_add_v");
-			var v_sub_v = GVar("v_sub_v");
-			var v_mul_v = GVar("v_mul_v");
-			var v_div_v = GVar("v_div_v");
-			var v_complex = GVar("v_complex");
-			var v_complex2 = GVar("v_complex2");
-			var v_lit_left = GVar("v_lit_left");
-			var v_lit_right = GVar("v_lit_right");
+			var v_add_v = GVar["v_add_v"];
+			var v_sub_v = GVar["v_sub_v"];
+			var v_mul_v = GVar["v_mul_v"];
+			var v_div_v = GVar["v_div_v"];
+			var v_complex = GVar["v_complex"];
+			var v_complex2 = GVar["v_complex2"];
+			var v_lit_left = GVar["v_lit_left"];
+			var v_lit_right = GVar["v_lit_right"];
 
 			// IScriptVariableBlock variants (explicit method calls)
-			var m_add_b = GVar("m_add_b");
-			var m_sub_b = GVar("m_sub_b");
-			var m_mul_b = GVar("m_mul_b");
-			var m_div_b = GVar("m_div_b");
+			var m_add_b = GVar["m_add_b"];
+			var m_sub_b = GVar["m_sub_b"];
+			var m_mul_b = GVar["m_mul_b"];
+			var m_div_b = GVar["m_div_b"];
 
 			On.Ready(
 				v_set.Set(100),
@@ -86,10 +86,10 @@ namespace LunyScript.Test.Variables
 				m_div_b.Set(10), m_div_b.Div(five) // 2 (10 / 5)
 			);
 
-			var v_upd_inc = GVar("v_upd_inc");
-			var v_upd_tog = GVar("v_upd_tog");
-			v_upd_inc.Set(0);
-			v_upd_tog.Set(false);
+ 		var v_upd_inc = GVar["v_upd_inc"];
+			var v_upd_tog = GVar["v_upd_tog"];
+			GVar["v_upd_inc"] = 0;
+			GVar["v_upd_tog"] = false;
 
 			On.FrameUpdate(
 				v_upd_inc.Inc(),

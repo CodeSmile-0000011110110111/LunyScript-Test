@@ -10,11 +10,11 @@ namespace LunyScript.Test.Variables
 	{
 		public override void Build(ScriptContext context)
 		{
-			var a = GVar("a");
-			var b = GVar("b");
-			var c = GVar("c");
-			var isTrue = GVar("isTrue");
-			var isFalse = GVar("isFalse");
+			var a = GVar["a"];
+			var b = GVar["b"];
+			var c = GVar["c"];
+			var isTrue = GVar["isTrue"];
+			var isFalse = GVar["isFalse"];
 
  		On.Ready(
 				a.Set(10),
@@ -24,26 +24,26 @@ namespace LunyScript.Test.Variables
 				isFalse.Set(false),
 
 				// Variable-to-variable operators
-				If(a == c).Then(GVar("o_eq").Set(true)),
-				If(a != b).Then(GVar("o_neq").Set(true)),
-				If(b > a).Then(GVar("o_gt").Set(true)),
-				If(b >= a).Then(GVar("o_ge1").Set(true)),
-				If(a >= c).Then(GVar("o_ge2").Set(true)),
-				If(a < b).Then(GVar("o_lt").Set(true)),
-				If(a <= b).Then(GVar("o_le1").Set(true)),
-				If(a <= c).Then(GVar("o_le2").Set(true)),
-				If(isTrue).Then(GVar("o_true").Set(true)),
-				If(!isFalse).Then(GVar("o_not_false").Set(true)),
+				If(a == c).Then(GVar["o_eq"].Set(true)),
+				If(a != b).Then(GVar["o_neq"].Set(true)),
+				If(b > a).Then(GVar["o_gt"].Set(true)),
+				If(b >= a).Then(GVar["o_ge1"].Set(true)),
+				If(a >= c).Then(GVar["o_ge2"].Set(true)),
+				If(a < b).Then(GVar["o_lt"].Set(true)),
+				If(a <= b).Then(GVar["o_le1"].Set(true)),
+				If(a <= c).Then(GVar["o_le2"].Set(true)),
+				If(isTrue).Then(GVar["o_true"].Set(true)),
+				If(!isFalse).Then(GVar["o_not_false"].Set(true)),
 
 				// Variable-to-literal operators
-				If(a == 10).Then(GVar("lv_eq").Set(true)),
-				If(a != 20).Then(GVar("lv_neq").Set(true)),
-				If(b > 10).Then(GVar("lv_gt").Set(true)),
-				If(b >= 20).Then(GVar("lv_ge1").Set(true)),
-				If(a >= 10).Then(GVar("lv_ge2").Set(true)),
-				If(a < 20).Then(GVar("lv_lt").Set(true)),
-				If(a <= 20).Then(GVar("lv_le1").Set(true)),
-				If(a <= 10).Then(GVar("lv_le2").Set(true))
+				If(a == 10).Then(GVar["lv_eq"].Set(true)),
+				If(a != 20).Then(GVar["lv_neq"].Set(true)),
+				If(b > 10).Then(GVar["lv_gt"].Set(true)),
+				If(b >= 20).Then(GVar["lv_ge1"].Set(true)),
+				If(a >= 10).Then(GVar["lv_ge2"].Set(true)),
+				If(a < 20).Then(GVar["lv_lt"].Set(true)),
+				If(a <= 20).Then(GVar["lv_le1"].Set(true)),
+				If(a <= 10).Then(GVar["lv_le2"].Set(true))
 			);
 		}
 	}

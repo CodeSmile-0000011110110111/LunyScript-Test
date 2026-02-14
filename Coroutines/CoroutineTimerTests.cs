@@ -11,7 +11,7 @@ namespace LunyScript.Test.Coroutines
 		public override void Build(ScriptContext context)
 		{
 			// It should not be necessary to call timer.Start()
-			var timer = Timer("test").In(50).Milliseconds().Do(GVar()("TimerFired").Set(true));
+			var timer = Timer("test").In(50).Milliseconds().Do(GVar["TimerFired"].Set(true));
 		}
 	}
 
@@ -22,8 +22,8 @@ namespace LunyScript.Test.Coroutines
 			var timer = Timer("test")
 				.In(10)
 				.Milliseconds()
-				.Do(GVar()("TimerFired").Set(true),
-					GVar()("TimerFired_Seconds").Set(GVar()("Time.ElapsedSeconds")));
+				.Do(GVar["TimerFired"].Set(true),
+					GVar["TimerFired_Seconds"].Set(GVar["Time.ElapsedSeconds"]));
 
 			// This should start the coroutine as stopped
 			timer.Stop();
@@ -40,8 +40,8 @@ namespace LunyScript.Test.Coroutines
 			var timer = Timer("TIMER_StartsPaused_ResumeLater_LunyScript")
 				.In(50)
 				.Milliseconds()
-				.Do(GVar()("TimerFired").Set(true),
-					GVar()("TimerFired_Seconds").Set(GVar()("Time.ElapsedSeconds")));
+				.Do(GVar["TimerFired"].Set(true),
+					GVar["TimerFired_Seconds"].Set(GVar["Time.ElapsedSeconds"]));
 
 			// This should start the coroutine as paused
 			On.Ready(timer.Pause());
@@ -58,8 +58,8 @@ namespace LunyScript.Test.Coroutines
 			var timer = Timer("test")
 				.In(40)
 				.Milliseconds()
-				.Do(GVar()("TimerFired").Set(true),
-					GVar()("TimerFired_Seconds").Set(GVar()("Time.ElapsedSeconds")));
+				.Do(GVar["TimerFired"].Set(true),
+					GVar["TimerFired_Seconds"].Set(GVar["Time.ElapsedSeconds"]));
 
 			// This should pause about quarter-way
 			var pauseLater = Timer("pause").In(15).Milliseconds().Do(timer.Pause());
@@ -74,7 +74,7 @@ namespace LunyScript.Test.Coroutines
 		public override void Build(ScriptContext context)
 		{
 			// this should complete after >= 200 ms
-			var timer = Timer("test").In(100).Milliseconds().Do(GVar()("TimerFired").Set(true));
+			var timer = Timer("test").In(100).Milliseconds().Do(GVar["TimerFired"].Set(true));
 			On.Ready(timer.TimeScale(0.5));
 		}
 	}
@@ -84,7 +84,7 @@ namespace LunyScript.Test.Coroutines
 		public override void Build(ScriptContext context)
 		{
 			// Timer fires after 0.1 seconds
-			var timer = Timer("test").In(100).Milliseconds().Do(GVar()("TimerFired").Set(true));
+			var timer = Timer("test").In(100).Milliseconds().Do(GVar["TimerFired"].Set(true));
 			On.Ready(timer.Start());
 		}
 	}
@@ -94,7 +94,7 @@ namespace LunyScript.Test.Coroutines
 		public override void Build(ScriptContext context)
 		{
 			// Timer fires after 1 second
-			var timer = Timer("test").In(1).Seconds().Do(GVar()("TimerFired").Set(true));
+			var timer = Timer("test").In(1).Seconds().Do(GVar["TimerFired"].Set(true));
 			On.Ready(timer.Start());
 		}
 	}
@@ -103,7 +103,7 @@ namespace LunyScript.Test.Coroutines
 	{
 		public override void Build(ScriptContext context)
 		{
-			var timer = Timer("test").In(100).Milliseconds().Do(GVar()("TimerFired").Set(true));
+			var timer = Timer("test").In(100).Milliseconds().Do(GVar["TimerFired"].Set(true));
 			On.Ready(timer.Start());
 			On.FrameUpdate(timer.Stop()); // Stop immediately on first update
 		}
@@ -113,7 +113,7 @@ namespace LunyScript.Test.Coroutines
 	{
 		public override void Build(ScriptContext context)
 		{
-			var timer = Timer("test").In(100).Milliseconds().Do(GVar()("TimerFired").Set(true));
+			var timer = Timer("test").In(100).Milliseconds().Do(GVar["TimerFired"].Set(true));
 			On.Ready(timer.Start());
 			On.FrameUpdate(timer.Pause()); // Pause immediately - timer should never fire
 		}
@@ -124,7 +124,7 @@ namespace LunyScript.Test.Coroutines
 		public override void Build(ScriptContext context)
 		{
 			// Timer fires every 100ms
-			var timer = Timer("test").Every(100).Milliseconds().Do(GVar()("Counter").Inc());
+			var timer = Timer("test").Every(100).Milliseconds().Do(GVar["Counter"].Inc());
 			On.Ready(timer.Start());
 		}
 	}

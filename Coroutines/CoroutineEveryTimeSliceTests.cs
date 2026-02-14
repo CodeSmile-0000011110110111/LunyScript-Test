@@ -8,17 +8,17 @@ namespace LunyScript.Test.Coroutines
 {
 	public sealed class Every2Frames_RunsAlternating_LunyScript : Script
 	{
-		public override void Build(ScriptContext context) => Every(2).Frames().Do(GVar("Counter").Add(1));
+		public override void Build(ScriptContext context) => Every(2).Frames().Do(GVar["Counter"].Add(1));
 	}
 
 	public sealed class Every3Heartbeats_RunsEveryThird_LunyScript : Script
 	{
-		public override void Build(ScriptContext context) => Every(3).Heartbeats().Do(GVar("Counter").Add(1));
+		public override void Build(ScriptContext context) => Every(3).Heartbeats().Do(GVar["Counter"].Add(1));
 	}
 
 	public sealed class Every2FramesDelayBy1_RunsAlternatingOffset_LunyScript : Script
 	{
-		public override void Build(ScriptContext context) => Every(2).Frames().DelayBy(1).Do(GVar("Counter").Add(1));
+		public override void Build(ScriptContext context) => Every(2).Frames().DelayBy(1).Do(GVar["Counter"].Add(1));
 	}
 
 	public abstract class CoroutineEveryTimeSliceTests : ContractTestBase

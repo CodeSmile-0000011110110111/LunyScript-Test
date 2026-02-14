@@ -11,8 +11,8 @@ namespace LunyScript.Test.Scripts
 	{
 		public override void Build(ScriptContext context)
 		{
-			var condition = GVar("Condition");
-			var result = GVar("Result");
+			var condition = GVar["Condition"];
+			var result = GVar["Result"];
 
 			On.Ready(
 				If(condition == 1)
@@ -28,7 +28,7 @@ namespace LunyScript.Test.Scripts
 	{
 		public override void Build(ScriptContext context)
 		{
-			var counter = GVar("Counter");
+			var counter = GVar["Counter"];
 
 			On.Ready(
 				counter.Set(0),
@@ -42,7 +42,7 @@ namespace LunyScript.Test.Scripts
 	{
 		public override void Build(ScriptContext context)
 		{
-			var sum = GVar("Sum");
+			var sum = GVar["Sum"];
 
 			On.Ready(
 				sum.Set(0),
@@ -55,7 +55,7 @@ namespace LunyScript.Test.Scripts
 	{
 		public override void Build(ScriptContext context)
 		{
-			var sum = GVar("Sum");
+			var sum = GVar["Sum"];
 
 			On.Ready(
 				sum.Set("START"),
@@ -68,8 +68,8 @@ namespace LunyScript.Test.Scripts
 	{
 		public override void Build(ScriptContext context)
 		{
-			var outer = GVar("Outer");
-			var inner = GVar("Inner");
+			var outer = GVar["Outer"];
+			var inner = GVar["Inner"];
 
 			On.Ready(
 				outer.Set(0),

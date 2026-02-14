@@ -58,9 +58,9 @@ namespace LunyScript.Test.Scripts
 		public override void Build(ScriptContext context)
 		{
 			On.Ready(Object.Disable());
-			On.Heartbeat(GVar("Steps").Set(true));
-			On.FrameUpdate(GVar("Updates").Set(true));
-			On.AfterFrameUpdate(GVar("LateUpdates").Set(true));
+			On.Heartbeat(GVar["Steps"].Set(true));
+			On.FrameUpdate(GVar["Updates"].Set(true));
+			On.AfterFrameUpdate(GVar["LateUpdates"].Set(true));
 		}
 	}
 
@@ -69,10 +69,10 @@ namespace LunyScript.Test.Scripts
 		public override void Build(ScriptContext context)
 		{
 			On.Ready(Object.Disable(), Object.Enable());
-			On.Heartbeat(GVar("Steps").Set(true));
-			//On.Heartbeat(GVar("Steps") = (true));
-			On.FrameUpdate(GVar("Updates").Set(true));
-			On.AfterFrameUpdate(GVar("LateUpdates").Set(true));
+			On.Heartbeat(GVar["Steps"].Set(true));
+			//On.Heartbeat(GVar["Steps"] = (true));
+			On.FrameUpdate(GVar["Updates"].Set(true));
+			On.AfterFrameUpdate(GVar["LateUpdates"].Set(true));
 		}
 	}
 
