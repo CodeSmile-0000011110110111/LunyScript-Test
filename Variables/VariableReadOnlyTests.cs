@@ -47,8 +47,8 @@ namespace LunyScript.Test.Variables
 	{
 		public override void Build(ScriptContext context)
 		{
-			var pi = Const("PI", 3.14159);
-			var gVar = GVar("result");
+			var pi = Define("PI", 3.14159);
+			var gVar = GVar()("result");
 
 			On.Ready(
 				gVar.Set(pi)

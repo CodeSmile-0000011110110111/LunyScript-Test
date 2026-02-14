@@ -12,10 +12,10 @@ namespace LunyScript.Test.Variables
 		public override void Build(ScriptContext context)
 		{
 			// Constants
-			var three = Const(3);
-			var four = Const(4);
-			var five = Const(5);
-			var ten = Const(10);
+			var three = Define("three", 3);
+			var four = Define("four", 4);
+			var five = Define("five", 5);
+			var ten = Define("ten", 10);
 
 			// Method variants
 			var v_set = GVar("v_set");

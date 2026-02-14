@@ -16,26 +16,14 @@ namespace LunyScript.Test.Variables
 			var isTrue = GVar("isTrue");
 			var isFalse = GVar("isFalse");
 
-			On.Ready(
+ 		On.Ready(
 				a.Set(10),
 				b.Set(20),
 				c.Set(10),
 				isTrue.Set(true),
 				isFalse.Set(false),
 
-				// Method variants
-				If(a.IsEqualTo(c)).Then(GVar("m_eq").Set(true)),
-				If(a.IsNotEqualTo(b)).Then(GVar("m_neq").Set(true)),
-				If(b.IsGreaterThan(a)).Then(GVar("m_gt").Set(true)),
-				If(b.IsAtLeast(a)).Then(GVar("m_ge1").Set(true)),
-				If(a.IsAtLeast(c)).Then(GVar("m_ge2").Set(true)),
-				If(a.IsLessThan(b)).Then(GVar("m_lt").Set(true)),
-				If(a.IsAtMost(b)).Then(GVar("m_le1").Set(true)),
-				If(a.IsAtMost(c)).Then(GVar("m_le2").Set(true)),
-				If(isTrue.IsTrue()).Then(GVar("m_true").Set(true)),
-				If(isFalse.IsFalse()).Then(GVar("m_false").Set(true)),
-
-				// Operator variants
+				// Variable-to-variable operators
 				If(a == c).Then(GVar("o_eq").Set(true)),
 				If(a != b).Then(GVar("o_neq").Set(true)),
 				If(b > a).Then(GVar("o_gt").Set(true)),
@@ -47,15 +35,15 @@ namespace LunyScript.Test.Variables
 				If(isTrue).Then(GVar("o_true").Set(true)),
 				If(!isFalse).Then(GVar("o_not_false").Set(true)),
 
-				// Is* with Variable literals
-				If(a.IsEqualTo(10)).Then(GVar("lv_eq").Set(true)),
-				If(a.IsNotEqualTo(20)).Then(GVar("lv_neq").Set(true)),
-				If(b.IsGreaterThan(10)).Then(GVar("lv_gt").Set(true)),
-				If(b.IsAtLeast(20)).Then(GVar("lv_ge1").Set(true)),
-				If(a.IsAtLeast(10)).Then(GVar("lv_ge2").Set(true)),
-				If(a.IsLessThan(20)).Then(GVar("lv_lt").Set(true)),
-				If(a.IsAtMost(20)).Then(GVar("lv_le1").Set(true)),
-				If(a.IsAtMost(10)).Then(GVar("lv_le2").Set(true))
+				// Variable-to-literal operators
+				If(a == 10).Then(GVar("lv_eq").Set(true)),
+				If(a != 20).Then(GVar("lv_neq").Set(true)),
+				If(b > 10).Then(GVar("lv_gt").Set(true)),
+				If(b >= 20).Then(GVar("lv_ge1").Set(true)),
+				If(a >= 10).Then(GVar("lv_ge2").Set(true)),
+				If(a < 20).Then(GVar("lv_lt").Set(true)),
+				If(a <= 20).Then(GVar("lv_le1").Set(true)),
+				If(a <= 10).Then(GVar("lv_le2").Set(true))
 			);
 		}
 	}
@@ -73,19 +61,7 @@ namespace LunyScript.Test.Variables
 
 			SimulateFrames(1);
 
-			// Method variants
-			Assert.That(gVars["m_eq"].AsBoolean(), Is.True, "m_eq");
-			Assert.That(gVars["m_neq"].AsBoolean(), Is.True, "m_neq");
-			Assert.That(gVars["m_gt"].AsBoolean(), Is.True, "m_gt");
-			Assert.That(gVars["m_ge1"].AsBoolean(), Is.True, "m_ge1");
-			Assert.That(gVars["m_ge2"].AsBoolean(), Is.True, "m_ge2");
-			Assert.That(gVars["m_lt"].AsBoolean(), Is.True, "m_lt");
-			Assert.That(gVars["m_le1"].AsBoolean(), Is.True, "m_le1");
-			Assert.That(gVars["m_le2"].AsBoolean(), Is.True, "m_le2");
-			Assert.That(gVars["m_true"].AsBoolean(), Is.True, "m_true");
-			Assert.That(gVars["m_false"].AsBoolean(), Is.True, "m_false");
-
-			// Operator variants
+			// Variable-to-variable operators
 			Assert.That(gVars["o_eq"].AsBoolean(), Is.True, "o_eq");
 			Assert.That(gVars["o_neq"].AsBoolean(), Is.True, "o_neq");
 			Assert.That(gVars["o_gt"].AsBoolean(), Is.True, "o_gt");
