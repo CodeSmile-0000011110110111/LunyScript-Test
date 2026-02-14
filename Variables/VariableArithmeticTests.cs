@@ -47,7 +47,7 @@ namespace LunyScript.Test.Variables
 			var v_lit_left = GVar["v_lit_left"];
 			var v_lit_right = GVar["v_lit_right"];
 
-			// IScriptVariableBlock variants (explicit method calls)
+			// VariableBlock variants (explicit method calls)
 			var m_add_b = GVar["m_add_b"];
 			var m_sub_b = GVar["m_sub_b"];
 			var m_mul_b = GVar["m_mul_b"];
@@ -79,7 +79,7 @@ namespace LunyScript.Test.Variables
 				(10 + v_lit_left).Set(100),
 				(v_lit_right + 20).Set(200),
 
-				// Explicitly call Add/Sub/Mul/Div(IScriptVariableBlock)
+				// Explicitly call Add/Sub/Mul/Div(VariableBlock)
 				m_add_b.Set(10), m_add_b.Add(ten), // 20
 				m_sub_b.Set(200), m_sub_b.Sub(five), // 195 (200 - 5)
 				m_mul_b.Set(10), m_mul_b.Mul(ten), // 100
@@ -140,7 +140,7 @@ namespace LunyScript.Test.Variables
 			Assert.That(gVars["v_complex"], Is.EqualTo(9.5));
 			Assert.That(gVars["v_complex2"], Is.EqualTo(-2.5));
 
-			// IScriptVariableBlock variants
+			// VariableBlock variants
 			Assert.That(gVars["m_add_b"], Is.EqualTo((Variable)20));
 			Assert.That(gVars["m_sub_b"], Is.EqualTo((Variable)195));
 			Assert.That(gVars["m_mul_b"], Is.EqualTo((Variable)100));

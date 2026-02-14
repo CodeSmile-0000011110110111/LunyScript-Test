@@ -49,7 +49,7 @@ namespace LunyScript.Test.Scripts
 			var cond = new MockCondition(true);
 			var action = new MockAction(() => executed = true);
 
-			var ifBlock = IfBlock.Create(new List<(IScriptConditionBlock[], IScriptActionBlock[])>
+			var ifBlock = IfBlock.Create(new List<(ScriptConditionBlock[], ScriptActionBlock[])>
 			{
 				(new[] { cond }, new[] { action }),
 			}, null);
@@ -69,7 +69,7 @@ namespace LunyScript.Test.Scripts
 			var action3 = new MockAction(() => executedBranch = 3);
 
 			// Test ElseIf branch
-			var ifBlock1 = IfBlock.Create(new List<(IScriptConditionBlock[], IScriptActionBlock[])>
+			var ifBlock1 = IfBlock.Create(new List<(ScriptConditionBlock[], ScriptActionBlock[])>
 			{
 				(new[] { condFalse }, new[] { action1 }),
 				(new[] { condTrue }, new[] { action2 }),
@@ -80,7 +80,7 @@ namespace LunyScript.Test.Scripts
 
 			// Test Else branch
 			executedBranch = 0;
-			var ifBlock2 = IfBlock.Create(new List<(IScriptConditionBlock[], IScriptActionBlock[])>
+			var ifBlock2 = IfBlock.Create(new List<(ScriptConditionBlock[], ScriptActionBlock[])>
 			{
 				(new[] { condFalse }, new[] { action1 }),
 				(new[] { condFalse }, new[] { action2 }),
@@ -97,7 +97,7 @@ namespace LunyScript.Test.Scripts
 			var action = new MockAction(() => executed = true);
 
 			// null conditions should evaluate to true
-			var ifBlock = IfBlock.Create(new List<(IScriptConditionBlock[], IScriptActionBlock[])>
+			var ifBlock = IfBlock.Create(new List<(ScriptConditionBlock[], ScriptActionBlock[])>
 			{
 				(null, new[] { action }),
 			}, null);
@@ -113,9 +113,9 @@ namespace LunyScript.Test.Scripts
 			var action = new MockAction(() => executed = true);
 
 			// empty conditions should evaluate to true
-			var ifBlock = IfBlock.Create(new List<(IScriptConditionBlock[], IScriptActionBlock[])>
+			var ifBlock = IfBlock.Create(new List<(ScriptConditionBlock[], ScriptActionBlock[])>
 			{
-				(Array.Empty<IScriptConditionBlock>(), new[] { action }),
+				(Array.Empty<ScriptConditionBlock>(), new[] { action }),
 			}, null);
 
 			ifBlock.Execute(null);
@@ -158,25 +158,25 @@ namespace LunyScript.Test.Scripts
 			Assert.That(value.AsInt32(), Is.EqualTo(42));
 		}
 
-		private class MockCondition : IScriptConditionBlock
+		private class MockCondition : ScriptConditionBlock
 		{
 			private readonly Boolean _result;
 			public MockCondition(Boolean result) => _result = result;
-			public Boolean Evaluate(IScriptRuntimeContext runtimeContext) => _result;
+ 		public override Boolean Evaluate(IScriptRuntimeContext runtimeContext) => _result;
 		}
 
-		private class MockAction : IScriptActionBlock
+		private class MockAction : ScriptActionBlock
 		{
 			private readonly Action _action;
 			public MockAction(Action action) => _action = action;
-			public void Execute(IScriptRuntimeContext runtimeContext) => _action();
+ 		public override void Execute(IScriptRuntimeContext runtimeContext) => _action();
 		}
 
-		private class MockActionWithContext : IScriptActionBlock
+		private class MockActionWithContext : ScriptActionBlock
 		{
 			private readonly Action<IScriptRuntimeContext> _action;
 			public MockActionWithContext(Action<IScriptRuntimeContext> action) => _action = action;
-			public void Execute(IScriptRuntimeContext runtimeContext) => _action(runtimeContext);
+ 		public override void Execute(IScriptRuntimeContext runtimeContext) => _action(runtimeContext);
 		}
 
 		private class MockRuntimeContext : IScriptRuntimeContext

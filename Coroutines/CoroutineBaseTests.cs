@@ -1,6 +1,7 @@
 using Luny;
 using Luny.ContractTest;
 using Luny.Engine.Bridge.Enums;
+using LunyScript.Blocks;
 using LunyScript.Exceptions;
 using NUnit.Framework;
 using System;
@@ -15,7 +16,7 @@ namespace LunyScript.Test.Coroutines
 				.OnFrameUpdate(GVar["Counter"].Add(1))
 				.Do();
 
-			On.Ready(counter); // throws, a coroutine is not an executable block
+			On.Ready((ScriptActionBlock)counter); // throws, a coroutine is not an executable block
 		}
 	}
 
