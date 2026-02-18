@@ -26,7 +26,7 @@ namespace LunyScript.Test.Input
 		private UnityInputService InputService => (UnityInputService)LunyEngine.Instance.Input;
 
 		[Test]
-		public void Axis_Returns_Zero_When_No_Input()
+		public void Directional_Returns_Zero_When_No_Input()
 		{
 			var block = InputAxisBlock.Create("Move");
 			var value = block.GetValue(null);
@@ -36,10 +36,10 @@ namespace LunyScript.Test.Input
 		}
 
 		[Test]
-		public void Axis_Returns_Value_After_Simulate()
+		public void Directional_Returns_Value_After_Simulate()
 		{
 			var expected = new LunyVector2(0.7f, -0.3f);
-			InputService.SimulateAxisInput("Move", expected);
+			InputService.SimulateDirectionalInput("Move", expected);
 
 			var block = InputAxisBlock.Create("Move");
 			var value = block.GetValue(null);
@@ -48,10 +48,10 @@ namespace LunyScript.Test.Input
 		}
 
 		[Test]
-		public void Axis_GetValueGeneric_Returns_LunyVector2()
+		public void Directional_GetValueGeneric_Returns_LunyVector2()
 		{
 			var expected = new LunyVector2(1f, 0f);
-			InputService.SimulateAxisInput("Move", expected);
+			InputService.SimulateDirectionalInput("Move", expected);
 
 			var block = InputAxisBlock.Create("Move");
 			var vec = block.GetValue<LunyVector2>(null);
@@ -60,15 +60,15 @@ namespace LunyScript.Test.Input
 		}
 
 		[Test]
-		public void Axis_Cleared_Across_Frames()
+		public void Directional_NotCleared_Across_Frames()
 		{
 			var expected = new LunyVector2(0.5f, 0.5f);
-			InputService.SimulateAxisInput("Look", expected);
+			InputService.SimulateDirectionalInput("Look", expected);
 
 			SimulateFrames(1);
 
 			var block = InputAxisBlock.Create("Look");
-			Assert.That(block.GetValue<LunyVector2>(null), Is.EqualTo(LunyVector2.Zero));
+			Assert.That(block.GetValue<LunyVector2>(null), Is.EqualTo(expected));
 		}
 	}
 

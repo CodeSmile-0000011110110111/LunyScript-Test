@@ -16,7 +16,7 @@ namespace LunyScript.Test.Variables
 			internal static TestComputedBlock Create(Variable value) => new(value);
 			private TestComputedBlock(Variable value) => _value = value;
 
-			public override Variable GetValue(IScriptRuntimeContext runtimeContext) => _value;
+			internal override Variable GetValue(IScriptRuntimeContext runtimeContext) => _value;
 		}
 
 		private sealed class TestVector2ComputedBlock : ComputedVariableBlock
@@ -26,10 +26,10 @@ namespace LunyScript.Test.Variables
 			internal static TestVector2ComputedBlock Create(LunyVector2 value) => new(value);
 			private TestVector2ComputedBlock(LunyVector2 value) => _value = value;
 
-			public override Variable GetValue(IScriptRuntimeContext runtimeContext) =>
+			internal override Variable GetValue(IScriptRuntimeContext runtimeContext) =>
 				Variable.FromVector2(_value);
 
-			public override T GetValue<T>(IScriptRuntimeContext runtimeContext)
+			internal override T GetValue<T>(IScriptRuntimeContext runtimeContext)
 			{
 				if (typeof(T) == typeof(LunyVector2))
 				{
