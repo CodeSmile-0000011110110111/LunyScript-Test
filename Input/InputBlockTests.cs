@@ -60,15 +60,15 @@ namespace LunyScript.Test.Input
 		}
 
 		[Test]
-		public void Axis_Persists_Across_Frames()
+		public void Axis_Cleared_Across_Frames()
 		{
 			var expected = new LunyVector2(0.5f, 0.5f);
 			InputService.SimulateAxisInput("Look", expected);
 
-			SimulateFrames(3);
+			SimulateFrames(1);
 
 			var block = InputAxisBlock.Create("Look");
-			Assert.That(block.GetValue<LunyVector2>(null), Is.EqualTo(expected));
+			Assert.That(block.GetValue<LunyVector2>(null), Is.EqualTo(LunyVector2.Zero));
 		}
 	}
 
@@ -167,6 +167,9 @@ namespace LunyScript.Test.Input
 		public void ButtonValue_In_Script_Via_GVar()
 		{
 			LunyEngine.Instance.Object.CreateEmpty(nameof(InputButtonValueTestScript));
+
+			SimulateFrames(1);
+
 			InputService.SimulateButtonInput("Fire", true, 0.6f);
 
 			SimulateFrames(1);
