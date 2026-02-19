@@ -4,43 +4,13 @@ using LunyScript.Blocks;
 using LunyScript.Exceptions;
 using NUnit.Framework;
 using System;
+using System.Runtime.CompilerServices;
 
 namespace LunyScript.Test.Variables
 {
 	[TestFixture]
 	public sealed class ComputedVariableBlockTests
 	{
-		private sealed class TestComputedBlock : ComputedVariableBlock
-		{
-			private readonly Variable _value;
-
-			internal static TestComputedBlock Create(Variable value) => new(value);
-			private TestComputedBlock(Variable value) => _value = value;
-
-			internal override Variable GetValue(IScriptRuntimeContext runtimeContext) => _value;
-		}
-
-		private sealed class TestVector2ComputedBlock : ComputedVariableBlock
-		{
-			private readonly LunyVector2 _value;
-
-			internal static TestVector2ComputedBlock Create(LunyVector2 value) => new(value);
-			private TestVector2ComputedBlock(LunyVector2 value) => _value = value;
-
-			internal override Variable GetValue(IScriptRuntimeContext runtimeContext) =>
-				Variable.FromVector2(_value);
-
-			internal override T GetValue<T>(IScriptRuntimeContext runtimeContext)
-			{
-				if (typeof(T) == typeof(LunyVector2))
-				{
-					var val = _value;
-					return System.Runtime.CompilerServices.Unsafe.As<LunyVector2, T>(ref val);
-				}
-				return base.GetValue<T>(runtimeContext);
-			}
-		}
-
 		[Test]
 		public void TargetHandle_Is_Null()
 		{
@@ -133,6 +103,36 @@ namespace LunyScript.Test.Variables
 		{
 			var block = TestComputedBlock.Create(42);
 			Assert.Throws<LunyScriptVariableException>(() => block.GetValue<LunyQuaternion>(null));
+		}
+
+		private sealed class TestComputedBlock : ComputedVariableBlock
+		{
+			private readonly Variable _value;
+
+			internal static TestComputedBlock Create(Variable value) => new(value);
+			private TestComputedBlock(Variable value) => _value = value;
+
+			internal override Variable GetValue(IScriptRuntimeContext runtimeContext) => _value;
+		}
+
+		private sealed class TestVector2ComputedBlock : ComputedVariableBlock
+		{
+			private readonly LunyVector2 _value;
+
+			internal static TestVector2ComputedBlock Create(LunyVector2 value) => new(value);
+			private TestVector2ComputedBlock(LunyVector2 value) => _value = value;
+
+			internal override Variable GetValue(IScriptRuntimeContext runtimeContext) => Variable.FromVector2(_value);
+
+			internal override T GetValue<T>(IScriptRuntimeContext runtimeContext)
+			{
+				if (typeof(T) == typeof(LunyVector2))
+				{
+					var val = _value;
+					return Unsafe.As<LunyVector2, T>(ref val);
+				}
+				return base.GetValue<T>(runtimeContext);
+			}
 		}
 	}
 }

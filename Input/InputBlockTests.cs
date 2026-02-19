@@ -4,18 +4,14 @@ using Luny.Engine.Bridge;
 using Luny.Unity.Engine.Services;
 using LunyScript.Blocks;
 using NUnit.Framework;
-using System;
 
 namespace LunyScript.Test.Input
 {
 	public sealed class InputButtonValueTestScript : Script
 	{
-		public override void Build(ScriptContext context)
-		{
-			On.FrameUpdate(
-				GVar["btn_value"].Set(Input.Button("Fire").Value)
-			);
-		}
+		public override void Build(ScriptContext context) => On.FrameUpdate(
+			GVar["btn_value"].Set(Input.Button("Fire").Value)
+		);
 	}
 
 	[TestFixture]
