@@ -1,4 +1,5 @@
 using Luny;
+using Luny.Engine.Bridge;
 using LunyScript.Blocks;
 using LunyScript.Exceptions;
 using NUnit.Framework;
