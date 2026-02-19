@@ -1,7 +1,7 @@
 ﻿using Luny;
 using Luny.ContractTest;
 using Luny.Engine.Bridge;
-using Luny.Unity.Engine.Services;
+using Luny.Engine.Services;
 using LunyScript.Blocks;
 using NUnit.Framework;
 
@@ -14,17 +14,22 @@ namespace LunyScript.Test.Input
 		);
 	}
 
-	[TestFixture]
-	public sealed class InputDirectionBlockTests : ContractTestBase
+	public sealed class InputDirectionMoveTestScript : Script
 	{
-		protected override NativeEngine Engine => NativeEngine.Unity;
+		public override void Build(ScriptContext context) => On.FrameUpdate(
+			Transform.Move(Input.Direction("Move"))
+		);
+	}
 
-		private UnityInputService InputService => (UnityInputService)LunyEngine.Instance.Input;
+	[TestFixture]
+	public abstract class InputBlockTests : ContractTestBase
+	{
+		private LunyInputServiceBase InputService => (LunyInputServiceBase)LunyEngine.Instance.Input;
 
 		[Test]
 		public void Directional_Returns_Zero_When_No_Input()
 		{
-			var block = InputDirectionBlock.Create("Move");
+			var block = InputBlock.Create("Move");
 			var value = block.GetValue(null);
 
 			Assert.That(value.Type, Is.EqualTo(Variable.ValueType.Vector2));
@@ -37,7 +42,7 @@ namespace LunyScript.Test.Input
 			var expected = new LunyVector2(0.7f, -0.3f);
 			InputService.SimulateDirectionalInput("Move", expected);
 
-			var block = InputDirectionBlock.Create("Move");
+			var block = InputBlock.Create("Move");
 			var value = block.GetValue(null);
 
 			Assert.That(value.AsVector2(), Is.EqualTo(expected));
@@ -49,7 +54,7 @@ namespace LunyScript.Test.Input
 			var expected = new LunyVector2(1f, 0f);
 			InputService.SimulateDirectionalInput("Move", expected);
 
-			var block = InputDirectionBlock.Create("Move");
+			var block = InputBlock.Create("Move");
 			var vec = block.GetValue<LunyVector2>(null);
 
 			Assert.That(vec, Is.EqualTo(expected));
@@ -63,17 +68,9 @@ namespace LunyScript.Test.Input
 
 			SimulateFrames(1);
 
-			var block = InputDirectionBlock.Create("Look");
+			var block = InputBlock.Create("Look");
 			Assert.That(block.GetValue<LunyVector2>(null), Is.EqualTo(expected));
 		}
-	}
-
-	[TestFixture]
-	public sealed class InputButtonIsPressedBlockTests : ContractTestBase
-	{
-		protected override NativeEngine Engine => NativeEngine.Unity;
-
-		private UnityInputService InputService => (UnityInputService)LunyEngine.Instance.Input;
 
 		[Test]
 		public void IsPressed_False_When_No_Input()
@@ -100,14 +97,6 @@ namespace LunyScript.Test.Input
 			var block = InputButtonIsPressedBlock.Create("Fire");
 			Assert.That(block.Evaluate(null), Is.False);
 		}
-	}
-
-	[TestFixture]
-	public sealed class InputButtonIsJustPressedBlockTests : ContractTestBase
-	{
-		protected override NativeEngine Engine => NativeEngine.Unity;
-
-		private UnityInputService InputService => (UnityInputService)LunyEngine.Instance.Input;
 
 		[Test]
 		public void IsJustPressed_False_When_No_Input()
@@ -134,14 +123,6 @@ namespace LunyScript.Test.Input
 			var block = InputButtonIsJustPressedBlock.Create("Jump");
 			Assert.That(block.Evaluate(null), Is.False);
 		}
-	}
-
-	[TestFixture]
-	public sealed class InputAxisValueBlockTests : ContractTestBase
-	{
-		protected override NativeEngine Engine => NativeEngine.Unity;
-
-		private UnityInputService InputService => (UnityInputService)LunyEngine.Instance.Input;
 
 		[Test]
 		public void ButtonValue_Zero_When_No_Input()
@@ -187,5 +168,30 @@ namespace LunyScript.Test.Input
 			var gVars = ScriptEngine.Instance.GlobalVariables;
 			Assert.That(gVars["btn_value"].AsDouble(), Is.EqualTo(0.0));
 		}
+
+		[Test]
+		public void Directional_Move_ChangesTransformPosition()
+		{
+			var obj = LunyEngine.Instance.Object.CreateEmpty(nameof(InputDirectionMoveTestScript));
+			Assert.That(obj.Transform.Position, Is.EqualTo(LunyVector3.Zero));
+
+			var direction = new LunyVector2(0.4f, 0.7f);
+			InputService.SimulateDirectionalInput("Move", direction);
+			SimulateFrames(1);
+
+			Assert.That(obj.Transform.Position, Is.EqualTo(new LunyVector3(direction.X, 0, direction.Y)));
+		}
+
+		[TestFixture]
+		public sealed class InputBlockUnityTests : InputBlockTests
+		{
+			protected override NativeEngine Engine => NativeEngine.Unity;
+		}
+
+		// [TestFixture]
+		// public sealed class InputBlockGodotTests : InputBlockTests
+		// {
+		// 	protected override NativeEngine Engine => NativeEngine.Godot;
+		// }
 	}
 }
