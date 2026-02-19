@@ -7,15 +7,15 @@ using NUnit.Framework;
 
 namespace LunyScript.Test.Input
 {
-	public sealed class InputButtonValueTestScript : Script
+	public sealed class InputAxisTestScript : Script
 	{
 		public override void Build(ScriptContext context) => On.FrameUpdate(
-			GVar["btn_value"].Set(Input.Button("Fire").Value)
+			GVar["btn_value"].Set(Input.Axis("Fire").Value)
 		);
 	}
 
 	[TestFixture]
-	public sealed class InputAxisBlockTests : ContractTestBase
+	public sealed class InputDirectionBlockTests : ContractTestBase
 	{
 		protected override NativeEngine Engine => NativeEngine.Unity;
 
@@ -24,7 +24,7 @@ namespace LunyScript.Test.Input
 		[Test]
 		public void Directional_Returns_Zero_When_No_Input()
 		{
-			var block = InputAxisBlock.Create("Move");
+			var block = InputDirectionBlock.Create("Move");
 			var value = block.GetValue(null);
 
 			Assert.That(value.Type, Is.EqualTo(Variable.ValueType.Vector2));
@@ -37,7 +37,7 @@ namespace LunyScript.Test.Input
 			var expected = new LunyVector2(0.7f, -0.3f);
 			InputService.SimulateDirectionalInput("Move", expected);
 
-			var block = InputAxisBlock.Create("Move");
+			var block = InputDirectionBlock.Create("Move");
 			var value = block.GetValue(null);
 
 			Assert.That(value.AsVector2(), Is.EqualTo(expected));
@@ -49,7 +49,7 @@ namespace LunyScript.Test.Input
 			var expected = new LunyVector2(1f, 0f);
 			InputService.SimulateDirectionalInput("Move", expected);
 
-			var block = InputAxisBlock.Create("Move");
+			var block = InputDirectionBlock.Create("Move");
 			var vec = block.GetValue<LunyVector2>(null);
 
 			Assert.That(vec, Is.EqualTo(expected));
@@ -63,13 +63,13 @@ namespace LunyScript.Test.Input
 
 			SimulateFrames(1);
 
-			var block = InputAxisBlock.Create("Look");
+			var block = InputDirectionBlock.Create("Look");
 			Assert.That(block.GetValue<LunyVector2>(null), Is.EqualTo(expected));
 		}
 	}
 
 	[TestFixture]
-	public sealed class InputIsPressedBlockTests : ContractTestBase
+	public sealed class InputButtonIsPressedBlockTests : ContractTestBase
 	{
 		protected override NativeEngine Engine => NativeEngine.Unity;
 
@@ -78,7 +78,7 @@ namespace LunyScript.Test.Input
 		[Test]
 		public void IsPressed_False_When_No_Input()
 		{
-			var block = InputIsPressedBlock.Create("Fire");
+			var block = InputButtonIsPressedBlock.Create("Fire");
 			Assert.That(block.Evaluate(null), Is.False);
 		}
 
@@ -87,7 +87,7 @@ namespace LunyScript.Test.Input
 		{
 			InputService.SimulateButtonInput("Fire", true);
 
-			var block = InputIsPressedBlock.Create("Fire");
+			var block = InputButtonIsPressedBlock.Create("Fire");
 			Assert.That(block.Evaluate(null), Is.True);
 		}
 
@@ -97,13 +97,13 @@ namespace LunyScript.Test.Input
 			InputService.SimulateButtonInput("Fire", true);
 			InputService.SimulateButtonInput("Fire", false);
 
-			var block = InputIsPressedBlock.Create("Fire");
+			var block = InputButtonIsPressedBlock.Create("Fire");
 			Assert.That(block.Evaluate(null), Is.False);
 		}
 	}
 
 	[TestFixture]
-	public sealed class InputIsJustPressedBlockTests : ContractTestBase
+	public sealed class InputButtonIsJustPressedBlockTests : ContractTestBase
 	{
 		protected override NativeEngine Engine => NativeEngine.Unity;
 
@@ -112,7 +112,7 @@ namespace LunyScript.Test.Input
 		[Test]
 		public void IsJustPressed_False_When_No_Input()
 		{
-			var block = InputIsJustPressedBlock.Create("Jump");
+			var block = InputButtonIsJustPressedBlock.Create("Jump");
 			Assert.That(block.Evaluate(null), Is.False);
 		}
 
@@ -121,7 +121,7 @@ namespace LunyScript.Test.Input
 		{
 			InputService.SimulateButtonInput("Jump", true);
 
-			var block = InputIsJustPressedBlock.Create("Jump");
+			var block = InputButtonIsJustPressedBlock.Create("Jump");
 			Assert.That(block.Evaluate(null), Is.True);
 		}
 
@@ -131,13 +131,13 @@ namespace LunyScript.Test.Input
 			InputService.SimulateButtonInput("Jump", true);
 			SimulateFrames(1);
 
-			var block = InputIsJustPressedBlock.Create("Jump");
+			var block = InputButtonIsJustPressedBlock.Create("Jump");
 			Assert.That(block.Evaluate(null), Is.False);
 		}
 	}
 
 	[TestFixture]
-	public sealed class InputButtonValueBlockTests : ContractTestBase
+	public sealed class InputAxisValueBlockTests : ContractTestBase
 	{
 		protected override NativeEngine Engine => NativeEngine.Unity;
 
@@ -146,27 +146,27 @@ namespace LunyScript.Test.Input
 		[Test]
 		public void ButtonValue_Zero_When_No_Input()
 		{
-			var block = InputButtonValueBlock.Create("Trigger");
+			var block = InputAxisValueBlock.Create("Trigger");
 			Assert.That(block.GetValue(null).AsDouble(), Is.EqualTo(0.0));
 		}
 
 		[Test]
-		public void ButtonValue_Returns_Analog()
+		public void AxisValue_Returns_Analog()
 		{
-			InputService.SimulateButtonInput("Trigger", true, 0.75f);
+			InputService.SimulateAxisInput("Trigger", 0.75f);
 
-			var block = InputButtonValueBlock.Create("Trigger");
+			var block = InputAxisValueBlock.Create("Trigger");
 			Assert.That(block.GetValue(null).AsDouble(), Is.EqualTo(0.75).Within(0.01));
 		}
 
 		[Test]
-		public void ButtonValue_In_Script_Via_GVar()
+		public void AxisValue_In_Script_Via_GVar()
 		{
-			LunyEngine.Instance.Object.CreateEmpty(nameof(InputButtonValueTestScript));
+			LunyEngine.Instance.Object.CreateEmpty(nameof(InputAxisTestScript));
 
 			SimulateFrames(1);
 
-			InputService.SimulateButtonInput("Fire", true, 0.6f);
+			InputService.SimulateAxisInput("Fire", 0.6f);
 
 			SimulateFrames(1);
 
@@ -177,7 +177,7 @@ namespace LunyScript.Test.Input
 		[Test]
 		public void ButtonValue_In_Script_Zero_After_Release()
 		{
-			LunyEngine.Instance.Object.CreateEmpty(nameof(InputButtonValueTestScript));
+			LunyEngine.Instance.Object.CreateEmpty(nameof(InputAxisTestScript));
 			InputService.SimulateButtonInput("Fire", true, 0.8f);
 			SimulateFrames(1);
 
