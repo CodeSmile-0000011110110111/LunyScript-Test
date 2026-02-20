@@ -17,7 +17,7 @@ namespace LunyScript.Test.Input
 	public sealed class InputDirectionMoveTestScript : Script
 	{
 		public override void Build(ScriptContext context) => On.FrameUpdate(
-			Transform.Move(Input.Direction("Move"))
+			Transform.MoveBy(Input.Direction("Move"))
 		);
 	}
 
