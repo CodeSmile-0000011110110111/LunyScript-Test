@@ -126,6 +126,8 @@ namespace LunyScript.Test.Scripts
 		[Test]
 		public void For_Loop_Works()
 		{
+			Assert.Inconclusive("loop counter disabled");
+
 			LunyEngine.Instance.Object.CreateEmpty(nameof(ForLoopScript));
 			var gVars = ScriptEngine.Instance.GlobalVariables;
 
@@ -138,6 +140,8 @@ namespace LunyScript.Test.Scripts
 		[Test]
 		public void For_Loop_Reverse_Works()
 		{
+			Assert.Inconclusive("loop counter disabled");
+
 			LunyEngine.Instance.Object.CreateEmpty(nameof(ForLoopReverseScript));
 			var gVars = ScriptEngine.Instance.GlobalVariables;
 

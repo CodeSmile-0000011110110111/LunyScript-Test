@@ -30,7 +30,7 @@ namespace LunyScript.Test.Input
 		public void Directional_Returns_Zero_When_No_Input()
 		{
 			var block = InputBlock.Create("Move");
-			var value = block.GetValue(null);
+			var value = block.GetValue();
 
 			Assert.That(value.Type, Is.EqualTo(Variable.ValueType.Vector2));
 			Assert.That(value.AsVector2(), Is.EqualTo(LunyVector2.Zero));
@@ -43,7 +43,7 @@ namespace LunyScript.Test.Input
 			InputService.SimulateDirectionalInput("Move", expected);
 
 			var block = InputBlock.Create("Move");
-			var value = block.GetValue(null);
+			var value = block.GetValue();
 
 			Assert.That(value.AsVector2(), Is.EqualTo(expected));
 		}
@@ -55,7 +55,7 @@ namespace LunyScript.Test.Input
 			InputService.SimulateDirectionalInput("Move", expected);
 
 			var block = InputBlock.Create("Move");
-			var vec = block.GetValue<LunyVector2>(null);
+			var vec = block.GetValue<LunyVector2>();
 
 			Assert.That(vec, Is.EqualTo(expected));
 		}
@@ -69,7 +69,7 @@ namespace LunyScript.Test.Input
 			SimulateFrames(1);
 
 			var block = InputBlock.Create("Look");
-			Assert.That(block.GetValue<LunyVector2>(null), Is.EqualTo(expected));
+			Assert.That(block.GetValue<LunyVector2>(), Is.EqualTo(expected));
 		}
 
 		[Test]
@@ -128,7 +128,7 @@ namespace LunyScript.Test.Input
 		public void ButtonValue_Zero_When_No_Input()
 		{
 			var block = InputAxisValueBlock.Create("Trigger");
-			Assert.That(block.GetValue(null).AsDouble(), Is.EqualTo(0.0));
+			Assert.That(block.GetValue().AsDouble(), Is.EqualTo(0.0));
 		}
 
 		[Test]
@@ -137,7 +137,7 @@ namespace LunyScript.Test.Input
 			InputService.SimulateAxisInput("Trigger", 0.75f);
 
 			var block = InputAxisValueBlock.Create("Trigger");
-			Assert.That(block.GetValue(null).AsDouble(), Is.EqualTo(0.75).Within(0.01));
+			Assert.That(block.GetValue().AsDouble(), Is.EqualTo(0.75).Within(0.01));
 		}
 
 		[Test]
@@ -175,11 +175,14 @@ namespace LunyScript.Test.Input
 			var obj = LunyEngine.Instance.Object.CreateEmpty(nameof(InputDirectionMoveTestScript));
 			Assert.That(obj.Transform.Position, Is.EqualTo(LunyVector3.Zero));
 
-			var direction = new LunyVector2(0.4f, 0.7f);
+			var direction = new LunyVector2(0.4, 0.7);
 			InputService.SimulateDirectionalInput("Move", direction);
-			SimulateFrames(1);
+			SimulateFrames(60);
 
-			Assert.That(obj.Transform.Position, Is.EqualTo(new LunyVector3(direction.X, 0, direction.Y)));
+			var actual = obj.Transform.Position;
+			Assert.That(actual.X, Is.EqualTo(direction.X).Within(0.0001));
+			Assert.That(actual.Y, Is.EqualTo(0));
+			Assert.That(actual.Z, Is.EqualTo(direction.Y).Within(0.0001));
 		}
 
 		[TestFixture]

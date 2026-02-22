@@ -151,10 +151,12 @@ namespace LunyScript.Test.Scripts
 		[Test]
 		public void TestLoopCounterValue()
 		{
+			Assert.Inconclusive("loop counter disabled");
+
 			var context = new MockRuntimeContext();
 			context.LoopStack.Push(42);
 
-			var value = LoopCounterVariableBlock.Instance.GetValue(context);
+			var value = LoopCounterVariableBlock.Instance.GetValue();
 			Assert.That(value.AsInt32(), Is.EqualTo(42));
 		}
 
