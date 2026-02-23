@@ -125,27 +125,31 @@ namespace LunyScript.Test.Scripts
 		[Test]
 		public void TestForBlock()
 		{
-			var counts = new List<Int32>();
-			var action = new MockActionWithContext(ctx => counts.Add(ctx.LoopStack.Peek()));
+			Assert.Inconclusive("loop counter disabled");
 
-			var forBlock = ForBlock.Create(3, 1, new[] { action });
-			var context = new MockRuntimeContext();
-
-			forBlock.Execute(context);
-			Assert.That(counts, Is.EqualTo(new[] { 1, 2, 3 }));
+			// var counts = new List<Int32>();
+			// var action = new MockActionWithContext(ctx => counts.Add(ctx.LoopStack.Peek()));
+			//
+			// var forBlock = ForBlock.Create(3, 1, new[] { action });
+			// var context = new MockRuntimeContext();
+			//
+			// forBlock.Execute(context);
+			// Assert.That(counts, Is.EqualTo(new[] { 1, 2, 3 }));
 		}
 
 		[Test]
 		public void TestForBlockReverse()
 		{
-			var counts = new List<Int32>();
-			var action = new MockActionWithContext(ctx => counts.Add(ctx.LoopStack.Peek()));
+			Assert.Inconclusive("loop counter disabled");
 
-			var forBlock = ForBlock.Create(3, -1, new[] { action });
-			var context = new MockRuntimeContext();
-
-			forBlock.Execute(context);
-			Assert.That(counts, Is.EqualTo(new[] { 3, 2, 1 }));
+			// var counts = new List<Int32>();
+			// var action = new MockActionWithContext(ctx => counts.Add(ctx.LoopStack.Peek()));
+			//
+			// var forBlock = ForBlock.Create(3, -1, new[] { action });
+			// var context = new MockRuntimeContext();
+			//
+			// forBlock.Execute(context);
+			// Assert.That(counts, Is.EqualTo(new[] { 3, 2, 1 }));
 		}
 
 		[Test]

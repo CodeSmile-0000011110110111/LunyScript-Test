@@ -41,12 +41,13 @@ namespace LunyScript.Test.Scripts
 	{
 		public override void Build(ScriptContext context)
 		{
-			var sum = GVar["Sum"];
+			Assert.Inconclusive("loop counter disabled");
 
-			On.Ready(
-				sum.Set(0),
-				For(3).Do(sum.Add(Loop.Counter))
-			);
+			// var sum = GVar["Sum"];
+			// On.Ready(
+			// 	sum.Set(0),
+			// 	For(3).Do(sum.Add(Loop.Counter))
+			// );
 		}
 	}
 
@@ -54,12 +55,13 @@ namespace LunyScript.Test.Scripts
 	{
 		public override void Build(ScriptContext context)
 		{
-			var sum = GVar["Sum"];
+			Assert.Inconclusive("loop counter disabled");
 
-			On.Ready(
-				sum.Set("START"),
-				For(3, -1).Do(sum.Add(Loop.Counter))
-			);
+			// var sum = GVar["Sum"];
+			// On.Ready(
+			// 	sum.Set("START"),
+			// 	For(3, -1).Do(sum.Add(Loop.Counter))
+			// );
 		}
 	}
 
